@@ -1,0 +1,4 @@
+package.json
+*.ts
+.idea/*
+dist

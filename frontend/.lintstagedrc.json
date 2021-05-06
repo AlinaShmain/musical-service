@@ -1,0 +1,12 @@
+{
+  "*.html": [
+    "prettier --write",
+    "eslint --fix"
+  ],
+  "*.ts": [
+    "eslint --fix"
+  ],
+  "*.less": [
+    "stylelint --syntax less --fix"
+  ]
+}

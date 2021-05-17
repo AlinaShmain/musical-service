@@ -10,5 +10,6 @@ import {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MsAppComponent {
-    title = 123;
+
+
 }

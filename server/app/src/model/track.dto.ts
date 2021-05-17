@@ -1,4 +1,4 @@
-export interface Track {
+export interface TrackDto {
    id: string;
    title: string;
    artist: string;

@@ -1,14 +1,19 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TrackController } from './track/track.controller';
+import { TrackCollectionModule } from './collections/track-collection/track-collection.module';
+import { TrackController } from './controllers/track/track.controller';
 import { TrackService } from './track/track.service';
-import { TracksController } from './tracks/tracks.controller';
-import { TracksService } from './tracks/tracks.service';
+import { TracksController } from './controllers/tracks/tracks.controller';
 
 @Module({
-  imports: [],
+  imports: [
+    MongooseModule.forRoot(
+      'mongodb+srv://alinau:admin@cluster0.lk3bb.mongodb.net/musicServiceDB?retryWrites=true&w=majority'
+    ),
+    TrackCollectionModule],
   controllers: [AppController, TracksController, TrackController],
-  providers: [AppService, TracksService, TrackService],
+  providers: [AppService, TrackService],
 })
-export class AppModule {}
+export class AppModule { }

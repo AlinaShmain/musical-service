@@ -1,1 +1,32 @@
-<p>sign-in works!</p>
+<form [formGroup]="formModel" (ngSubmit)="onSubmit()" class="form-model">
+    <div class="input-group">
+        <input type="text" placeholder="Username..." class="form-control" formControlName="name" required />
+        <div *ngIf="(name && name.invalid && (name.dirty || name.touched)) || (submitted && name.invalid)" class="icon-status-invalid"> </div>
+        <div *ngIf="(name && name.valid && (name.dirty || name.touched)) || (submitted && name.valid)" class="icon-status-valid"> </div>
+        <div *ngIf="(name && name.invalid && (name.dirty || name.touched)) || (submitted && name.invalid)" class="error-messages">
+            <div *ngFor="let error of getErrorsControl('name')" class="text-danger">
+                {{ getErrorMessage(error) }}
+            </div>
+        </div>
+    </div>
+    <div class="input-group">
+        <input type="text" placeholder="Password..." class="form-control" formControlName="password" required />
+        <div *ngIf="(password && password.invalid && (password.dirty || password.touched)) || (submitted && password.invalid)" class="icon-status-invalid"> </div>
+        <div *ngIf="(password && password.valid && (password.dirty || password.touched)) || (submitted && password.valid)" class="icon-status-valid"> </div>
+        <div *ngIf="(password && password.invalid && (password.dirty || password.touched)) || (submitted && password.invalid)" class="error-messages">
+            <div *ngFor="let error of getErrorsControl('password')" class="text-danger">
+                {{ getErrorMessage(error) }}
+            </div>
+        </div>
+    </div>
+    <div class="flex-wrapper">
+        <div class="checkbox">
+            <input class="checkbox-input" type="checkbox" [checked]="checked" (change)="handleCheckboxChange()" />
+            <span class="checkbox-span">Keep me signed in</span>
+        </div>
+        <span class="forget-password">Forget <a class="link" href="#">password?</a></span>
+    </div>
+    <div class="center-button">
+        <button type="submit" class="submit-button"> Submit </button>
+    </div>
+</form>

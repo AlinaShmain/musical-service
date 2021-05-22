@@ -13,7 +13,7 @@ export class TracksController {
     findAll(): Promise<Track[]> {
         console.log("get tracks");
         // console.log(await this.tracksService.findAll());
-        return this.tracksService.findAll();
+        return this.tracksService.findAllTracks();
     }
     
 }

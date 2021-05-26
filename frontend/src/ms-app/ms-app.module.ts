@@ -11,8 +11,8 @@ import { SignUpComponent } from "./auth-modal/sign-up/sign-up.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { AppRoutingModule } from "./ms-app-routing.module";
 import { HomeComponent } from "./home/home.component";
-// import { ModalEntryComponent } from "./auth-modal/modal-entry/modal-entry.component";
-// import { HomeModule } from "./home/home.module";
+import { UsersService } from "./services/users.service";
+import { HttpClientModule } from "@angular/common/http";
 @NgModule({
     declarations: [
         MsAppComponent,
@@ -21,7 +21,6 @@ import { HomeComponent } from "./home/home.component";
         SignUpComponent,
         PageNotFoundComponent,
         HomeComponent,
-        // ModalEntryComponent,
     ],
     imports: [
         BrowserModule,
@@ -30,10 +29,10 @@ import { HomeComponent } from "./home/home.component";
         NoopAnimationsModule,
         MaterialModule,
         AppRoutingModule,
-        // HomeModule,
+        HttpClientModule,
     ],
-    entryComponents: [AuthModalComponent],
-    providers: [],
+    // entryComponents: [AuthModalComponent],
+    providers: [UsersService],
     // exports: [
     //     MaterialModule,
     // ],

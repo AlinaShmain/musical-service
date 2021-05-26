@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } fro
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { User } from "src/ms-app/model/user";
+import { UsersService } from "src/ms-app/services/users.service";
 
 
 interface AllValidationControlErrors {
@@ -30,7 +31,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private _fb: FormBuilder) {
+  constructor(private _fb: FormBuilder, private usersService: UsersService) {
     this.name = this._fb.control("", [Validators.required, Validators.pattern("^[А-Яа-яЁёA-Za-z]*$"), Validators.maxLength(20), Validators.minLength(3)]);
     this.email = this._fb.control("", [Validators.required, Validators.pattern("^[A-Za-z]*$"), Validators.maxLength(20), Validators.minLength(3)]);
     this.password = this._fb.control("", [Validators.required, Validators.pattern(
@@ -116,6 +117,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   registerNewUser(user: User): void {
+    this.usersService.registerUser(user).pipe(takeUntil(this.destroy$)).subscribe((data) => console.log(data));
     // this.goBack();
   }
 
@@ -129,7 +131,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
         name, email, password
       };
       console.log("on submit form", user);
-        this.registerNewUser(user);
+      this.registerNewUser(user);
     }
   }
 

@@ -62,7 +62,6 @@ export class AuthService {
 
     getHash(salt: string, str: string): string {
         const hash = bcrypt.hashSync(str, salt);
-        // console.log("hash", hash);
 
         return hash;
     }

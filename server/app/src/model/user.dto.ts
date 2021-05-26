@@ -1,6 +1,6 @@
 export interface UserDto {
     _id?: number;
-    name: string;
+    name?: string;
     email: string;
     password: string;
     // admin: boolean,

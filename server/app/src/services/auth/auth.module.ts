@@ -4,6 +4,7 @@ import { UserCollectionModule } from "src/collections/user-collection/user-colle
 import { AuthService } from "./auth.service";
 import { jwtConstants } from "./constants";
 import { RegisterController } from "src/controllers/register/register.controller";
+import { LoginController } from "src/controllers/login/login.controller";
 
 
 @Module({
@@ -14,7 +15,7 @@ import { RegisterController } from "src/controllers/register/register.controller
             signOptions: { expiresIn: '3h' },
         }),
     ],
-    controllers: [RegisterController],
+    controllers: [RegisterController, LoginController],
     providers: [AuthService],
     exports: [AuthService, JwtModule],
 })

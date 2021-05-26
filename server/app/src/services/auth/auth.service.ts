@@ -1,46 +1,103 @@
-import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserCollectionService } from 'src/collections/user-collection/user-collection.service';
+import { TokenDto } from 'src/model/token.dto';
 import { UserDto } from 'src/model/user.dto';
+import * as forge from "node-forge";
+import { EncryptedData } from 'src/model/encryptedData.dto';
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class AuthService {
 
+    currentPayload = null;
+    currentRND: number = null;
+
     constructor(private readonly userCollectionService: UserCollectionService, private jwtService: JwtService) { }
 
-    async signIn(user: UserDto): Promise<any> {
-        const foundUser = await this.userCollectionService.findByEmail({ email: user.email });
-        if (!foundUser) {
-            // throw new ConflictException("");
-        }
-
-        if(foundUser.name !== user.name) {
-            // throw new ConflictException("Incorrect name or password");
-        }
-
-        const isCorrectPassword = await foundUser.isCorrectPassword(user.password);
-
-        if(!isCorrectPassword) {
-            // throw new ConflictException("Incorrect name or password");
-        }
-
-        const payload = {
-            username: foundUser.name,
-            sub: foundUser._id,
-        };
-
-        const foundUserCopy = {
-            name: foundUser.name,
-            email: foundUser.email,
-        }
-
-        return {
-            user: foundUserCopy,
-            token: this.jwtService.sign(payload),
-        };
+    getRandomInteger(min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEGER): number {
+        return Math.floor(Math.random() * (max - min)) + min;
     }
 
-    async signUp(newUser: UserDto): Promise<any> {
+    encryptNum(num: number, publicKeyPem: string) {
+        const publicKey = forge.pki.publicKeyFromPem(publicKeyPem);
+
+        // const encryptNum: string = publicKey.encrypt(num);
+        // const encryptText: string = publicKey.encrypt(forge.util.encodeUtf8(num.toString()));
+        console.log(forge.util.encodeUtf8(num.toString()));
+        const encryptText: string = publicKey.encrypt(num.toString());
+
+        // console.log("encryptNum", encryptNum);
+        console.log("encryptText", encryptText);
+
+        return encryptText;
+    }
+
+    async validateUser(email: string): Promise<EncryptedData> {
+        const foundUser: UserDto = await this.userCollectionService.findByEmail({ email });
+        if (!foundUser) {
+            console.log("Incorrect email or password");
+            // return new 
+        }
+
+        // console.log("found user", foundUser);
+        this.currentPayload = {
+            email: foundUser.email,
+            sub: foundUser._id,
+        }
+
+        const randInt: number = this.getRandomInteger();
+        console.log("rand int", randInt);
+        this.currentRND = randInt;
+
+        const keys = foundUser.password.split("\r\n----\r\n");
+
+        const encryptedRND = this.encryptNum(randInt, keys[1]);
+
+        return {
+            encryptedPrivateKey: keys[0],
+            encryptedRND
+        }
+    }
+
+    getHash(salt: string, str: string): string {
+        const hash = bcrypt.hashSync(str, salt);
+        // console.log("hash", hash);
+
+        return hash;
+    }
+
+    async signIn({salt, hashClient}): Promise<TokenDto | UnauthorizedException> {
+        const hashServer = this.getHash(salt, this.currentRND.toString());
+        console.log("hash server", hashServer);
+        console.log("hash client", hashClient);
+        
+        if (hashClient === hashServer) {
+            return {
+                token: this.jwtService.sign(this.currentPayload),
+            };
+        }
+
+        return new UnauthorizedException("Incorrect email or password");
+
+        // const isCorrectPassword = await foundUser.isCorrectPassword(user.password);
+
+        // if(!isCorrectPassword) {
+        //     // throw new ConflictException("Incorrect name or password");
+        //     console.log("Incorrect email or password");
+        // }
+
+        // const payload = {
+        //     emial: foundUser.email,
+        //     sub: foundUser._id,
+        // };
+
+        // return {
+        //     token: this.jwtService.sign(payload),
+        // };
+    }
+
+    async signUp(newUser: UserDto): Promise<TokenDto> {
         const isUserExist = await this.userCollectionService.findByEmail({ email: newUser.email });
         if (isUserExist) {
             throw new ConflictException("Email already exist");
@@ -49,21 +106,23 @@ export class AuthService {
         try {
             const createdUser = (await this.userCollectionService.create(newUser)).toObject();
 
-            const createdUserCopy = {
-                name: createdUser.name,
-                email: createdUser.email,
-            }
+            console.log("saved user", createdUser);
+
+            // const createdUserCopy = {
+            //     name: createdUser.name,
+            //     email: createdUser.email,
+            // };
 
             const payload = {
-                username: createdUser.name,
+                email: createdUser.email,
                 sub: createdUser._id,
             };
 
             return {
-                user: createdUserCopy,
                 token: this.jwtService.sign(payload),
             };
         } catch (error) {
+            console.log(error.message);
             throw new InternalServerErrorException(error.message);
         }
     }

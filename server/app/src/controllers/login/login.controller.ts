@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Param, Post, UnauthorizedException } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { EncryptedData } from 'src/model/encryptedData.dto';
 import { TokenDto } from 'src/model/token.dto';
-import { UserDto } from 'src/model/user.dto';
 import { AuthService } from 'src/services/auth/auth.service';
 
 @Controller('login')
@@ -19,12 +18,12 @@ export class LoginController {
     }
 
     @Post()
-    async create(@Body() { hashRND }): Promise<TokenDto | UnauthorizedException> {
+    async create(@Body() { hashRND }): Promise<TokenDto> {
         console.log("hashRND", hashRND);
         const splitted = hashRND.split(":")
         const hashData = {
             salt: splitted[0],
-            hashClient: splitted[1], 
+            hashClient: splitted[1],
         };
         console.log("hashData", hashData)
         return await this.authService.signIn(hashData);

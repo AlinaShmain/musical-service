@@ -28,7 +28,7 @@ export class AuthService {
         const encryptText: string = publicKey.encrypt(num.toString());
 
         // console.log("encryptNum", encryptNum);
-        console.log("encryptText", encryptText);
+        // console.log("encryptText", encryptText);
 
         return encryptText;
     }
@@ -37,7 +37,7 @@ export class AuthService {
         const foundUser: UserDto = await this.userCollectionService.findByEmail({ email });
         if (!foundUser) {
             console.log("Incorrect email or password");
-            // return new 
+            throw new UnauthorizedException("Incorrect email or password");
         }
 
         // console.log("found user", foundUser);
@@ -66,18 +66,20 @@ export class AuthService {
         return hash;
     }
 
-    async signIn({salt, hashClient}): Promise<TokenDto | UnauthorizedException> {
+    async signIn({salt, hashClient}): Promise<TokenDto> {
         const hashServer = this.getHash(salt, this.currentRND.toString());
         console.log("hash server", hashServer);
         console.log("hash client", hashClient);
         
         if (hashClient === hashServer) {
-            return {
+            const token = {
                 token: this.jwtService.sign(this.currentPayload),
             };
+            console.log("token", token);
+            return token;
         }
 
-        return new UnauthorizedException("Incorrect email or password");
+        throw new UnauthorizedException("Incorrect email or password");
 
         // const isCorrectPassword = await foundUser.isCorrectPassword(user.password);
 

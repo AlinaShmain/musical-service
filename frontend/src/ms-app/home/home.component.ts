@@ -4,7 +4,6 @@ import {
   OnDestroy,
   OnInit,
 } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute } from "@angular/router";
 
 @Component({
@@ -15,7 +14,7 @@ import { ActivatedRoute } from "@angular/router";
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {

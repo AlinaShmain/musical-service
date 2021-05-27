@@ -10,7 +10,10 @@
         </div>
     </div>
     <div class="input-group">
-        <input type="text" placeholder="Password..." class="form-control" formControlName="password" required (focus)="onFocus()" />
+        <input [type]="isShown ? 'text' : 'password'" placeholder="Password..." class="form-control" formControlName="password" required (focus)="onFocus()" />
+        <span class="password-icon" (click)="onShow()">
+            <i [class]="isShown ? 'fas fa-eye' : 'fas fa-eye-slash'"> </i>
+        </span>
         <div *ngIf="(password && password.invalid && (password.dirty || password.touched)) || (submitted && password.invalid)" class="icon-status-invalid"> </div>
         <div *ngIf="(password && password.valid && (password.dirty || password.touched)) || (submitted && password.valid)" class="icon-status-valid"> </div>
         <div *ngIf="(password && password.invalid && (password.dirty || password.touched)) || (submitted && password.invalid)" class="error-messages">

@@ -29,7 +29,6 @@
               "src/fonts"
             ],
             "styles": [
-              "src/custom-theme.scss",
               "src/styles.less"
             ],
             "statsJson": true,

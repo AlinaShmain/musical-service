@@ -1,23 +1,17 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { User } from "src/ms-app/model/user";
 import { UsersService } from "src/ms-app/services/users.service";
-
-
-interface AllValidationControlErrors {
-  controlName: string;
-  errorName: string;
-  errorValue: ValidationErrors;
-}
+import { ValidationErrorsComponent } from "../validation-errors/validation-errors.component";
 @Component({
   selector: "ms-sign-up",
   templateUrl: "./sign-up.component.html",
   styleUrls: ["./sign-up.component.less"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignUpComponent implements OnInit, OnDestroy {
+export class SignUpComponent extends ValidationErrorsComponent implements OnInit, OnDestroy {
 
   name: FormControl;
   email: FormControl;
@@ -25,15 +19,15 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   formModel: FormGroup;
 
-  errors: AllValidationControlErrors[] = [];
-
   submitted: boolean = false;
+  isShown: boolean = false;
 
   private destroy$ = new Subject<void>();
 
   constructor(private _fb: FormBuilder, private usersService: UsersService) {
+    super();
     this.name = this._fb.control("", [Validators.required, Validators.pattern("^[А-Яа-яЁёA-Za-z]*$"), Validators.maxLength(20), Validators.minLength(3)]);
-    this.email = this._fb.control("", [Validators.required, Validators.pattern("^[A-Za-z]*$"), Validators.maxLength(20), Validators.minLength(3)]);
+    this.email = this._fb.control("", [Validators.required, Validators.email, Validators.maxLength(20), Validators.minLength(3)]);
     this.password = this._fb.control("", [Validators.required, Validators.pattern(
       "^(?=.*[0-9])(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*[@$!%*?&])([a-zA-Zа-яА-Я0-9@$!%*?&]{8,})$"), Validators.minLength(8)]);
 
@@ -61,64 +55,13 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  calculateErrors(form: FormGroup): AllValidationControlErrors[] {
-    Object.keys(form.controls).forEach((field) => {
-      const control = form.get(field);
-      if (control instanceof FormControl) {
-        const controlErrors: ValidationErrors | null = control.errors;
-        if (controlErrors) {
-          Object.keys(controlErrors).forEach((keyError) => {
-            this.errors.push({
-              controlName: field,
-              errorName: keyError,
-              errorValue: controlErrors[keyError]
-            });
-          });
-        }
-      }
-    });
-
-    this.errors = this.errors.filter((error, index, self) => self.findIndex((t) => {
-      return t.controlName === error.controlName && t.errorName === error.errorName;
-    }) === index);
-    return this.errors;
-  }
-
-  getErrorsControl(control: string): AllValidationControlErrors[] | undefined {
-    return this.errors.filter((error) => error.controlName === control);
-  }
-
-  getErrorMessage(error: AllValidationControlErrors | undefined): string {
-    if (error) {
-      switch (error.errorName) {
-        case "required":
-          return `Field ${error.controlName} should not be empty`;
-        case "pattern":
-          if (error.controlName === "password") {
-            return `Field ${error.controlName} should contain at least one letter, one number and one special character`;
-          }
-          if (error.controlName === "name") {
-            return `Field ${error.controlName} should contain only letters`;
-          }
-          if (error.controlName === "email") {
-            return `Field ${error.controlName} has incorrect data`;
-          }
-          return "";
-        case "maxlength":
-          return `Length of field ${error.controlName} should be ${error.errorValue.requiredLength} characters maximum`;
-        case "minlength":
-          return `Length of field ${error.controlName} should be ${error.errorValue.requiredLength} characters minimum`;
-        default:
-          return `Unknown error in validation of ${error.errorName} field`;
-      }
-    } else {
-      return "";
-    }
-  }
-
   registerNewUser(user: User): void {
     this.usersService.registerUser(user).pipe(takeUntil(this.destroy$)).subscribe((data) => console.log(data));
     // this.goBack();
+  }
+
+  onShow(): void {
+    this.isShown = !this.isShown;
   }
 
   onSubmit(): void {

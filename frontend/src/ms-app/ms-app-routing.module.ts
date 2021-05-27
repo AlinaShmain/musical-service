@@ -15,13 +15,8 @@ const routes: Routes = [
         // },
         component: HomeComponent,
         children: [
-            // {
-            //     path: "",
-            //     component: HomeComponent,
-            // },
             {
                 path: "form",
-                // component: ModalEntryComponent,
                 component: AuthModalComponent,
                 children: [
                     { path: "signIn", component: SignInComponent, data: { label: "Sign In" } },
@@ -30,14 +25,6 @@ const routes: Routes = [
             },
         ]
     },
-    // {
-    //     path: "form",
-    //     component: HomeComponent,
-    //     children: [
-    //         { path: "signIn", component: SignInComponent, data: { label: "Sign In" } },
-    //         { path: "signUp", component: SignUpComponent, data: { label: "Sign Up" } },
-    //     ]
-    // },
     { path: "page-not-found", component: PageNotFoundComponent },
     { path: "**", redirectTo: "/page-not-found" },
 ];

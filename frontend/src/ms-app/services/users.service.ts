@@ -57,7 +57,6 @@ export class UsersService {
   }
 
   loginUser(user: User): Observable<Token> {
-    // : Observable<Error | Token> {
     const httpOptions = {
       headers: {
         "CONTENT-TYPE": "application/json" as const,

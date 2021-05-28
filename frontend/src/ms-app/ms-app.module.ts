@@ -13,6 +13,7 @@ import { HomeComponent } from "./home/home.component";
 import { UsersService } from "./services/users.service";
 import { HttpClientModule } from "@angular/common/http";
 import { ValidationErrorsComponent } from "./auth-modal/validation-errors/validation-errors.component";
+import { TrackListComponent } from "./track-list/track-list.component";
 @NgModule({
     declarations: [
         MsAppComponent,
@@ -22,6 +23,7 @@ import { ValidationErrorsComponent } from "./auth-modal/validation-errors/valida
         PageNotFoundComponent,
         HomeComponent,
         ValidationErrorsComponent,
+        TrackListComponent,
     ],
     imports: [
         BrowserModule,

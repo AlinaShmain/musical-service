@@ -4,15 +4,21 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TrackCollectionModule } from './collections/track-collection/track-collection.module';
 import { TrackController } from './controllers/track/track.controller';
-import { TrackService } from './track/track.service';
+import { TrackService } from './services/track/track.service';
 import { TracksController } from './controllers/tracks/tracks.controller';
+import { RegisterController } from './controllers/register/register.controller';
+import { UserCollectionModule } from './collections/user-collection/user-collection.module';
+import { AuthModule } from './services/auth/auth.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot(
       'mongodb+srv://alinau:admin@cluster0.lk3bb.mongodb.net/musicServiceDB?retryWrites=true&w=majority'
     ),
-    TrackCollectionModule],
+    TrackCollectionModule, 
+    // UserCollectionModule,
+    AuthModule,
+  ],
   controllers: [AppController, TracksController, TrackController],
   providers: [AppService, TrackService],
 })

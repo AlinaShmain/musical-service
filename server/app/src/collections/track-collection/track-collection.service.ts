@@ -22,7 +22,7 @@ export class TrackCollectionService {
     //     return createdTrack.save();
     // }
 
-    async findAll(): Promise<Track[]> {
-        return this.trackModel.find().exec();
+    async findAllTracks(): Promise<Track[]> {
+        return await this.trackModel.find().exec();
     }
 }

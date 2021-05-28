@@ -11,5 +11,4 @@ import {
 })
 export class MsAppComponent {
 
-
 }

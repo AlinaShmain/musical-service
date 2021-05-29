@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { User } from "src/ms-app/model/user";
-import { UsersService } from "src/ms-app/services/users.service";
+import { User } from "src/ms-app/models/user";
+import { UsersService } from "src/ms-app/services/users/users.service";
 import { ValidationErrorsComponent } from "../validation-errors/validation-errors.component";
 @Component({
   selector: "ms-sign-up",

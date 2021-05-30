@@ -1,12 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type TrackDocument = Track & Document;
-
+// export type TrackDocument = Track & Document;
 @Schema()
-export class Track {
-    @Prop({ required: true, unique: true })
-    id: string;
+export class Track extends Document {
+    // @Prop({ required: true, unique: true })
+    // id: string;
 
     @Prop({ required: true })
     title: string;

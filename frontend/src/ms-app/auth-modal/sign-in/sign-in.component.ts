@@ -124,7 +124,7 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
       const { email, password } = this.formModel.value;
 
       const user = {
-        email, password
+        email, password, favouriteTracks: []
       };
       console.log("on submit form", user);
       this.loginUser(user);

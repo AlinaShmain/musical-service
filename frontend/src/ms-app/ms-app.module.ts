@@ -15,7 +15,6 @@ import { HttpClientModule } from "@angular/common/http";
 import { ValidationErrorsComponent } from "./auth-modal/validation-errors/validation-errors.component";
 import { TrackListComponent } from "./track-list/track-list.component";
 import { GetKeysPipe } from "./pipes/get-keys.pipe";
-import { FilterPropPipe } from "./pipes/filter-prop.pipe";
 import { GetValuesPipe } from "./pipes/get-values.pipe";
 import { ToTimeFormatPipe } from "./pipes/to-time-format.pipe";
 @NgModule({
@@ -29,7 +28,6 @@ import { ToTimeFormatPipe } from "./pipes/to-time-format.pipe";
         ValidationErrorsComponent,
         TrackListComponent,
         GetKeysPipe,
-        FilterPropPipe,
         GetValuesPipe,
         ToTimeFormatPipe,
     ],

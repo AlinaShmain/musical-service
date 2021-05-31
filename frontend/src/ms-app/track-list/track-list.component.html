@@ -1,0 +1,47 @@
+<table class="tracks-table" cellpadding="10" cellspacing="0" width="95%">
+    <thead>
+        <tr class="head-row">
+            <th>#</th>
+            <th class="head-cell" *ngFor="let column of headers | getValues">
+                {{ column !== "Duration" ? column : null }}
+                <span *ngIf="column === 'Duration'" class="duration-icon">
+                    <i class="far fa-clock"></i>
+                </span>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="table-body">
+        <tr *ngFor="let track of tracks$ | async; index as i" class="row">
+            <td class="cell track-index"
+                ><span>{{ i + 1 }}</span
+                ><i class="fas fa-play"></i
+            ></td>
+            <!-- <td *ngFor="let column of track | filterProp:('genre') | getKeys" class="cell {{column}}" > -->
+            <td *ngFor="let column of headers | getKeys" class="cell {{ column }}">
+                {{ headers[column] === "Duration" ? (track[column] | toTimeFormat) : track[column] }}
+            </td>
+            <td class="cell">
+                <div class="group-buttons">
+                    <span class="like-icon" (click)="onLike()">
+                        <i class="fas fa-heart"></i>
+                    </span>
+                    <div class="dropdown">
+                        <span class="dropdown-icon" (click)="onDropdown(i)">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </span>
+                        <div class="dropdown-content" *ngIf="isOpenDropdown[i]">
+                            <div class="track-info">
+                                <span class="title-span">{{ track["title"] }}</span>
+                                <span class="artist-span">{{ track["artist"] }}</span>
+                                <span class="genre-span">{{ track["genre"] }}</span>
+                            </div>
+                            <a href="#" class="playlist"><img class="playlist-icon" src="../../assets/icons/playlist.svg" />Add to playlist</a>
+                            <a href="#"><img class="artist-icon" src="../../assets/icons/singer.svg" />Go to artist</a>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

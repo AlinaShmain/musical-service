@@ -10,9 +10,13 @@ import { SignUpComponent } from "./auth-modal/sign-up/sign-up.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { AppRoutingModule } from "./ms-app-routing.module";
 import { HomeComponent } from "./home/home.component";
-import { UsersService } from "./services/users.service";
+import { UsersService } from "./services/users/users.service";
 import { HttpClientModule } from "@angular/common/http";
 import { ValidationErrorsComponent } from "./auth-modal/validation-errors/validation-errors.component";
+import { TrackListComponent } from "./track-list/track-list.component";
+import { GetKeysPipe } from "./pipes/get-keys.pipe";
+import { GetValuesPipe } from "./pipes/get-values.pipe";
+import { ToTimeFormatPipe } from "./pipes/to-time-format.pipe";
 @NgModule({
     declarations: [
         MsAppComponent,
@@ -22,6 +26,10 @@ import { ValidationErrorsComponent } from "./auth-modal/validation-errors/valida
         PageNotFoundComponent,
         HomeComponent,
         ValidationErrorsComponent,
+        TrackListComponent,
+        GetKeysPipe,
+        GetValuesPipe,
+        ToTimeFormatPipe,
     ],
     imports: [
         BrowserModule,

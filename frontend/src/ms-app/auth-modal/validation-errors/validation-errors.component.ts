@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { FormControl, FormGroup, ValidationErrors } from "@angular/forms";
-import { AllValidationControlErrors } from "src/ms-app/model/all-validation-control-errors";
+import { AllValidationControlErrors } from "src/ms-app/models/all-validation-control-errors";
 
 @Component({
   selector: "ms-validation-errors",

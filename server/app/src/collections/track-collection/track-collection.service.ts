@@ -4,14 +4,13 @@ import { Connection, Model } from 'mongoose';
 import { TrackDto } from 'src/model/track.dto';
 import {
     Track,
-    TrackDocument,
 } from './track.schema';
 
 @Injectable()
 export class TrackCollectionService {
     constructor(
         @InjectModel(Track.name)
-        private trackModel: Model<TrackDocument>,
+        private trackModel: Model<Track>,
         @InjectConnection() private connection: Connection
     ) {
         // console.log(this.connection);
@@ -23,6 +22,6 @@ export class TrackCollectionService {
     // }
 
     async findAllTracks(): Promise<Track[]> {
-        return await this.trackModel.find().exec();
+        return await this.trackModel.find({}, "-_id").exec();
     }
 }

@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from "@angular/forms";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { User } from "src/ms-app/model/user";
-import { UsersService } from "src/ms-app/services/users.service";
+import { User } from "src/ms-app/models/user";
+import { UsersService } from "src/ms-app/services/users/users.service";
 import { ValidationErrorsComponent } from "../validation-errors/validation-errors.component";
 @Component({
   selector: "ms-sign-in",
@@ -124,7 +124,7 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
       const { email, password } = this.formModel.value;
 
       const user = {
-        email, password
+        email, password, favouriteTracks: []
       };
       console.log("on submit form", user);
       this.loginUser(user);

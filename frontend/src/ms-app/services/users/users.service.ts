@@ -2,9 +2,9 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { catchError, switchMap, tap } from "rxjs/operators";
-import { Token } from "../model/token";
-import { User } from "../model/user";
-import { SecurityService } from "./security/security.service";
+import { Token } from "src/ms-app/models/token";
+import { User } from "src/ms-app/models/user";
+import { SecurityService } from "../security/security.service";
 
 @Injectable({
   providedIn: "root"

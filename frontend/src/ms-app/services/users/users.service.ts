@@ -12,8 +12,9 @@ import { SecurityService } from "../security/security.service";
 export class UsersService {
 
   authenticated: boolean = false;
-  private token: string = "";
-  private user: User;
+  token: string = "";
+  user: User;
+  isOpenAuthModal: boolean = false;
 
   constructor(private http: HttpClient) { }
 

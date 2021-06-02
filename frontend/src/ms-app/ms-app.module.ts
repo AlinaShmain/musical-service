@@ -17,6 +17,7 @@ import { TrackListComponent } from "./track-list/track-list.component";
 import { GetKeysPipe } from "./pipes/get-keys.pipe";
 import { GetValuesPipe } from "./pipes/get-values.pipe";
 import { ToTimeFormatPipe } from "./pipes/to-time-format.pipe";
+import { MaterialModule } from "./material/material.module";
 @NgModule({
     declarations: [
         MsAppComponent,
@@ -38,6 +39,7 @@ import { ToTimeFormatPipe } from "./pipes/to-time-format.pipe";
         NoopAnimationsModule,
         AppRoutingModule,
         HttpClientModule,
+        MaterialModule,
     ],
     // entryComponents: [AuthModalComponent],
     providers: [UsersService],

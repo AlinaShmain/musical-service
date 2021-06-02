@@ -18,7 +18,6 @@ export class AuthModalGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         console.log("guard", this.usersService.isOpenAuthModal);
         if (this.usersService.isOpenAuthModal) {
-            console.log("!!", this.usersService.isOpenAuthModal);
             return true;
         }
         this.router.navigateByUrl(this.returnUrl);

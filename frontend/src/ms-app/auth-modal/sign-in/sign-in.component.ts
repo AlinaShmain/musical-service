@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from "@angular/forms";
+import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { filter, takeUntil } from "rxjs/operators";
 import { User } from "src/ms-app/models/user";
-import { UsersService } from "src/ms-app/services/users/users.service";
+import { AuthActions } from "src/ms-app/store/actions";
+import { AppState, selectAuthenticated, selectLoginError } from "src/ms-app/store/state/app.state";
 import { ValidationErrorsComponent } from "../validation-errors/validation-errors.component";
 @Component({
   selector: "ms-sign-in",
@@ -22,9 +24,11 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
   checked: boolean = false;
   isShown: boolean = false;
 
+  authenticated: boolean = false;
+
   private destroy$ = new Subject<void>();
 
-  constructor(private _fb: FormBuilder, private usersService: UsersService, private cdr: ChangeDetectorRef) {
+  constructor(private _fb: FormBuilder, private cdr: ChangeDetectorRef, private store: Store<AppState>) {
     super();
     this.email = this._fb.control("", [Validators.required, Validators.email, Validators.maxLength(20), Validators.minLength(3)]);
     this.password = this._fb.control("", [Validators.required, Validators.pattern(
@@ -38,6 +42,13 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
 
   ngOnInit(): void {
     console.log("init sign in component");
+
+    this.store.select(selectAuthenticated).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe((authenticated) => {
+      this.authenticated = authenticated;
+      // this.cdr.markForCheck();
+    });
 
     this.formModel.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
       console.log("value change");
@@ -79,13 +90,16 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
   }
 
   loginUser(user: User): void {
-    this.usersService.loginUser(user).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (result) => {
-        console.log("authentification ended", result);
-        // this.goBack();
-      },
-      error: (error: Error) => {
-        // console.error(error);
+    this.store.dispatch(AuthActions.loginUser({ user }));
+
+    // TODO redirect to authenticated page if login success
+
+    this.store.select(selectLoginError).pipe(
+      filter((value) => !!value),
+      takeUntil(this.destroy$),
+    ).subscribe((error) => {
+      console.log("error", error);
+      if (error) {
         Object.keys(this.formModel.controls).forEach((prop) => {
           const formControl = this.formModel.get(prop);
           if (formControl) {
@@ -104,12 +118,12 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
             this.cdr.markForCheck();
           }
         });
-      },
+      }
     });
   }
 
   isCorrectUserData(): ValidationErrors | null {
-    return this.usersService.authenticated ? { "isIncorrect": true } : null;
+    return this.authenticated ? { "isIncorrect": true } : null;
   }
 
   onShow(): void {

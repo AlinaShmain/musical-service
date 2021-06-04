@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { User } from "src/ms-app/models/user";
-import { UsersService } from "src/ms-app/services/users/users.service";
+import { AuthActions } from "src/ms-app/store/actions";
+import { AppState } from "src/ms-app/store/state/app.state";
 import { ValidationErrorsComponent } from "../validation-errors/validation-errors.component";
 @Component({
   selector: "ms-sign-up",
@@ -24,7 +26,7 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
 
   private destroy$ = new Subject<void>();
 
-  constructor(private _fb: FormBuilder, private usersService: UsersService) {
+  constructor(private _fb: FormBuilder, private store: Store<AppState>) {
     super();
     this.name = this._fb.control("", [Validators.required, Validators.pattern("^[А-Яа-яЁёA-Za-z]*$"), Validators.maxLength(20), Validators.minLength(3)]);
     this.email = this._fb.control("", [Validators.required, Validators.email, Validators.maxLength(20), Validators.minLength(3)]);
@@ -56,8 +58,37 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
   }
 
   registerNewUser(user: User): void {
-    this.usersService.registerUser(user).pipe(takeUntil(this.destroy$)).subscribe((data) => console.log(data));
-    // this.goBack();
+    this.store.dispatch(AuthActions.registerUser({ user }));
+
+    // TODO redirect to authenticated page if register success
+
+    // TODO handle error User already exists
+    // this.store.select(selectRegisterError).pipe(
+    //   filter((value) => !!value),
+    //   takeUntil(this.destroy$),
+    // ).subscribe((error) => {
+    //   console.log("error", error);
+    //   if (error) {
+    //     Object.keys(this.formModel.controls).forEach((prop) => {
+    //       const formControl = this.formModel.get(prop);
+    //       if (formControl) {
+    //         formControl.setErrors({
+    //           "isIncorrect": true,
+    //         });
+    //         // formControl.setValidators(this.isCorrectUserData);
+    //         this.errors = [
+    //           ...this.errors,
+    //           {
+    //             controlName: prop,
+    //             errorName: "isIncorrect",
+    //             errorValue: <ValidationErrors>error,
+    //           },
+    //         ];
+    //         this.cdr.markForCheck();
+    //       }
+    //     });
+    //   }
+    // });
   }
 
   onShow(): void {

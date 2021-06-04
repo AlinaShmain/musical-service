@@ -6,10 +6,12 @@ import {
 } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { AuthModalComponent } from "../auth-modal/auth-modal.component";
-import { UsersService } from "../services/users/users.service";
+import { AuthActions } from "../store/actions";
+import { AppState } from "../store/state/app.state";
 
 @Component({
   selector: "ms-home",
@@ -23,7 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   returnUrl: string;
 
   constructor(private route: ActivatedRoute, public dialog: MatDialog,
-    private router: Router, private usersService: UsersService) {
+    private router: Router, private store: Store<AppState>) {
   }
 
   ngOnInit(): void {
@@ -42,7 +44,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onOpen(): void {
     console.log("on open");
-    this.usersService.isOpenAuthModal = true;
+    this.store.dispatch(AuthActions.setIsOpenAuthModal({ isOpenAuthModal: true }));
+
     const dialogRef = this.dialog.open(AuthModalComponent, {});
     dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
       console.log("after close modal");

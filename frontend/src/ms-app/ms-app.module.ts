@@ -18,6 +18,12 @@ import { GetKeysPipe } from "./pipes/get-keys.pipe";
 import { GetValuesPipe } from "./pipes/get-values.pipe";
 import { ToTimeFormatPipe } from "./pipes/to-time-format.pipe";
 import { MaterialModule } from "./material/material.module";
+import { StoreModule } from "@ngrx/store";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { authReducer } from "./store/reducers/auth.reducer";
+import { AuthEffects } from "./store/effects/auth.effects";
+import { EffectsModule } from "@ngrx/effects";
+import { environment } from "@env/environment";
 @NgModule({
     declarations: [
         MsAppComponent,
@@ -40,6 +46,14 @@ import { MaterialModule } from "./material/material.module";
         AppRoutingModule,
         HttpClientModule,
         MaterialModule,
+        StoreModule.forRoot({
+            auth: authReducer
+        }),
+        EffectsModule.forRoot([AuthEffects]),
+        StoreDevtoolsModule.instrument({
+            maxAge: 25,
+            logOnly: environment.production,
+        }),
     ],
     // entryComponents: [AuthModalComponent],
     providers: [UsersService],

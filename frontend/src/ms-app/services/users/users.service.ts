@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { catchError, switchMap, tap } from "rxjs/operators";
@@ -10,11 +10,6 @@ import { SecurityService } from "../security/security.service";
   providedIn: "root"
 })
 export class UsersService {
-
-  authenticated: boolean = false;
-  token: string = "";
-  user: User;
-  isOpenAuthModal: boolean = false;
 
   constructor(private http: HttpClient) { }
 
@@ -37,24 +32,7 @@ export class UsersService {
 
     console.log("userData", userData);
 
-    return this.http.post<{ token: string }>("http://localhost:3000/register", JSON.stringify(userData), httpOptions)
-      .pipe(
-        tap({
-          next: (response) => {
-            this.authenticated = true;
-            console.log("response register", response);
-            if (response.token) {
-              this.token = response.token;
-              console.log("recieved token", this.token);
-              // localStorage.setItem('token', res['token']);
-            }
-            // this.user = user;
-          },
-          error: (error) => {
-            console.log("response error", error);
-          },
-        }),
-      );
+    return this.http.post<{ token: string }>("http://localhost:3000/register", JSON.stringify(userData), httpOptions);
   }
 
   loginUser(user: User): Observable<Token> {
@@ -67,13 +45,6 @@ export class UsersService {
 
     return this.http.get<{ encryptedPrivateKey: string, encryptedRND: string }>(`http://localhost:3000/login/${user.email}`)
       .pipe(
-        catchError((err) => {
-          if (err instanceof HttpErrorResponse) {
-            console.log("http error response", err.status);
-          }
-          throw err;
-          // return of(err);
-        }),
         switchMap(({ encryptedPrivateKey, encryptedRND }) => {
           console.log("encryptedPrivateKey", encryptedPrivateKey);
           console.log("encryptedRND", encryptedRND);
@@ -99,8 +70,8 @@ export class UsersService {
         }),
         tap(({ token }) => {
           console.log("token", token);
-          this.authenticated = true;
-          this.token = token;
+        //   this.authenticated = true;
+        //   this.token = token;
         }),
       );
   }

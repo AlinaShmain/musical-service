@@ -4,12 +4,12 @@ import { BrowserModule } from "@angular/platform-browser";
 import { MsAppComponent } from "./ms-app.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AuthModalComponent } from "./auth-modal/auth-modal.component";
-import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations"; // NoopAnimationsModule
 import { SignInComponent } from "./auth-modal/sign-in/sign-in.component";
 import { SignUpComponent } from "./auth-modal/sign-up/sign-up.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { AppRoutingModule } from "./ms-app-routing.module";
-import { HomeComponent } from "./home/home.component";
+import { MainComponent } from "./main/main.component";
 import { UsersService } from "./services/users/users.service";
 import { HttpClientModule } from "@angular/common/http";
 import { ValidationErrorsComponent } from "./auth-modal/validation-errors/validation-errors.component";
@@ -24,6 +24,10 @@ import { authReducer } from "./store/reducers/auth.reducer";
 import { AuthEffects } from "./store/effects/auth.effects";
 import { EffectsModule } from "@ngrx/effects";
 import { environment } from "@env/environment";
+import { ArtistListComponent } from "./artist-list/artist-list.component";
+import { AlbumListComponent } from "./album-list/album-list.component";
+import { FavouriteListComponent } from "./favourite-list/favourite-list.component";
+import { PlaylistListComponent } from "./playlist-list/playlist-list.component";
 @NgModule({
     declarations: [
         MsAppComponent,
@@ -31,18 +35,23 @@ import { environment } from "@env/environment";
         SignInComponent,
         SignUpComponent,
         PageNotFoundComponent,
-        HomeComponent,
+        MainComponent,
         ValidationErrorsComponent,
         TrackListComponent,
         GetKeysPipe,
         GetValuesPipe,
         ToTimeFormatPipe,
+        ArtistListComponent,
+        AlbumListComponent,
+        FavouriteListComponent,
+        PlaylistListComponent,
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
-        NoopAnimationsModule,
+        // NoopAnimationsModule,
         AppRoutingModule,
         HttpClientModule,
         MaterialModule,

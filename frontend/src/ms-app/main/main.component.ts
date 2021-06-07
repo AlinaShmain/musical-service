@@ -3,26 +3,69 @@ import {
   Component,
   OnDestroy,
   OnInit,
+  ViewChild,
 } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
+import { MatSidenav } from "@angular/material/sidenav";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+import { hamburgerAnimation } from "../animations/hamburger-menu";
 import { AuthModalComponent } from "../auth-modal/auth-modal.component";
 import { AuthActions } from "../store/actions";
 import { AppState } from "../store/state/app.state";
 
+interface Link {
+  pageName: string;
+  path: string;
+  iconName: string;
+}
 @Component({
-  selector: "ms-home",
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.less"],
+  selector: "ms-main",
+  templateUrl: "./main.component.html",
+  styleUrls: ["./main.component.less"],
+  animations: [
+    hamburgerAnimation.animeTrigger,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class MainComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
   returnUrl: string;
+
+  isOpenMenu: boolean = false;
+  @ViewChild(MatSidenav) private sidenav: MatSidenav;
+  isHamburguer: boolean = true;
+
+  links: Link[] = [
+    {
+      pageName: "Home",
+      path: "tracks",
+      iconName: "home",
+    },
+    {
+      pageName: "Artists",
+      path: "artists",
+      iconName: "mic_external_on",
+    },
+    {
+      pageName: "Albums",
+      path: "albums",
+      iconName: "album",
+    },
+    {
+      pageName: "Favourites",
+      path: "favourites",
+      iconName: "grade",
+    },
+    {
+      pageName: "Playlists",
+      path: "playlists",
+      iconName: "playlist_play",
+    },
+  ];
 
   constructor(private route: ActivatedRoute, public dialog: MatDialog,
     private router: Router, private store: Store<AppState>) {
@@ -42,7 +85,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  onOpen(): void {
+  onOpenMenu(): void {
+    this.isHamburguer = !this.isHamburguer;
+    this.sidenav.toggle();
+  }
+
+  onOpenModal(): void {
     console.log("on open");
     this.store.dispatch(AuthActions.setIsOpenAuthModal({ isOpenAuthModal: true }));
 

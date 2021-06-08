@@ -20,7 +20,6 @@ import { ToTimeFormatPipe } from "./pipes/to-time-format.pipe";
 import { MaterialModule } from "./material/material.module";
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
-import { authReducer } from "./store/reducers/auth.reducer";
 import { AuthEffects } from "./store/effects/auth.effects";
 import { EffectsModule } from "@ngrx/effects";
 import { environment } from "@env/environment";
@@ -28,6 +27,8 @@ import { ArtistListComponent } from "./artist-list/artist-list.component";
 import { AlbumListComponent } from "./album-list/album-list.component";
 import { FavouriteListComponent } from "./favourite-list/favourite-list.component";
 import { PlaylistListComponent } from "./playlist-list/playlist-list.component";
+import { PlayerComponent } from "./player/player.component";
+import { reducers } from "./store/reducers";
 @NgModule({
     declarations: [
         MsAppComponent,
@@ -45,6 +46,7 @@ import { PlaylistListComponent } from "./playlist-list/playlist-list.component";
         AlbumListComponent,
         FavouriteListComponent,
         PlaylistListComponent,
+        PlayerComponent,
     ],
     imports: [
         BrowserModule,
@@ -55,9 +57,7 @@ import { PlaylistListComponent } from "./playlist-list/playlist-list.component";
         AppRoutingModule,
         HttpClientModule,
         MaterialModule,
-        StoreModule.forRoot({
-            auth: authReducer
-        }),
+        StoreModule.forRoot(reducers),
         EffectsModule.forRoot([AuthEffects]),
         StoreDevtoolsModule.instrument({
             maxAge: 25,

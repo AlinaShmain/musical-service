@@ -1,0 +1,41 @@
+<div class="player-container">
+    <!-- <mat-toolbar> -->
+    <!-- <mat-toolbar-row class="slider-row"> -->
+    <div class="slider-row">
+        <span>{{ audioState?.currentTime | toTimeFormat }}</span>
+        <!-- <mat-slider class="time-slider" min="0" [max]="state?.duration" step="1" [value]="state?.currentTime" (input)="onSliderChangeEnd($event)" [disabled]="state?.error || currentFile.index === undefined"></mat-slider> -->
+        <mat-slider class="time-slider" min="0" [max]="audioState?.duration" step="1" [value]="audioState?.currentTime"></mat-slider>
+        <span>{{ audioState?.duration | toTimeFormat }}</span>
+    </div>
+    <!-- </mat-toolbar-row> -->
+    <!-- <mat-toolbar-row class="media-action-bar"> -->
+    <div class="media-action-bar">
+        <div class="track-info">
+            <span className="title">Title</span>
+            <span className="artist">Artist</span>
+        </div>
+        <!-- <button mat-button [disabled]="isFirstPlaying()" (click)="previous()"> -->
+        <div class="play-controllers">
+            <button mat-icon-button color="accent">
+                <mat-icon mat-list-icon>skip_previous</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" *ngIf="!audioState?.isPlaying">
+                <mat-icon mat-list-icon class="play-icon">play_circle_filled</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" *ngIf="audioState?.isPlaying">
+                <mat-icon mat-list-icon class="play-icon">pause</mat-icon>
+            </button>
+            <button mat-icon-button color="accent">
+                <mat-icon mat-list-icon>skip_next</mat-icon>
+            </button>
+        </div>
+        <div class="volume-controllers">
+            <button mat-icon-button color="accent">
+                <mat-icon mat-list-icon> volume_up </mat-icon>
+            </button>
+            <mat-slider class="volume-slider" min="0"></mat-slider>
+        </div>
+    </div>
+    <!-- </mat-toolbar-row> -->
+    <!-- </mat-toolbar> -->
+</div>

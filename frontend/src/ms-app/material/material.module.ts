@@ -6,6 +6,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatListModule } from "@angular/material/list";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
+import { MatSliderModule } from "@angular/material/slider";
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { MatIconModule } from "@angular/material/icon";
     MatIconModule,
     MatToolbarModule,
     MatListModule,
+    MatSliderModule,
   ]
 })
 export class MaterialModule { }

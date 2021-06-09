@@ -43,27 +43,32 @@ export class MainComponent implements OnInit, OnDestroy {
     {
       pageName: "Home",
       path: "tracks",
-      iconName: "home",
+      // iconName: "home",
+      iconName: "fas fa-home",
     },
     {
       pageName: "Artists",
       path: "artists",
-      iconName: "mic_external_on",
+      // iconName: "mic_external_on",
+      iconName: "fas fa-music",
     },
     {
       pageName: "Albums",
       path: "albums",
-      iconName: "album",
+      // iconName: "album",
+      iconName: "fas fa-record-vinyl",
     },
     {
       pageName: "Favourites",
       path: "favourites",
-      iconName: "grade",
+      // iconName: "grade",
+      iconName: "fas fa-star",
     },
     {
       pageName: "Playlists",
       path: "playlists",
-      iconName: "playlist_play",
+      // iconName: "playlist_play",
+      iconName: "fas fa-list",
     },
   ];
 

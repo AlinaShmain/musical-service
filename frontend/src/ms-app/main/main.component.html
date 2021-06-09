@@ -16,7 +16,8 @@
         <mat-sidenav #sidenav mode="side" [(opened)]="isOpenMenu" class="sidenav">
             <mat-nav-list mat-align-tabs="center" class="nav-list">
                 <a *ngFor="let link of links" routerLink="{{ link.path }}" mat-list-item routerLinkActive="active-link" class="list-item">
-                    <mat-icon>{{ link.iconName }}</mat-icon>
+                    <!-- <mat-icon>{{ link.iconName }}</mat-icon> -->
+                    <i class="{{ link.iconName }} icon"></i>
                     <span>{{ link.pageName }}</span>
                 </a>
             </mat-nav-list>

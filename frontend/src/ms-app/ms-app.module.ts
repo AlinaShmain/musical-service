@@ -17,7 +17,7 @@ import { TrackListComponent } from "./track-list/track-list.component";
 import { GetKeysPipe } from "./pipes/get-keys.pipe";
 import { GetValuesPipe } from "./pipes/get-values.pipe";
 import { ToTimeFormatPipe } from "./pipes/to-time-format.pipe";
-import { MaterialModule } from "./material/material.module";
+// import { MaterialModule } from "./material/material.module";
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { AuthEffects } from "./store/effects/auth.effects";
@@ -29,6 +29,7 @@ import { FavouriteListComponent } from "./favourite-list/favourite-list.componen
 import { PlaylistListComponent } from "./playlist-list/playlist-list.component";
 import { PlayerComponent } from "./player/player.component";
 import { reducers } from "./store/reducers";
+import { materialModules } from "./material";
 @NgModule({
     declarations: [
         MsAppComponent,
@@ -56,8 +57,9 @@ import { reducers } from "./store/reducers";
         // NoopAnimationsModule,
         AppRoutingModule,
         HttpClientModule,
-        MaterialModule,
         StoreModule.forRoot(reducers),
+        // MaterialModule,
+        materialModules,
         EffectsModule.forRoot([AuthEffects]),
         StoreDevtoolsModule.instrument({
             maxAge: 25,

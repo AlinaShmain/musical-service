@@ -1,30 +1,30 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { HomeComponent } from "./home/home.component";
+import { MainComponent } from "./main/main.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { SignInComponent } from "./auth-modal/sign-in/sign-in.component";
 import { SignUpComponent } from "./auth-modal/sign-up/sign-up.component";
-import { AuthModalComponent } from "./auth-modal/auth-modal.component";
+import { AuthModalGuard } from "./guards/auth-modal-guard";
+import { TrackListComponent } from "./track-list/track-list.component";
+import { ArtistListComponent } from "./artist-list/artist-list.component";
+import { AlbumListComponent } from "./album-list/album-list.component";
+import { FavouriteListComponent } from "./favourite-list/favourite-list.component";
+import { PlaylistListComponent } from "./playlist-list/playlist-list.component";
 
 const routes: Routes = [
-    { path: "", pathMatch: "full", redirectTo: "home" },
-    {
-        path: "home",
-        // loadChildren: './home/home.module.ts#HomeModule',
-        // loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
-        // },
-        component: HomeComponent,
+    { path: "", pathMatch: "full", redirectTo: "/home/tracks" },
+    { path: "home", component: MainComponent,
         children: [
-            {
-                path: "form",
-                component: AuthModalComponent,
-                children: [
-                    { path: "signIn", component: SignInComponent, data: { label: "Sign In" } },
-                    { path: "signUp", component: SignUpComponent, data: { label: "Sign Up" } },
-                ]
-            },
+            { path: "", pathMatch: "full", redirectTo: "tracks" },
+            { path: "tracks", component: TrackListComponent },
+            { path: "artists", component: ArtistListComponent },
+            { path: "albums", component: AlbumListComponent },
+            { path: "favourites", component: FavouriteListComponent },
+            { path: "playlists", component: PlaylistListComponent },
         ]
     },
+    { path: "signIn", component: SignInComponent, canActivate: [AuthModalGuard] },
+    { path: "signUp", component: SignUpComponent, canActivate: [AuthModalGuard] },
     { path: "page-not-found", component: PageNotFoundComponent },
     { path: "**", redirectTo: "/page-not-found" },
 ];

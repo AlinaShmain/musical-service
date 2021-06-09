@@ -1,0 +1,85 @@
+@import "src/colors.less";
+
+.main-container {
+    height: 100%;
+    background: linear-gradient(to top, white, @background-color-light-blue);
+}
+
+.sidenav-container {
+    height: 100%;
+    background-color: transparent;
+}
+
+.sidenav {
+    width: 200px;
+}
+
+.nav-list {
+    width: 100%;
+    margin-top: 60px;
+    // .list-item {
+    //     padding: 0 0 0 30px;
+    // }
+}
+
+:host ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content {
+    padding: 0 0 0 30px;
+    color: @text-color-blue;
+}
+
+.active-link {
+    background-color: @light-grey-color;
+}
+
+.mat-icon,
+ .icon {
+    margin-right: 10px;
+}
+
+.sidenav-content {
+    margin-top: 60px;
+}
+
+.fixed-header {
+    justify-content: space-between;
+    background-color: transparent;
+    // background: @background-color-light-blue;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+// .menu-button {
+//     min-width: 0;
+//     padding: 0;
+//     line-height: normal;
+// }
+
+// .menu-button:hover {
+//     transform: scale(1.1);
+// }
+
+.menu-btn {
+    padding: 0;
+    cursor: pointer;
+    background-color: transparent;
+    text-align: center;
+    transition: all .2s ease-in-out;
+}
+  
+.icon-bar {
+    width: 22px;
+    height: 2px;
+    background: @primary-color;
+    margin: 3px;
+    position: relative;
+}
+
+.menu-btn:hover {
+    transform: scale(1.1);
+}
+
+.modal-btn {
+    margin-left: 100px;
+}

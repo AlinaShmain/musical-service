@@ -1,9 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
+import { Store } from "@ngrx/store";
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { Track } from "../models/track";
 import { TrackHeaders } from "../models/track-headers";
 import { TrackListService } from "../services/track-list/track-list.service";
+import { AudioActions } from "../store/actions";
+import { AppState } from "../store/state/app.state";
 
 @Component({
   selector: "ms-track-list",
@@ -25,7 +28,8 @@ export class TrackListComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private trackListService: TrackListService) { }
+  constructor(private trackListService: TrackListService,
+    private store: Store<AppState>) { }
 
   ngOnInit(): void {
     console.log("init track list component");
@@ -52,6 +56,11 @@ export class TrackListComponent implements OnInit, OnDestroy {
 
   onDropdown(idx: number): void {
     this.isOpenDropdown[idx] = !this.isOpenDropdown[idx];
+  }
+
+  onPlay(track: Track): void {
+    console.log(track);
+    this.store.dispatch(AudioActions.playTrack({ track }));
   }
 
 }

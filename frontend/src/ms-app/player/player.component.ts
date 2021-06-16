@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -16,7 +16,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   audioState: AudioState;
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     console.log("player component init");
@@ -26,6 +26,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     ).subscribe((audioState) => {
       console.log(audioState);
       this.audioState = audioState;
+      this.cdr.markForCheck();
     });
   }
 

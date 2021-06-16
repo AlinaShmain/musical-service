@@ -26,3 +26,4 @@ export const selectIsPlaying = createSelector(selectAudioState, (audioState: Aud
 export const selectCurrentTime = createSelector(selectAudioState, (audioState: AudioState) => audioState.currentTime);
 export const selectDuration = createSelector(selectAudioState, (audioState: AudioState) => audioState.duration);
 export const selectError = createSelector(selectAudioState, (audioState: AudioState) => audioState.error);
+export const selectAudioBuffer = createSelector(selectAudioState, (audioState: AudioState) => audioState.audioBuffer);

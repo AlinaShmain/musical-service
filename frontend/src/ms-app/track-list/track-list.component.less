@@ -6,8 +6,16 @@
     border-collapse: separate;
     border-radius: 5px;
     margin: 0 auto;
-    .row {
+    .track-row {
         background-color: white;
+        &:hover,
+ &:active,
+ &:focus {
+            background-color: @light-grey-color;
+            .cell {
+                border-color: @light-grey-color;
+            }
+        }
         .cell {
             border: solid 1px white;
             border-style: solid none;

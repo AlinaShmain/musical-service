@@ -12,9 +12,9 @@
         </tr>
     </thead>
     <tbody class="table-body">
-        <tr *ngFor="let track of tracks$ | async; index as i" class="row">
+        <tr *ngFor="let track of tracks$ | async; index as i" class="track-row" (click)="onPlay(track)">
             <td class="cell track-index"
-                ><span>{{ i + 1 }}</span
+                ><span>{{ track.id }}</span
                 ><i class="fas fa-play"></i
             ></td>
             <!-- <td *ngFor="let column of track | filterProp:('genre') | getKeys" class="cell {{column}}" > -->

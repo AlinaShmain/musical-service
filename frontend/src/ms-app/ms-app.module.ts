@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 
+// import { AudioContextModule } from "angular-audio-context";
 import { MsAppComponent } from "./ms-app.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AuthModalComponent } from "./auth-modal/auth-modal.component";
@@ -30,6 +31,8 @@ import { PlaylistListComponent } from "./playlist-list/playlist-list.component";
 import { PlayerComponent } from "./player/player.component";
 import { reducers } from "./store/reducers";
 import { materialModules } from "./material";
+import { WebAudioModule } from "@ng-web-apis/audio";
+import { AudioEffects } from "./store/effects/audio.effects";
 @NgModule({
     declarations: [
         MsAppComponent,
@@ -60,11 +63,13 @@ import { materialModules } from "./material";
         StoreModule.forRoot(reducers),
         // MaterialModule,
         materialModules,
-        EffectsModule.forRoot([AuthEffects]),
+        EffectsModule.forRoot([AuthEffects, AudioEffects]),
         StoreDevtoolsModule.instrument({
             maxAge: 25,
             logOnly: environment.production,
         }),
+        // AudioContextModule.forRoot("balanced"),
+        WebAudioModule,
     ],
     // entryComponents: [AuthModalComponent],
     providers: [UsersService],

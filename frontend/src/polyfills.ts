@@ -1,4 +1,10 @@
 /* eslint-disable */
+import '@ng-web-apis/audio/polyfill';
+
+// import * as buffer from 'buffer';
+
+// (window as any).Buffer = buffer;
+
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.
  * You can add your own extra polyfills to this file.

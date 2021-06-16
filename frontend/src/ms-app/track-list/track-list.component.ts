@@ -1,12 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { Observable, Subject } from "rxjs";
+import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { Track } from "../models/track";
 import { TrackHeaders } from "../models/track-headers";
-import { TrackListService } from "../services/track-list/track-list.service";
-import { AudioActions } from "../store/actions";
-import { AppState } from "../store/state/app.state";
+import { AudioActions, HomePageActions } from "../store/actions";
+import { AppState, selectIsEnded, selectTrackList } from "../store/state/app.state";
 
 @Component({
   selector: "ms-track-list",
@@ -22,26 +21,29 @@ export class TrackListComponent implements OnInit, OnDestroy {
     // album: "Album",
     duration: "Duration",
   };
-  tracks$: Observable<Track[]> = this.trackListService.getTracks();
+  tracks$: Track[] = [];
 
   isOpenDropdown: boolean[] = [];
 
   private destroy$ = new Subject<void>();
 
-  constructor(private trackListService: TrackListService,
-    private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>,
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     console.log("init track list component");
-    this.trackListService.getTracks().pipe(takeUntil(this.destroy$)).subscribe({
-      next: (response) => {
-        console.log("after get response", response);
-        // this.tracks$ = response;
-      },
-      error: (error) => {
-        console.error(error);
-      }
+    this.store.dispatch(HomePageActions.getTracks());
+
+    this.store.select(selectTrackList).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe((trackList) => {
+      console.log("loaded tracks", trackList);
+      this.tracks$ = [...trackList];
+      this.cdr.markForCheck();
     });
+
+    // TODO handle error
+
   }
 
   ngOnDestroy(): void {
@@ -61,6 +63,15 @@ export class TrackListComponent implements OnInit, OnDestroy {
   onPlay(track: Track): void {
     console.log(track);
     this.store.dispatch(AudioActions.playTrack({ track }));
+
+    this.store.select(selectIsEnded).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe((isEnded) => {
+      if (isEnded) {
+        const nextTrack = this.tracks$.find((item) => parseInt(item.id, 10) === (parseInt(track.id, 10) + 1));
+        this.store.dispatch(AudioActions.playTrack({ track: nextTrack }));
+      }
+    });
   }
 
 }

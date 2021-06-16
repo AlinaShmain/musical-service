@@ -19,7 +19,8 @@ export class AudioEffects {
             mergeMap(({ track }) =>
                 this.trackService.getTrack(track.id).pipe(
                     map(({ audioBuffer, bufferSource }) => {
-                        this.audioService.playTrack(bufferSource);
+                        const startedAt = this.audioService.playTrack(bufferSource);
+                        this.audioService.updateCurrentTime(startedAt, bufferSource.buffer.duration);
                         return AudioApiActions.gotTrackSuccess({
                             audioBuffer,
                             bufferSource,

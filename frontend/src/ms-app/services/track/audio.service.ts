@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { filter } from "rxjs/operators";
-import { AppState, selectAudioBuffer } from "src/ms-app/store/state/app.state";
+import { AudioActions } from "src/ms-app/store/actions";
+import { AppState } from "src/ms-app/store/state/app.state";
 
 @Injectable({
   providedIn: "root"
@@ -9,22 +9,11 @@ import { AppState, selectAudioBuffer } from "src/ms-app/store/state/app.state";
 export class AudioService {
 
   private _audioContext: AudioContext;
-  private audioBuffer: AudioBuffer;
 
   // constructor(private _audioContext: AudioContext) { }
   constructor(private store: Store<AppState>) {
     // window.AudioContext = window.AudioContext || window.webkitAudioContext;
     this._audioContext = new AudioContext();
-    this.store.select(selectAudioBuffer)
-    .pipe(
-      filter((value) => !!value),
-    //   takeUntil(this.destroy$),
-    )
-    .subscribe((audioBuffer) => {
-      console.log(audioBuffer);
-      this.audioBuffer = audioBuffer;
-    });
-
   }
 
   decodeAudioData(audioData: ArrayBuffer): Promise<AudioBuffer> {
@@ -35,18 +24,37 @@ export class AudioService {
 
   createBufferSource(audioBuffer: AudioBuffer): AudioBufferSourceNode {
     const bufferSource = this._audioContext.createBufferSource();
-    // bufferSource.buffer = this.audioBuffer;
     bufferSource.buffer = audioBuffer;
     bufferSource.connect(this._audioContext.destination);
     return bufferSource;
   }
 
-  playTrack(bufferSource: AudioBufferSourceNode): void {
+  playTrack(bufferSource: AudioBufferSourceNode): string {
     console.log("playing track");
 
+    const startedAt = (Date.now()).toString();
+    console.log("start playing at", startedAt);
     bufferSource.start(0);
+    // bufferSource.addEventListener("ended", (event) => {
+    //   console.log("playback ended");
+    // });
+    return startedAt;
   }
 
+  updateCurrentTime(startedAt: string, duration: number): void {
+    const startNum = parseInt(startedAt, 10);
 
+    const timer = setInterval(() => {
+      console.log("updating time");
+      const inSec = (Date.now() - startNum) / 1000;
+      if (inSec >= duration) {
+        console.log("playback ended");
+        this.store.dispatch(AudioActions.endPlaying());
+        clearInterval(timer);
+        return;
+      }
+      this.store.dispatch(AudioActions.updateCurrentTime({ currentTime: (inSec).toString() }));
+    }, 1000);
+  }
 
 }

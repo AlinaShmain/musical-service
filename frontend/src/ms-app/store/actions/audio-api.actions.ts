@@ -8,7 +8,6 @@ export enum AudioApiActionTypes {
 export const gotTrackSuccess = createAction(
     AudioApiActionTypes.GET_TRACK_SUCCESS,
     props<{ audioBuffer: AudioBuffer, bufferSource: AudioBufferSourceNode }>(),
-    // props<{ audioData: ArrayBuffer }>(),
 );
 
 export const gotTrackError = createAction(

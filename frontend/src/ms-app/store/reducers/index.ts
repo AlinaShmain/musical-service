@@ -1,6 +1,7 @@
 // import { combineReducers } from "@ngrx/store";
 import { audioReducer } from "./audio.reducer";
 import { authReducer } from "./auth.reducer";
+import { homePageReducer } from "./home-page.reducer";
 
 // export const rootReducer = combineReducers({
 //     auth: authReducer,
@@ -9,5 +10,6 @@ import { authReducer } from "./auth.reducer";
 
 export const reducers = {
     auth: authReducer,
-    audio: audioReducer
+    audio: audioReducer,
+    home: homePageReducer,
 };

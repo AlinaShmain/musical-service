@@ -24,7 +24,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
     this.store.select(selectAudioState).pipe(
       takeUntil(this.destroy$),
     ).subscribe((audioState) => {
-      console.log(audioState);
+      // console.log(audioState);
       this.audioState = audioState;
       this.cdr.markForCheck();
     });

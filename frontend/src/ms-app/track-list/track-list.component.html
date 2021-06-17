@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tbody class="table-body">
-        <tr *ngFor="let track of tracks$; index as i" class="track-row" (click)="onPlay(track)">
+        <tr *ngFor="let track of tracks$; index as i" class="track-row" (click)="onTrackClick(track)">
             <td class="cell track-index"
                 ><span>{{ track.id }}</span
                 ><i class="fas fa-play"></i

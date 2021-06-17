@@ -81,7 +81,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
       const track = this.audioState.currTrackList[0];
       this.store.dispatch(AudioActions.playTrack({ track }));
     }
-
   }
 
   isLastTrack(trackId: string): boolean {

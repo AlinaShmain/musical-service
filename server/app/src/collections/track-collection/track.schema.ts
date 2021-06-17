@@ -4,8 +4,11 @@ import { Document } from 'mongoose';
 // export type TrackDocument = Track & Document;
 @Schema()
 export class Track extends Document {
-    // @Prop({ required: true, unique: true })
-    // id: string;
+    @Prop({ required: true, unique: true })
+    id: string;
+
+    @Prop({ required: true })
+    url: string;
 
     @Prop({ required: true })
     title: string;
@@ -17,7 +20,7 @@ export class Track extends Document {
     album: string;
 
     @Prop({ required: true })
-    duration: number;
+    duration: string;
 
     @Prop()
     genre: string;

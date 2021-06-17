@@ -3,6 +3,6 @@ export interface TrackDto {
    title: string;
    artist: string;
    album: string;
-   duration: number;
+   duration: string;
    genre: string;
 }

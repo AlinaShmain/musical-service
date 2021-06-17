@@ -20,7 +20,9 @@ export class AudioEffects {
                 this.trackService.getTrack(track.id).pipe(
                     map(({ audioBuffer, bufferSource }) => {
                         const startedAt = this.audioService.playTrack(bufferSource);
-                        this.audioService.updateCurrentTime(startedAt, bufferSource.buffer.duration);
+                        const startNum = parseInt(startedAt, 10);
+                        const inSec = (Date.now() - startNum) / 1000;
+                        this.audioService.updateCurrentTime(inSec, bufferSource.buffer.duration);
                         return AudioApiActions.gotTrackSuccess({
                             audioBuffer,
                             bufferSource,
@@ -31,4 +33,18 @@ export class AudioEffects {
         ),
     );
 
+    resumePlaying$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AudioActions.resumePlaying),
+            map(({ currentTime, audioBuffer }) => {
+                const bufferSource = this.audioService.createBufferSource(audioBuffer);
+                this.audioService.playTrack(bufferSource, parseInt(currentTime, 10));
+                const startNum = parseInt(currentTime, 10);
+                this.audioService.updateCurrentTime(startNum, bufferSource.buffer.duration);
+
+                return AudioApiActions.playSuccess({ bufferSource });
+            }),
+        ),
+        // { dispatch: false },
+    );
 }

@@ -18,11 +18,11 @@
                 <!-- <mat-icon mat-list-icon>skip_previous</mat-icon> -->
                 <i class="fas fa-step-backward"></i>
             </button>
-            <button mat-icon-button color="accent" *ngIf="!audioState?.isPlaying">
+            <button mat-icon-button color="accent" *ngIf="!audioState?.isPlaying" (click)="onResume()">
                 <!-- <mat-icon mat-list-icon class="play-icon">play_circle_filled</mat-icon> -->
                 <i class="fas fa-play-circle play-icon"></i>
             </button>
-            <button mat-icon-button color="accent" *ngIf="audioState?.isPlaying">
+            <button mat-icon-button color="accent" *ngIf="audioState?.isPlaying" (click)="onPause()">
                 <!-- <mat-icon mat-list-icon class="play-icon">pause</mat-icon> -->
                 <i class="fas fa-pause-circle play-icon"></i>
             </button>

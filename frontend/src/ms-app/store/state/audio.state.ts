@@ -9,6 +9,7 @@ export interface AudioState {
     isPlaying: boolean;
     currentTime: string;
     duration: string;
+    stoppedAt: number;
     isEnded: boolean;
     error: Error;
 }
@@ -22,6 +23,7 @@ export const initialAudioState: AudioState = {
     isPlaying: false,
     currentTime: "0",
     duration: "0",
+    stoppedAt: null,
     isEnded: false,
     error: null,
 };

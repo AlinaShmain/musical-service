@@ -37,4 +37,17 @@ export const audioReducer = createReducer(initialAudioState,
         trackTitle: null,
         trackArtist: null,
     })),
+    on(AudioActions.pausePlaying, (state): AudioState => ({
+        ...state,
+        isPlaying: false,
+        bufferSource: null,
+    })),
+    on(AudioActions.resumePlaying, (state): AudioState => ({
+        ...state,
+        isPlaying: true,
+    })),
+    on(AudioApiActions.playSuccess, (state, { bufferSource }): AudioState => ({
+        ...state,
+        bufferSource,
+    })),
 );

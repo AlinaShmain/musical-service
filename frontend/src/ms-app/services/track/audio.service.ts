@@ -9,6 +9,7 @@ import { AppState } from "src/ms-app/store/state/app.state";
 export class AudioService {
 
   private _audioContext: AudioContext;
+  private timer;
 
   // constructor(private _audioContext: AudioContext) { }
   constructor(private store: Store<AppState>) {
@@ -29,32 +30,39 @@ export class AudioService {
     return bufferSource;
   }
 
-  playTrack(bufferSource: AudioBufferSourceNode): string {
+  playTrack(bufferSource: AudioBufferSourceNode, resumeTime = 0): string {
     console.log("playing track");
 
     const startedAt = (Date.now()).toString();
     console.log("start playing at", startedAt);
-    bufferSource.start(0);
+    bufferSource.start(0, resumeTime);
     // bufferSource.addEventListener("ended", (event) => {
     //   console.log("playback ended");
     // });
     return startedAt;
   }
 
-  updateCurrentTime(startedAt: string, duration: number): void {
-    const startNum = parseInt(startedAt, 10);
+  updateCurrentTime(startedAt: number, duration: number): void {
+    // const startNum = parseInt(startedAt, 10);
 
-    const timer = setInterval(() => {
+    this.timer = setInterval(() => {
       console.log("updating time");
-      const inSec = (Date.now() - startNum) / 1000;
-      if (inSec >= duration) {
+      // const inSec = (Date.now() - startNum) / 1000; // redo
+      ++startedAt;
+      if (startedAt >= duration) {
         console.log("playback ended");
         this.store.dispatch(AudioActions.endPlaying());
-        clearInterval(timer);
+        clearInterval(this.timer);
         return;
       }
-      this.store.dispatch(AudioActions.updateCurrentTime({ currentTime: (inSec).toString() }));
+      this.store.dispatch(AudioActions.updateCurrentTime({ currentTime: (startedAt).toString() }));
     }, 1000);
+  }
+
+  pausePlaying(bufferSource: AudioBufferSourceNode): void {
+    clearInterval(this.timer);
+    bufferSource?.stop();
+    this.store.dispatch(AudioActions.pausePlaying());
   }
 
 }

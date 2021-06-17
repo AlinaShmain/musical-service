@@ -43,7 +43,6 @@ export class TrackListComponent implements OnInit, OnDestroy {
     });
 
     // TODO handle error
-
   }
 
   ngOnDestroy(): void {

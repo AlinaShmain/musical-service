@@ -4,12 +4,17 @@ import { AudioState, initialAudioState } from "../state/audio.state";
 
 
 export const audioReducer = createReducer(initialAudioState,
+    on(AudioActions.loadTrackList, (state, { currTrackList }): AudioState => ({
+        ...state,
+        currTrackList,
+    })),
     on(AudioActions.playTrack, (state, { track }): AudioState => ({
         ...state,
         trackId: track.id,
         trackArtist: track.artist,
         trackTitle: track.title,
         duration: track.duration,
+        isEnded: false,
     })),
     on(AudioApiActions.gotTrackSuccess, (state, { audioBuffer, bufferSource }): AudioState => ({
         ...state,
@@ -20,6 +25,7 @@ export const audioReducer = createReducer(initialAudioState,
     on(AudioApiActions.gotTrackError, (state, { error }): AudioState => ({
         ...state,
         error,
+        isEnded: true,
     })),
     on(AudioActions.updateCurrentTime, (state, { currentTime }): AudioState => ({
         ...state,
@@ -33,7 +39,15 @@ export const audioReducer = createReducer(initialAudioState,
         bufferSource: null,
         currentTime: "0",
         duration: "0",
-        trackId: null,
+        // trackId: null,
+        trackTitle: null,
+        trackArtist: null,
+    })),
+    on(AudioActions.resetTrackData, (state): AudioState => ({
+        ...state,
+        audioBuffer: null,
+        currentTime: "0",
+        duration: "0",
         trackTitle: null,
         trackArtist: null,
     })),

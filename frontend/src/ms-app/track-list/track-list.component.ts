@@ -5,7 +5,7 @@ import { takeUntil } from "rxjs/operators";
 import { Track } from "../models/track";
 import { TrackHeaders } from "../models/track-headers";
 import { AudioActions, HomePageActions } from "../store/actions";
-import { AppState, selectIsEnded, selectTrackList } from "../store/state/app.state";
+import { AppState, selectTrackList } from "../store/state/app.state";
 
 @Component({
   selector: "ms-track-list",
@@ -60,17 +60,8 @@ export class TrackListComponent implements OnInit, OnDestroy {
   }
 
   onPlay(track: Track): void {
-    console.log(track);
+    console.log("on play", track);
     this.store.dispatch(AudioActions.playTrack({ track }));
-
-    this.store.select(selectIsEnded).pipe(
-      takeUntil(this.destroy$),
-    ).subscribe((isEnded) => {
-      if (isEnded) {
-        const nextTrack = this.tracks$.find((item) => parseInt(item.id, 10) === (parseInt(track.id, 10) + 1));
-        this.store.dispatch(AudioActions.playTrack({ track: nextTrack }));
-      }
-    });
   }
 
 }

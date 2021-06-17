@@ -14,7 +14,7 @@
             <span className="artist">{{ audioState?.trackArtist }}</span>
         </div>
         <div class="play-controllers">
-            <button mat-icon-button color="accent">
+            <button mat-icon-button color="accent" [disabled]="!audioState?.trackId || audioState?.trackId === '1'" (click)="onPrevious()">
                 <!-- <mat-icon mat-list-icon>skip_previous</mat-icon> -->
                 <i class="fas fa-step-backward"></i>
             </button>
@@ -26,7 +26,7 @@
                 <!-- <mat-icon mat-list-icon class="play-icon">pause</mat-icon> -->
                 <i class="fas fa-pause-circle play-icon"></i>
             </button>
-            <button mat-icon-button color="accent">
+            <button mat-icon-button color="accent" [disabled]="isLastTrack(audioState?.trackId)" (click)="onNext()">
                 <!-- <mat-icon mat-list-icon>skip_next</mat-icon> -->
                 <i class="fas fa-step-forward"></i>
             </button>

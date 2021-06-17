@@ -65,4 +65,8 @@ export class AudioService {
     this.store.dispatch(AudioActions.pausePlaying());
   }
 
+  resetTrackData(): void {
+    this.store.dispatch(AudioActions.resetTrackData());
+  }
+
 }

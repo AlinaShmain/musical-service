@@ -2,12 +2,19 @@ import { createAction, props } from "@ngrx/store";
 import { Track } from "src/ms-app/models/track";
 
 export enum AudioActionTypes {
+    LOAD_TRACK_LIST = "[Audio] Load TrackList",
     PLAY_TRACK = "[Audio] Play Track",
     UPDATE_CURRENT_TIME = "[Audio] Update CurrentTime",
     END_PLAYING = "[Audio] Stop Playing",
     PAUSE_PLAYING = "[Audio] Pause Playing",
     RESUME_PLAYING = "[Audio] Resume Playing",
+    RESET_TRACK_DATA = "[Audio] Reset TrackData",
 }
+
+export const loadTrackList = createAction(
+    AudioActionTypes.LOAD_TRACK_LIST,
+    props<{ currTrackList: Track[] }>(),
+);
 
 export const playTrack = createAction(
     AudioActionTypes.PLAY_TRACK,
@@ -30,4 +37,8 @@ export const pausePlaying = createAction(
 export const resumePlaying = createAction(
     AudioActionTypes.RESUME_PLAYING,
     props<{ currentTime: string, audioBuffer: AudioBuffer }>(),
+);
+
+export const resetTrackData = createAction(
+    AudioActionTypes.RESET_TRACK_DATA,
 );

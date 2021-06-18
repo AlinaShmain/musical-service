@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { MatSliderChange } from "@angular/material/slider";
 import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -113,6 +114,25 @@ export class PlayerComponent implements OnInit, OnDestroy {
     const nextTrack = this.getNextTrack();
 
     this.store.dispatch(AudioActions.playTrack({ track: nextTrack }));
+  }
+
+  onMute(): void {
+    console.log("on mute");
+
+    this.store.dispatch(AudioActions.muteVolume());
+  }
+
+  onUnmute(): void {
+    console.log("on unmute");
+
+    this.store.dispatch(AudioActions.unmuteVolume());
+  }
+
+  onVolumeChange(event: MatSliderChange): void {
+    console.log("on volume change", event.value);
+    const volume = event.value.toString();
+
+    this.store.dispatch(AudioActions.setVolume({ volume }));
   }
 
 }

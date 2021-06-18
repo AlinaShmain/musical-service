@@ -31,6 +31,7 @@ export const selectDuration = createSelector(selectAudioState, (audioState: Audi
 export const selectError = createSelector(selectAudioState, (audioState: AudioState) => audioState.error);
 // export const selectAudioBuffer = createSelector(selectAudioState, (audioState: AudioState) => audioState.audioBuffer);
 export const selectIsEnded = createSelector(selectAudioState, (audioState: AudioState) => audioState.isEnded);
+export const selectVolume = createSelector(selectAudioState, (audioState: AudioState) => audioState.volume);
 
 export const selectHomePageState = (state: AppState): HomePageState => state.home;
 

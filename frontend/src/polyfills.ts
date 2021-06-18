@@ -1,7 +1,4 @@
 /* eslint-disable */
-import '@ng-web-apis/audio/polyfill';
-
-// import * as buffer from 'buffer';
 
 // (window as any).Buffer = buffer;
 

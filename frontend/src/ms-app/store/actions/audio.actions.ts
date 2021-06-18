@@ -9,6 +9,9 @@ export enum AudioActionTypes {
     PAUSE_PLAYING = "[Audio] Pause Playing",
     RESUME_PLAYING = "[Audio] Resume Playing",
     RESET_TRACK_DATA = "[Audio] Reset TrackData",
+    MUTE_VOLUME = "[Audio] Mute",
+    UNMUTE_VOLUME = "[Audio] Unmute",
+    SET_VOLUME = "[Audio] Set Volume",
 }
 
 export const loadTrackList = createAction(
@@ -42,3 +45,18 @@ export const resumePlaying = createAction(
 export const resetTrackData = createAction(
     AudioActionTypes.RESET_TRACK_DATA,
 );
+
+export const muteVolume = createAction(
+    AudioActionTypes.MUTE_VOLUME,
+);
+
+export const unmuteVolume = createAction(
+    AudioActionTypes.UNMUTE_VOLUME,
+);
+
+export const setVolume = createAction(
+    AudioActionTypes.SET_VOLUME,
+    props<{ volume: string }>(),
+);
+
+

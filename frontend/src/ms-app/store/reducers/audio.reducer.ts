@@ -64,4 +64,19 @@ export const audioReducer = createReducer(initialAudioState,
         ...state,
         bufferSource,
     })),
+    on(AudioActions.muteVolume, (state): AudioState => ({
+        ...state,
+        isMuted: true,
+        volumeBeforeMute: state.volume,
+        volume: "0",
+    })),
+    on(AudioActions.unmuteVolume, (state): AudioState => ({
+        ...state,
+        isMuted: false,
+        volume: state.volumeBeforeMute,
+    })),
+    on(AudioActions.setVolume, (state, { volume }): AudioState => ({
+        ...state,
+        volume,
+    })),
 );

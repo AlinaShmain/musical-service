@@ -32,11 +32,15 @@
             </button>
         </div>
         <div class="volume-controllers">
-            <button mat-icon-button color="accent">
+            <button mat-icon-button color="accent" *ngIf="!audioState?.isMuted" (click)="onMute()">
                 <!-- <mat-icon mat-list-icon> volume_up </mat-icon> -->
                 <i class="fas fa-volume-up"></i>
             </button>
-            <mat-slider class="volume-slider" min="0"></mat-slider>
+            <button mat-icon-button color="accent" *ngIf="audioState?.isMuted" (click)="onUnmute()">
+                <!-- <mat-icon mat-list-icon> volume_off </mat-icon> -->
+                <i class="fas fa-volume-off"></i>
+            </button>
+            <mat-slider class="volume-slider" min="0" max="1" step="0.1" [value]="audioState?.volume" (input)="onVolumeChange($event)"></mat-slider>
         </div>
     </div>
     <!-- </mat-toolbar-row> -->

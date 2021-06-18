@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { AudioActions } from "src/ms-app/store/actions";
-import { AppState } from "src/ms-app/store/state/app.state";
+import { AppState, selectVolume } from "src/ms-app/store/state/app.state";
 
 @Injectable({
   providedIn: "root"
@@ -9,12 +9,19 @@ import { AppState } from "src/ms-app/store/state/app.state";
 export class AudioService {
 
   private _audioContext: AudioContext;
+  private gainNode: GainNode;
   private timer;
 
-  // constructor(private _audioContext: AudioContext) { }
   constructor(private store: Store<AppState>) {
     // window.AudioContext = window.AudioContext || window.webkitAudioContext;
     this._audioContext = new AudioContext();
+    this.gainNode = this._audioContext.createGain();
+
+    this.store.select(selectVolume).subscribe((volume) => {
+      console.log("!!! volume update", parseFloat(volume));
+      this.gainNode.gain.value = parseFloat(volume);
+      this.gainNode.connect(this._audioContext.destination);
+    });
   }
 
   decodeAudioData(audioData: ArrayBuffer): Promise<AudioBuffer> {
@@ -26,7 +33,12 @@ export class AudioService {
   createBufferSource(audioBuffer: AudioBuffer): AudioBufferSourceNode {
     const bufferSource = this._audioContext.createBufferSource();
     bufferSource.buffer = audioBuffer;
-    bufferSource.connect(this._audioContext.destination);
+
+    // bufferSource.connect(this._audioContext.destination);
+
+    console.log("gain node", this.gainNode);
+    bufferSource.connect(this.gainNode);
+
     return bufferSource;
   }
 

@@ -14,6 +14,9 @@ export interface AudioState {
     duration: string;
     isEnded: boolean;
     error: Error;
+    isMuted: boolean;
+    volumeBeforeMute: string;
+    volume: string;
 }
 
 export const initialAudioState: AudioState = {
@@ -28,4 +31,7 @@ export const initialAudioState: AudioState = {
     duration: "0",
     isEnded: false,
     error: null,
+    isMuted: false,
+    volumeBeforeMute: "",
+    volume: "0.5",
 };

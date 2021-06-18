@@ -1,14 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import { resolve } from 'path';
+import { TrackCollectionService } from 'src/collections/track-collection/track-collection.service';
+import { TrackDto } from 'src/model/track.dto';
 
 @Injectable()
 export class TrackService {
 
-    readFile(id: string): Promise<Buffer> {
-        // const filepath = resolve(__dirname, "../", "../", "./src", "./music-storage", "./track1.mp3");
-        const filepath = resolve(__dirname, "../", "../", "../", "./src", "./music-storage", "./track1.mp3");
-        console.log(filepath);
+    constructor(private readonly trackCollectionService: TrackCollectionService) {}
+
+    async findTrack(id: string): Promise<TrackDto> {
+        return await this.trackCollectionService.findById({ id });
+    }
+
+    readFile(path: string): Promise<Buffer> {
+        const filepath = resolve(__dirname, "../", "../", "../", "./src", "./music-storage", path);
+        console.log("full filepath", filepath);
 
         return new Promise(function (resolve, reject) {
             fs.readFile(filepath, (err, data) => {
@@ -20,22 +27,12 @@ export class TrackService {
         });
     }
 
-    // toArrayBuffer(buf: Buffer): ArrayBuffer {
-    //     const ab = new ArrayBuffer(buf.length);
-    //     const view = new Uint8Array(ab);
-    //     for (let i = 0; i < buf.length; ++i) {
-    //         view[i] = buf[i];
-    //     }
-    //     return ab;
-    // }
-
     async getTrack(id: string): Promise<Buffer> {
         console.log("getting track", id);
 
-        // const audioData = await this.readFile(id)
+        const foundTrack = await this.findTrack(id);
+        console.log("found track", foundTrack);
 
-        // return this.toArrayBuffer(audioData);
-
-        return await this.readFile(id);
+        return await this.readFile(foundTrack.path);
     }
 }

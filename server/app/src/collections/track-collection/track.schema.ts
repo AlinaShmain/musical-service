@@ -8,7 +8,7 @@ export class Track extends Document {
     id: string;
 
     @Prop({ required: true })
-    url: string;
+    path: string;
 
     @Prop({ required: true })
     title: string;

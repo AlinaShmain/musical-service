@@ -8,9 +8,7 @@
     margin: 0 auto;
     .track-row {
         background-color: white;
-        &:hover,
- &:active,
- &:focus {
+        &:hover {
             background-color: @light-grey-color;
             .cell {
                 border-color: @light-grey-color;
@@ -46,6 +44,18 @@
             display: none;
         }
         &:hover .fa-play {
+            display: inline;
+        }
+    }
+    .chosen-track {
+        background-color: @light-grey-color;
+        .cell {
+            border-color: @light-grey-color;
+        }
+        .track-index > span {
+            display: none;
+        }
+        .fa-play {
             display: inline;
         }
     }

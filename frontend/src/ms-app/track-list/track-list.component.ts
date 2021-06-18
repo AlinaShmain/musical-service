@@ -50,7 +50,6 @@ export class TrackListComponent implements OnInit, OnDestroy {
     this.store.select(selectAudioState).pipe(
       takeUntil(this.destroy$),
     ).subscribe((audioState) => {
-
       this.audioState = audioState;
       this.cdr.markForCheck();
     });

@@ -12,13 +12,13 @@
         </tr>
     </thead>
     <tbody class="table-body">
-        <tr *ngFor="let track of tracks$; index as i" class="track-row" (click)="onTrackClick(track)">
-            <td class="cell track-index"
+        <tr *ngFor="let track of tracks$; index as i" class="track-row" [ngClass]="track.id === audioState?.trackId ? 'chosen-track' : ''">
+            <td class="cell track-index" (click)="onTrackClick(track)"
                 ><span>{{ track.id }}</span
                 ><i class="fas fa-play"></i
             ></td>
             <!-- <td *ngFor="let column of track | filterProp:('genre') | getKeys" class="cell {{column}}" > -->
-            <td *ngFor="let column of headers | getKeys" class="cell {{ column }}">
+            <td *ngFor="let column of headers | getKeys" class="cell {{ column }}" (click)="onTrackClick(track)">
                 {{ headers[column] === "Duration" ? (track[column] | toTimeFormat) : track[column] }}
             </td>
             <td class="cell">

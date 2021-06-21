@@ -1,11 +1,11 @@
 import { ConflictException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserCollectionService } from 'src/collections/user-collection/user-collection.service';
-import { TokenDto } from 'src/model/token.dto';
 import { UserDto } from 'src/model/user.dto';
 import * as forge from "node-forge";
 import { EncryptedData } from 'src/model/encryptedData.dto';
 import * as bcrypt from "bcrypt";
+import { TokenDto } from 'src/model/token.dto';
 
 @Injectable()
 export class AuthService {
@@ -76,6 +76,7 @@ export class AuthService {
                 token: this.jwtService.sign(this.currentPayload),
             };
             console.log("token", token);
+
             return token;
         }
 
@@ -108,11 +109,6 @@ export class AuthService {
             const createdUser = (await this.userCollectionService.create(newUser)).toObject();
 
             console.log("saved user", createdUser);
-
-            // const createdUserCopy = {
-            //     name: createdUser.name,
-            //     email: createdUser.email,
-            // };
 
             const payload = {
                 email: createdUser.email,

@@ -32,6 +32,7 @@ export class UserCollectionService {
             { new: true },
         ).exec();
         console.log('document after updating =>', favouriteTracks);
+        
     }
 
 }

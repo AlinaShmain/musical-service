@@ -25,4 +25,13 @@ export class UserCollectionService {
         return await this.userModel.findOne({ email }).exec();
     }
 
+    async updateFavourites({ userEmail, trackId }): Promise<void> {
+        const { favouriteTracks } = await this.userModel.findOneAndUpdate(
+            { email: userEmail },
+            { $addToSet: { favouriteTracks: trackId } },
+            { new: true },
+        ).exec();
+        console.log('document after updating =>', favouriteTracks);
+    }
+
 }

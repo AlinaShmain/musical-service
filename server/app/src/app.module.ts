@@ -11,7 +11,8 @@ import { AuthModule } from './services/auth/auth.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb+srv://alinau:admin@cluster0.lk3bb.mongodb.net/musicServiceDB?retryWrites=true&w=majority'
+      'mongodb+srv://alinau:admin@cluster0.lk3bb.mongodb.net/musicServiceDB?retryWrites=true&w=majority',
+      {useFindAndModify: false}
     ),
     TrackCollectionModule, 
     // UserCollectionModule,

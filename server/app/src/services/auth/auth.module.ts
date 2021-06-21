@@ -5,6 +5,8 @@ import { AuthService } from "./auth.service";
 import { jwtConstants } from "./constants";
 import { RegisterController } from "src/controllers/register/register.controller";
 import { LoginController } from "src/controllers/login/login.controller";
+import { FavouritesController } from "src/controllers/favourites/favourites.controller";
+import { FavouritesService } from "../favourites/favourites.service";
 
 
 @Module({
@@ -15,8 +17,8 @@ import { LoginController } from "src/controllers/login/login.controller";
             signOptions: { expiresIn: '3h' },
         }),
     ],
-    controllers: [RegisterController, LoginController],
-    providers: [AuthService],
-    exports: [AuthService, JwtModule],
+    controllers: [RegisterController, LoginController, FavouritesController],
+    providers: [AuthService, FavouritesService],
+    exports: [AuthService, FavouritesService, JwtModule],
 })
 export class AuthModule { }

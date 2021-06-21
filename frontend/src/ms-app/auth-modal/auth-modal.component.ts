@@ -45,10 +45,6 @@ export class AuthModalComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     console.warn("---- Dialog was destroyed ----");
     this.closeModal();
-    // this.store.dispatch(MainPageActions.setIsOpenAuthModal({ isOpenAuthModal: false }));
-    // this.destroy$.next();
-    // this.destroy$.complete();
-    // this.dialogRef.close();
   }
 
   closeModal(): void {

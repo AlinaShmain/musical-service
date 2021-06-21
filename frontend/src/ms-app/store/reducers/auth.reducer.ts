@@ -22,6 +22,7 @@ export const authReducer = createReducer(initialAuthState,
     on(AuthApiActions.loggedError, (state, { loginError }): AuthState => ({
         ...state,
         loginError,
+        user: null,
     })),
     on(AuthApiActions.registeredSuccess, (state, { token }): AuthState => ({
         ...state,
@@ -31,6 +32,7 @@ export const authReducer = createReducer(initialAuthState,
     on(AuthApiActions.registeredError, (state, { registerError }): AuthState => ({
         ...state,
         registerError,
+        user: null,
     })),
     // on(AuthActions.setIsOpenAuthModal, (state, { isOpenAuthModal }): AuthState => ({
     //     ...state,

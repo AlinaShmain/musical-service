@@ -23,7 +23,7 @@ export class UsersService {
     });
   }
 
-  registerUser(user: User): Observable<{ token: string }> {
+  registerUser(user: User): Observable<Token> {
     const httpOptions = {
       headers: {
         "CONTENT-TYPE": "application/json" as const,
@@ -42,7 +42,7 @@ export class UsersService {
 
     console.log("userData", userData);
 
-    return this.http.post<{ token: string }>("http://localhost:3000/register", JSON.stringify(userData), httpOptions);
+    return this.http.post<Token>("http://localhost:3000/register", JSON.stringify(userData), httpOptions);
   }
 
   loginUser(user: User): Observable<Token> {
@@ -90,6 +90,10 @@ export class UsersService {
 
   getUserEmail(): string {
     return this.authState.user.email;
+  }
+
+  getUserName(): string {
+    return this.authState.user.name;
   }
 
 }

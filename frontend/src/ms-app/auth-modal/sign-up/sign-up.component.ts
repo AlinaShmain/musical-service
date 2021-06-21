@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { filter, takeUntil } from "rxjs/operators";
 import { User } from "src/ms-app/models/user";
 import { AuthActions } from "src/ms-app/store/actions";
-import { AppState } from "src/ms-app/store/state/app.state";
+import { AppState, selectRegisterError } from "src/ms-app/store/state/app.state";
 import { ValidationErrorsComponent } from "../validation-errors/validation-errors.component";
 @Component({
   selector: "ms-sign-up",
@@ -26,7 +27,7 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
 
   private destroy$ = new Subject<void>();
 
-  constructor(private _fb: FormBuilder, private store: Store<AppState>) {
+  constructor(private _fb: FormBuilder, private store: Store<AppState>, private router: Router) {
     super();
     this.name = this._fb.control("", [Validators.required, Validators.pattern("^[А-Яа-яЁёA-Za-z]*$"), Validators.maxLength(20), Validators.minLength(3)]);
     this.email = this._fb.control("", [Validators.required, Validators.email, Validators.maxLength(20), Validators.minLength(3)]);
@@ -60,35 +61,37 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
   registerNewUser(user: User): void {
     this.store.dispatch(AuthActions.registerUser({ user }));
 
-    // TODO redirect to authenticated page if register success
-
     // TODO handle error User already exists
-    // this.store.select(selectRegisterError).pipe(
-    //   filter((value) => !!value),
-    //   takeUntil(this.destroy$),
-    // ).subscribe((error) => {
-    //   console.log("error", error);
-    //   if (error) {
-    //     Object.keys(this.formModel.controls).forEach((prop) => {
-    //       const formControl = this.formModel.get(prop);
-    //       if (formControl) {
-    //         formControl.setErrors({
-    //           "isIncorrect": true,
-    //         });
-    //         // formControl.setValidators(this.isCorrectUserData);
-    //         this.errors = [
-    //           ...this.errors,
-    //           {
-    //             controlName: prop,
-    //             errorName: "isIncorrect",
-    //             errorValue: <ValidationErrors>error,
-    //           },
-    //         ];
-    //         this.cdr.markForCheck();
-    //       }
-    //     });
-    //   }
-    // });
+    this.store.select(selectRegisterError).pipe(
+      filter((value) => !!value),
+      takeUntil(this.destroy$),
+    ).subscribe((error) => {
+      console.log("error", error);
+      if (error) {
+        //     Object.keys(this.formModel.controls).forEach((prop) => {
+        //       const formControl = this.formModel.get(prop);
+        //       if (formControl) {
+        //         formControl.setErrors({
+        //           "isIncorrect": true,
+        //         });
+        //         // formControl.setValidators(this.isCorrectUserData);
+        //         this.errors = [
+        //           ...this.errors,
+        //           {
+        //             controlName: prop,
+        //             errorName: "isIncorrect",
+        //             errorValue: <ValidationErrors>error,
+        //           },
+        //         ];
+        //         this.cdr.markForCheck();
+        //       }
+        //     });
+      } else {
+        // TODO redirect to authenticated page if register success
+        console.log("register success");
+        // this.router.navigateByUrl("/");
+      }
+    });
   }
 
   onShow(): void {

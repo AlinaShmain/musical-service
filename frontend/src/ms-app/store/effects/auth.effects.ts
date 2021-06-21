@@ -19,7 +19,7 @@ export class AuthEffects {
                 this.usersService.registerUser(user).pipe(
                     map(({ token }) =>
                         AuthApiActions.registeredSuccess({
-                            token
+                            token,
                         }),
                     ),
                     catchError((error: Error) => of(AuthApiActions.registeredError({ registerError: error }))),

@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
@@ -9,12 +10,14 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatSidenav } from "@angular/material/sidenav";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { hamburgerAnimation } from "../animations/hamburger-menu";
 import { AuthModalComponent } from "../auth-modal/auth-modal.component";
+import { UsersService } from "../services/users/users.service";
 import { MainPageActions } from "../store/actions";
-import { AppState, selectReturnUrl } from "../store/state/app.state";
+import { AppState, selectMainPageState } from "../store/state/app.state";
+import { MainPageState } from "../store/state/main-page.state";
 
 interface Link {
   pageName: string;
@@ -72,8 +75,10 @@ export class MainComponent implements OnInit, OnDestroy {
     },
   ];
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog,
-    private router: Router, private store: Store<AppState>) {
+  mainPageState: Observable<MainPageState> = this.store.select(selectMainPageState);
+
+  constructor(private route: ActivatedRoute, public dialog: MatDialog, private usersService: UsersService,
+    private router: Router, private store: Store<AppState>, private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -84,12 +89,20 @@ export class MainComponent implements OnInit, OnDestroy {
     //   this.returnUrl = params.returnUrl;
     // });
 
-    this.store.select(selectReturnUrl).pipe(
-      takeUntil(this.destroy$),
-    ).subscribe((returnUrl) => {
-      console.log("update returnUrl", returnUrl);
-      this.returnUrl = returnUrl;
-    });
+    // this.store.select(selectReturnUrl).pipe(
+    //   takeUntil(this.destroy$),
+    // ).subscribe((returnUrl) => {
+    //   console.log("update returnUrl", returnUrl);
+    //   this.returnUrl = returnUrl;
+    // });
+
+    // this.store.select(selectMainPageState).pipe(
+    //   takeUntil(this.destroy$),
+    // ).subscribe((mainPageState) => {
+    //   console.log("update mainPageState");
+    //   this.mainPageState = mainPageState;
+    //   this.cdr.markForCheck();
+    // });
 
     // this.store.select(selectIsOpenAuthModal).pipe(
     //   takeUntil(this.destroy$),
@@ -127,6 +140,14 @@ export class MainComponent implements OnInit, OnDestroy {
     this.store.dispatch(MainPageActions.setIsOpenAuthModal({ isOpenAuthModal: true }));
 
     this.createAuthDialog();
+  }
+
+  isAuthenticated(): boolean {
+    return this.usersService.isAuthenticated();
+  }
+
+  getUserName(): string {
+    return this.usersService.getUserName();
   }
 
 }

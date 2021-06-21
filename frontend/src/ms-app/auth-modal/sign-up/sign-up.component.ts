@@ -61,13 +61,13 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
   registerNewUser(user: User): void {
     this.store.dispatch(AuthActions.registerUser({ user }));
 
-    // TODO handle error User already exists
     this.store.select(selectRegisterError).pipe(
       filter((value) => !!value),
       takeUntil(this.destroy$),
     ).subscribe((error) => {
       console.log("error", error);
       if (error) {
+        // TODO handle error User already exists
         //     Object.keys(this.formModel.controls).forEach((prop) => {
         //       const formControl = this.formModel.get(prop);
         //       if (formControl) {

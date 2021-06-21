@@ -1,12 +1,16 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+import { AuthModalComponent } from "../auth-modal/auth-modal.component";
 import { Track } from "../models/track";
 import { TrackHeaders } from "../models/track-headers";
 import { AudioService } from "../services/track/audio.service";
-import { AudioActions, HomePageActions } from "../store/actions";
-import { AppState, selectAudioState, selectTrackList } from "../store/state/app.state";
+import { UsersService } from "../services/users/users.service";
+import { AudioActions, HomePageActions, MainPageActions } from "../store/actions";
+import { AppState, selectAudioState, selectReturnUrl, selectTrackList } from "../store/state/app.state";
 import { AudioState } from "../store/state/audio.state";
 
 @Component({
@@ -25,6 +29,7 @@ export class TrackListComponent implements OnInit, OnDestroy {
   };
   tracks$: Track[] = [];
   audioState: AudioState;
+  returnUrl: string;
 
   isOpenDropdown: boolean[] = [];
 
@@ -32,7 +37,10 @@ export class TrackListComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<AppState>,
     private cdr: ChangeDetectorRef,
-    private audioService: AudioService) { }
+    private audioService: AudioService,
+    private usersService: UsersService,
+    public dialog: MatDialog,
+    private router: Router) { }
 
   ngOnInit(): void {
     console.log("init track list component");
@@ -53,6 +61,14 @@ export class TrackListComponent implements OnInit, OnDestroy {
       this.audioState = audioState;
       this.cdr.markForCheck();
     });
+
+    this.store.select(selectReturnUrl).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe((returnUrl) => {
+      console.log("update returnUrl", returnUrl);
+      this.returnUrl = returnUrl;
+    });
+
   }
 
   ngOnDestroy(): void {
@@ -61,8 +77,21 @@ export class TrackListComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  onLike(): void {
+  onLike(trackId: string): void {
+    console.log("on like", trackId);
+    if (!this.usersService.isAuthenticated()) {
+      this.store.dispatch(MainPageActions.setIsOpenAuthModal({ isOpenAuthModal: true }));
 
+      const dialogRef = this.dialog.open(AuthModalComponent, {});
+      dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
+        console.log("after close modal");
+        this.router.navigateByUrl(this.returnUrl);
+      });
+    } else {
+      const userEmail = this.usersService?.getUserEmail();
+      console.log("userEmail", userEmail);
+      this.store.dispatch(MainPageActions.likeTrack({ trackId, userEmail }));
+    }
   }
 
   onDropdown(idx: number): void {

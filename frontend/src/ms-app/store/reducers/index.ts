@@ -2,6 +2,7 @@
 import { audioReducer } from "./audio.reducer";
 import { authReducer } from "./auth.reducer";
 import { homePageReducer } from "./home-page.reducer";
+import { mainPageReducer } from "./main-page.reducer";
 
 // export const rootReducer = combineReducers({
 //     auth: authReducer,
@@ -12,4 +13,5 @@ export const reducers = {
     auth: authReducer,
     audio: audioReducer,
     home: homePageReducer,
+    main: mainPageReducer,
 };

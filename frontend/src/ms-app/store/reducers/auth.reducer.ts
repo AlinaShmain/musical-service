@@ -32,8 +32,8 @@ export const authReducer = createReducer(initialAuthState,
         ...state,
         registerError,
     })),
-    on(AuthActions.setIsOpenAuthModal, (state, { isOpenAuthModal }): AuthState => ({
-        ...state,
-        isOpenAuthModal,
-    })),
+    // on(AuthActions.setIsOpenAuthModal, (state, { isOpenAuthModal }): AuthState => ({
+    //     ...state,
+    //     isOpenAuthModal,
+    // })),
 );

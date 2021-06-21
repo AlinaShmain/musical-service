@@ -4,6 +4,8 @@ import * as AudioActions from "./audio.actions";
 import * as AudioApiActions from "./audio-api.actions";
 import * as HomePageActions from "./home-page.actions";
 import * as HomeApiActions from "./home-api.actions";
+import * as MainPageActions from "./main-page.actions";
+import * as MainApiActions from "./main-api.actions";
 
 export {
     AuthApiActions,
@@ -12,4 +14,6 @@ export {
     AudioApiActions,
     HomePageActions,
     HomeApiActions,
+    MainPageActions,
+    MainApiActions,
 };

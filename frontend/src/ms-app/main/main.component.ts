@@ -13,8 +13,8 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { hamburgerAnimation } from "../animations/hamburger-menu";
 import { AuthModalComponent } from "../auth-modal/auth-modal.component";
-import { AuthActions } from "../store/actions";
-import { AppState } from "../store/state/app.state";
+import { MainPageActions } from "../store/actions";
+import { AppState, selectReturnUrl } from "../store/state/app.state";
 
 interface Link {
   pageName: string;
@@ -42,7 +42,7 @@ export class MainComponent implements OnInit, OnDestroy {
   links: Link[] = [
     {
       pageName: "Home",
-      path: "tracks",
+      path: "home",
       // iconName: "home",
       iconName: "fas fa-home",
     },
@@ -77,15 +77,34 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log("home component");
-    console.log(this.router.url);
-    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      this.returnUrl = params.returnUrl;
+    console.log("init main component");
+    // console.log(this.router.url);
+    // this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+    //   console.log("return url", params);
+    //   this.returnUrl = params.returnUrl;
+    // });
+
+    this.store.select(selectReturnUrl).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe((returnUrl) => {
+      console.log("update returnUrl", returnUrl);
+      this.returnUrl = returnUrl;
     });
+
+    // this.store.select(selectIsOpenAuthModal).pipe(
+    //   takeUntil(this.destroy$),
+    // ).subscribe((isOpenAuthModal) => {
+    //   console.log("update isOpenAuthModal", isOpenAuthModal);
+    //   // console.log("update returnUrl", mainPageState.returnUrl);
+    //   // this.mainPageState = mainPageState;
+    //   // if (isOpenAuthModal) {
+    //   //   this.createAuthDialog();
+    //   // }
+    // });
   }
 
   ngOnDestroy(): void {
-    console.log("home on destroy");
+    console.log("main on destroy");
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -95,15 +114,19 @@ export class MainComponent implements OnInit, OnDestroy {
     this.sidenav.toggle();
   }
 
-  onOpenModal(): void {
-    console.log("on open");
-    this.store.dispatch(AuthActions.setIsOpenAuthModal({ isOpenAuthModal: true }));
-
+  createAuthDialog(): void {
     const dialogRef = this.dialog.open(AuthModalComponent, {});
     dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
       console.log("after close modal");
       this.router.navigateByUrl(this.returnUrl);
     });
+  }
+
+  onOpenModal(): void {
+    console.log("on open");
+    this.store.dispatch(MainPageActions.setIsOpenAuthModal({ isOpenAuthModal: true }));
+
+    this.createAuthDialog();
   }
 
 }

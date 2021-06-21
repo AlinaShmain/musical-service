@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { AuthActions } from "../store/actions";
+import { MainPageActions } from "../store/actions";
 import { AppState, selectIsOpenAuthModal } from "../store/state/app.state";
 
 @Component({
@@ -16,7 +16,6 @@ import { AppState, selectIsOpenAuthModal } from "../store/state/app.state";
 export class AuthModalComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
-  isOpenAuthModal: boolean;
 
   constructor(
     private router: Router,
@@ -31,25 +30,32 @@ export class AuthModalComponent implements OnInit, OnDestroy {
     this.store.select(selectIsOpenAuthModal).pipe(
       takeUntil(this.destroy$),
     ).subscribe((isOpenAuthModal) => {
-      this.isOpenAuthModal = isOpenAuthModal;
+      if (isOpenAuthModal) {
+        console.log(this.router.url);
+        this.store.dispatch(MainPageActions.setReturnUrl({ returnUrl: this.router.url }));
+        this.router.navigateByUrl("/signIn");
+        // this.router.navigate(["./signIn"], { relativeTo: this.route }); // { queryParams: { returnUrl: this.router.url }, relativeTo: this.route });
+      } else {
+        this.closeModal();
+      }
     });
-    if (this.isOpenAuthModal) {
-      this.router.navigate(["./signIn"], { queryParams: { returnUrl: this.router.url }, relativeTo: this.route });
-    } else {
-      this.closeModal();
-    }
+
   }
 
   ngOnDestroy(): void {
     console.warn("---- Dialog was destroyed ----");
-    this.store.dispatch(AuthActions.setIsOpenAuthModal({ isOpenAuthModal: false }));
-    this.destroy$.next();
-    this.destroy$.complete();
-    this.dialogRef.close();
+    this.closeModal();
+    // this.store.dispatch(MainPageActions.setIsOpenAuthModal({ isOpenAuthModal: false }));
+    // this.destroy$.next();
+    // this.destroy$.complete();
+    // this.dialogRef.close();
   }
 
   closeModal(): void {
     console.log("close modal");
+    this.store.dispatch(MainPageActions.setIsOpenAuthModal({ isOpenAuthModal: false }));
+    this.destroy$.next();
+    this.destroy$.complete();
     this.dialogRef.close();
   }
 

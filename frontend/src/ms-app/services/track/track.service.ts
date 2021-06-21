@@ -32,7 +32,12 @@ export class TrackService {
       );
   }
 
-  addToFavourites(): void {
-    // this.http()
+  addToFavourites(trackId: string, userEmail: string): Observable<{ favouriteList: string[] }> {
+    const httpOptions = {
+      headers: {
+        "CONTENT-TYPE": "application/json" as const,
+      },
+    };
+    return this.http.post<{ favouriteList: string[] }>("http://localhost:3000/favourites", JSON.stringify({ trackId, userEmail }), httpOptions);
   }
 }

@@ -3,25 +3,26 @@ import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Router, RouterStat
 import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { AppState, selectIsOpenAuthModal } from "../store/state/app.state";
+import { AppState, selectMainPageState } from "../store/state/app.state";
+import { MainPageState } from "../store/state/main-page.state";
 
 @Injectable({
     providedIn: "root"
 })
 export class AuthModalGuard implements CanActivate, OnDestroy {
 
-    returnUrl: string;
-    isOpenAuthModal: boolean;
+    // returnUrl: string;
+    mainPageState: MainPageState;
     private readonly destroy$: Subject<void> = new Subject();
 
     constructor(private store: Store<AppState>, private router: Router, private route: ActivatedRoute) {
-        this.route.queryParams.subscribe((params) => {
-            this.returnUrl = params.returnUrl;
-        });
-        this.store.select(selectIsOpenAuthModal).pipe(
+        // this.route.queryParams.subscribe((params) => {
+        //     this.returnUrl = params.returnUrl;
+        // });
+        this.store.select(selectMainPageState).pipe(
             takeUntil(this.destroy$),
-        ).subscribe((isOpenAuthModal) => {
-            this.isOpenAuthModal = isOpenAuthModal;
+        ).subscribe((mainPageState) => {
+            this.mainPageState = mainPageState;
         });
     }
 
@@ -31,10 +32,10 @@ export class AuthModalGuard implements CanActivate, OnDestroy {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        if (this.isOpenAuthModal) {
+        if (this.mainPageState.isOpenAuthModal) {
             return true;
         }
-        this.router.navigateByUrl(this.returnUrl);
+        this.router.navigateByUrl(this.mainPageState.returnUrl);
         return false;
     }
 }

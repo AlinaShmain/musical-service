@@ -4,7 +4,7 @@ import { User } from "src/ms-app/models/user";
 export enum AuthActionTypes {
     LOGIN_USER = "[Auth] Login User",
     REGISTER_USER = "[Auth] Register User",
-    SET_IS_OPEN_AUTH_MODAL = "[Auth] Set IsOpenAuthModal",
+    // SET_IS_OPEN_AUTH_MODAL = "[Auth] Set IsOpenAuthModal",
 }
 
 export const loginUser = createAction(
@@ -17,7 +17,7 @@ export const registerUser = createAction(
     props<{ user: User }>(),
 );
 
-export const setIsOpenAuthModal = createAction(
-    AuthActionTypes.SET_IS_OPEN_AUTH_MODAL,
-    props<{ isOpenAuthModal: boolean }>(),
-);
+// export const setIsOpenAuthModal = createAction(
+//     AuthActionTypes.SET_IS_OPEN_AUTH_MODAL,
+//     props<{ isOpenAuthModal: boolean }>(),
+// );

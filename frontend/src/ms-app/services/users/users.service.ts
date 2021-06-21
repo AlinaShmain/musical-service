@@ -1,9 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Store } from "@ngrx/store";
 import { Observable, of } from "rxjs";
 import { catchError, switchMap, tap } from "rxjs/operators";
 import { Token } from "src/ms-app/models/token";
 import { User } from "src/ms-app/models/user";
+import { AppState, selectAuthState } from "src/ms-app/store/state/app.state";
+import { AuthState } from "src/ms-app/store/state/auth.state";
 import { SecurityService } from "../security/security.service";
 
 @Injectable({
@@ -11,7 +14,14 @@ import { SecurityService } from "../security/security.service";
 })
 export class UsersService {
 
-  constructor(private http: HttpClient) { }
+  private authState: AuthState;
+
+  constructor(private http: HttpClient, private store: Store<AppState>) {
+    this.store.select(selectAuthState).subscribe((authState) => {
+      console.log("update authenticated", authState.authenticated);
+      this.authState = authState;
+    });
+  }
 
   registerUser(user: User): Observable<{ token: string }> {
     const httpOptions = {
@@ -70,10 +80,16 @@ export class UsersService {
         }),
         tap(({ token }) => {
           console.log("token", token);
-        //   this.authenticated = true;
-        //   this.token = token;
         }),
       );
+  }
+
+  isAuthenticated(): boolean {
+    return this.authState.authenticated;
+  }
+
+  getUserEmail(): string {
+    return this.authState.user.email;
   }
 
 }

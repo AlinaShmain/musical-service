@@ -32,10 +32,12 @@ import { materialModules } from "./material";
 // import { WebAudioModule } from "@ng-web-apis/audio";
 import { effects } from "./store/effects";
 import { HomeComponent } from "./home/home.component";
+import { ModalEntryComponent } from "./modalEntry/modal-entry";
 @NgModule({
     declarations: [
         MsAppComponent,
         AuthModalComponent,
+        ModalEntryComponent,
         SignInComponent,
         SignUpComponent,
         PageNotFoundComponent,
@@ -70,7 +72,7 @@ import { HomeComponent } from "./home/home.component";
         // AudioContextModule.forRoot("balanced"),
         // WebAudioModule,
     ],
-    // entryComponents: [AuthModalComponent],
+    entryComponents: [AuthModalComponent],
     providers: [UsersService],
     bootstrap: [MsAppComponent],
 })

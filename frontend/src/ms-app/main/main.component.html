@@ -10,7 +10,8 @@
             <div class="icon-bar" [@hamburguerX]="isHamburguer ? 'hamburguer' : 'bottomX'"></div>
         </button>
 
-        <button mat-raised-button color="accent" *ngIf="!isAuthenticated()" (click)="onOpenModal()" class="modal-btn">Login</button>
+        <!-- <button mat-raised-button color="accent" *ngIf="!isAuthenticated()" (click)="onOpenModal()" class="modal-btn">Login</button> -->
+        <button mat-raised-button color="accent" *ngIf="!isAuthenticated()" routerLink="form" class="modal-btn">Login</button>
         <span *ngIf="isAuthenticated()">{{ getUserName() }}</span>
     </mat-toolbar>
     <mat-sidenav-container class="sidenav-container">

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
-import { ActivatedRoute, Router } from "@angular/router";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { AuthModalComponent } from "../auth-modal/auth-modal.component";
@@ -12,10 +12,10 @@ import { AuthModalComponent } from "../auth-modal/auth-modal.component";
 })
 export class ModalEntryComponent implements OnInit, OnDestroy {
 
+    private dialogRef: MatDialogRef<AuthModalComponent>;
     private destroy$ = new Subject<void>();
 
-    constructor(public dialog: MatDialog, private router: Router,
-        private route: ActivatedRoute) {
+    constructor(public dialog: MatDialog, private router: Router) {
     }
 
     ngOnInit(): void {
@@ -27,15 +27,22 @@ export class ModalEntryComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         console.log("on destroy modal entry");
-        this.destroy$.next();
-        this.destroy$.complete();
+        this.closeModal();
     }
 
+    closeModal(): void {
+        console.log("close modal");
+        // this.store.dispatch(MainPageActions.setIsOpenAuthModal({ isOpenAuthModal: false }));
+        this.destroy$.next();
+        this.destroy$.complete();
+        this.dialogRef.close();
+      }
+
     openDialog(): void {
-        const dialogRef = this.dialog.open(AuthModalComponent, {
+        this.dialogRef = this.dialog.open(AuthModalComponent, {
             // width: '250px'
         });
-        dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
+        this.dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
             console.log("close dialog");
             this.router.navigateByUrl("/");
         });

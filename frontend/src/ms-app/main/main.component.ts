@@ -11,11 +11,8 @@ import { MatSidenav } from "@angular/material/sidenav";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Observable, Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
 import { hamburgerAnimation } from "../animations/hamburger-menu";
-import { AuthModalComponent } from "../auth-modal/auth-modal.component";
 import { UsersService } from "../services/users/users.service";
-import { MainPageActions } from "../store/actions";
 import { AppState, selectMainPageState } from "../store/state/app.state";
 import { MainPageState } from "../store/state/main-page.state";
 
@@ -127,20 +124,20 @@ export class MainComponent implements OnInit, OnDestroy {
     this.sidenav.toggle();
   }
 
-  createAuthDialog(): void {
-    const dialogRef = this.dialog.open(AuthModalComponent, {});
-    dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
-      console.log("after close modal");
-      this.router.navigateByUrl(this.returnUrl);
-    });
-  }
+  // createAuthDialog(): void {
+  //   const dialogRef = this.dialog.open(AuthModalComponent, {});
+  //   dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
+  //     console.log("after close modal");
+  //     this.router.navigateByUrl(this.returnUrl);
+  //   });
+  // }
 
-  onOpenModal(): void {
-    console.log("on open");
-    this.store.dispatch(MainPageActions.setIsOpenAuthModal({ isOpenAuthModal: true }));
+  // onOpenModal(): void {
+  //   console.log("on open");
+  //   this.store.dispatch(MainPageActions.setIsOpenAuthModal({ isOpenAuthModal: true }));
 
-    this.createAuthDialog();
-  }
+  //   this.createAuthDialog();
+  // }
 
   isAuthenticated(): boolean {
     return this.usersService.isAuthenticated();

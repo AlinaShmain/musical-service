@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 
+// import { AudioContextModule } from "angular-audio-context";
 import { MsAppComponent } from "./ms-app.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AuthModalComponent } from "./auth-modal/auth-modal.component";
@@ -17,18 +18,21 @@ import { TrackListComponent } from "./track-list/track-list.component";
 import { GetKeysPipe } from "./pipes/get-keys.pipe";
 import { GetValuesPipe } from "./pipes/get-values.pipe";
 import { ToTimeFormatPipe } from "./pipes/to-time-format.pipe";
-// import { MaterialModule } from "./material/material.module";
 import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
-import { authReducer } from "./store/reducers/auth.reducer";
-import { AuthEffects } from "./store/effects/auth.effects";
 import { EffectsModule } from "@ngrx/effects";
 import { environment } from "@env/environment";
 import { ArtistListComponent } from "./artist-list/artist-list.component";
 import { AlbumListComponent } from "./album-list/album-list.component";
 import { FavouriteListComponent } from "./favourite-list/favourite-list.component";
 import { PlaylistListComponent } from "./playlist-list/playlist-list.component";
+import { PlayerComponent } from "./player/player.component";
+import { reducers } from "./store/reducers";
 import { materialModules } from "./material";
+// import { WebAudioModule } from "@ng-web-apis/audio";
+import { effects } from "./store/effects";
+import { HomeComponent } from "./home/home.component";
+
 @NgModule({
     declarations: [
         MsAppComponent,
@@ -46,6 +50,8 @@ import { materialModules } from "./material";
         AlbumListComponent,
         FavouriteListComponent,
         PlaylistListComponent,
+        PlayerComponent,
+        HomeComponent,
     ],
     imports: [
         BrowserModule,
@@ -55,16 +61,15 @@ import { materialModules } from "./material";
         // NoopAnimationsModule,
         AppRoutingModule,
         HttpClientModule,
-        // MaterialModule,
+        StoreModule.forRoot(reducers),
         materialModules,
-        StoreModule.forRoot({
-            auth: authReducer
-        }),
-        EffectsModule.forRoot([AuthEffects]),
+        EffectsModule.forRoot([...effects]),
         StoreDevtoolsModule.instrument({
             maxAge: 25,
             logOnly: environment.production,
         }),
+        // AudioContextModule.forRoot("balanced"),
+        // WebAudioModule,
     ],
     // entryComponents: [AuthModalComponent],
     providers: [UsersService],

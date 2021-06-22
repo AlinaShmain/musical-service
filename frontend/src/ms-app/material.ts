@@ -5,6 +5,7 @@ import { MatListModule } from "@angular/material/list";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatSliderModule } from "@angular/material/slider";
 
 export const materialModules = [
     MatDialogModule,
@@ -14,4 +15,5 @@ export const materialModules = [
     MatIconModule,
     MatToolbarModule,
     MatListModule,
+    MatSliderModule,
 ];

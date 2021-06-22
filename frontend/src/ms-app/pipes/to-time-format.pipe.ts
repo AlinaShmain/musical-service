@@ -6,8 +6,7 @@ import { Pipe, PipeTransform } from "@angular/core";
 export class ToTimeFormatPipe implements PipeTransform {
 
   transform(value: string): string {
-    // console.log(value);
-    const secNum: number = parseInt(value, 10);
+    const secNum: number = Math.round(parseFloat(value));
     const min: number = Math.floor(secNum / 60);
     const sec: number = secNum % 60;
     const minStr: string = min < 10 ? "0" + min : `${min}`;

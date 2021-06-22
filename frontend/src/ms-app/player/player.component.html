@@ -1,0 +1,48 @@
+<div class="player-container">
+    <!-- <mat-toolbar> -->
+    <!-- <mat-toolbar-row class="slider-row"> -->
+    <div class="slider-row">
+        <span>{{ audioState?.currentTime | toTimeFormat }}</span>
+        <mat-slider class="time-slider" min="0" [max]="audioState?.duration === '0' ? 1 : audioState?.duration" step="1" [value]="audioState?.currentTime"></mat-slider>
+        <span>{{ audioState?.duration | toTimeFormat }}</span>
+    </div>
+    <!-- </mat-toolbar-row> -->
+    <!-- <mat-toolbar-row class="media-action-bar"> -->
+    <div class="media-action-bar">
+        <div class="track-info">
+            <span className="title">{{ audioState?.trackTitle }}</span>
+            <span className="artist">{{ audioState?.trackArtist }}</span>
+        </div>
+        <div class="play-controllers">
+            <button mat-icon-button color="accent" [disabled]="!audioState?.trackId || audioState?.trackId === '1'" (click)="onPrevious()">
+                <!-- <mat-icon mat-list-icon>skip_previous</mat-icon> -->
+                <i class="fas fa-step-backward"></i>
+            </button>
+            <button mat-icon-button color="accent" *ngIf="!audioState?.isPlaying" (click)="onResume()">
+                <!-- <mat-icon mat-list-icon class="play-icon">play_circle_filled</mat-icon> -->
+                <i class="fas fa-play-circle play-icon"></i>
+            </button>
+            <button mat-icon-button color="accent" *ngIf="audioState?.isPlaying" (click)="onPause()">
+                <!-- <mat-icon mat-list-icon class="play-icon">pause</mat-icon> -->
+                <i class="fas fa-pause-circle play-icon"></i>
+            </button>
+            <button mat-icon-button color="accent" [disabled]="isLastTrack(audioState?.trackId)" (click)="onNext()">
+                <!-- <mat-icon mat-list-icon>skip_next</mat-icon> -->
+                <i class="fas fa-step-forward"></i>
+            </button>
+        </div>
+        <div class="volume-controllers">
+            <button mat-icon-button color="accent" *ngIf="!audioState?.isMuted" (click)="onMute()">
+                <!-- <mat-icon mat-list-icon> volume_up </mat-icon> -->
+                <i class="fas fa-volume-up"></i>
+            </button>
+            <button mat-icon-button color="accent" *ngIf="audioState?.isMuted" (click)="onUnmute()">
+                <!-- <mat-icon mat-list-icon> volume_off </mat-icon> -->
+                <i class="fas fa-volume-off"></i>
+            </button>
+            <mat-slider class="volume-slider" min="0" max="1" step="0.1" [value]="audioState?.volume" (input)="onVolumeChange($event)"></mat-slider>
+        </div>
+    </div>
+    <!-- </mat-toolbar-row> -->
+    <!-- </mat-toolbar> -->
+</div>

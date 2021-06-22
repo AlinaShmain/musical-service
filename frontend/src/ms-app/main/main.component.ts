@@ -42,7 +42,7 @@ export class MainComponent implements OnInit, OnDestroy {
   links: Link[] = [
     {
       pageName: "Home",
-      path: "tracks",
+      path: "home",
       // iconName: "home",
       iconName: "fas fa-home",
     },

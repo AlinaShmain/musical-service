@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
@@ -8,9 +7,8 @@ import {
 } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatSidenav } from "@angular/material/sidenav";
-import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { Observable, Subject } from "rxjs";
+import { Observable } from "rxjs";
 import { hamburgerAnimation } from "../animations/hamburger-menu";
 import { UsersService } from "../services/users/users.service";
 import { AppState, selectMainPageState } from "../store/state/app.state";
@@ -31,9 +29,6 @@ interface Link {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainComponent implements OnInit, OnDestroy {
-
-  private destroy$ = new Subject<void>();
-  returnUrl: string;
 
   isOpenMenu: boolean = false;
   @ViewChild(MatSidenav) private sidenav: MatSidenav;
@@ -74,24 +69,11 @@ export class MainComponent implements OnInit, OnDestroy {
 
   mainPageState: Observable<MainPageState> = this.store.select(selectMainPageState);
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog, private usersService: UsersService,
-    private router: Router, private store: Store<AppState>, private cdr: ChangeDetectorRef) {
+  constructor(public dialog: MatDialog, private usersService: UsersService, private store: Store<AppState>) {
   }
 
   ngOnInit(): void {
     console.log("init main component");
-    // console.log(this.router.url);
-    // this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-    //   console.log("return url", params);
-    //   this.returnUrl = params.returnUrl;
-    // });
-
-    // this.store.select(selectReturnUrl).pipe(
-    //   takeUntil(this.destroy$),
-    // ).subscribe((returnUrl) => {
-    //   console.log("update returnUrl", returnUrl);
-    //   this.returnUrl = returnUrl;
-    // });
 
     // this.store.select(selectMainPageState).pipe(
     //   takeUntil(this.destroy$),
@@ -100,44 +82,16 @@ export class MainComponent implements OnInit, OnDestroy {
     //   this.mainPageState = mainPageState;
     //   this.cdr.markForCheck();
     // });
-
-    // this.store.select(selectIsOpenAuthModal).pipe(
-    //   takeUntil(this.destroy$),
-    // ).subscribe((isOpenAuthModal) => {
-    //   console.log("update isOpenAuthModal", isOpenAuthModal);
-    //   // console.log("update returnUrl", mainPageState.returnUrl);
-    //   // this.mainPageState = mainPageState;
-    //   // if (isOpenAuthModal) {
-    //   //   this.createAuthDialog();
-    //   // }
-    // });
   }
 
   ngOnDestroy(): void {
     console.log("main on destroy");
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   onOpenMenu(): void {
     this.isHamburguer = !this.isHamburguer;
     this.sidenav.toggle();
   }
-
-  // createAuthDialog(): void {
-  //   const dialogRef = this.dialog.open(AuthModalComponent, {});
-  //   dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
-  //     console.log("after close modal");
-  //     this.router.navigateByUrl(this.returnUrl);
-  //   });
-  // }
-
-  // onOpenModal(): void {
-  //   console.log("on open");
-  //   this.store.dispatch(MainPageActions.setIsOpenAuthModal({ isOpenAuthModal: true }));
-
-  //   this.createAuthDialog();
-  // }
 
   isAuthenticated(): boolean {
     return this.usersService.isAuthenticated();

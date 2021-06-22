@@ -44,6 +44,7 @@ export const selectMainPageState = (state: AppState): MainPageState => state.mai
 export const selectReturnUrl = createSelector(selectMainPageState, (mainState: MainPageState) => mainState.returnUrl);
 export const selectIsOpenAuthModal = createSelector(selectMainPageState, (mainState: MainPageState) => mainState.isOpenAuthModal);
 export const selectFavouriteList = createSelector(selectMainPageState, (mainState: MainPageState) => mainState.favouriteList);
+export const selectIsCloseAuthModal = createSelector(selectMainPageState, (mainState: MainPageState) => mainState.isCloseAuthModal);
 
 
 

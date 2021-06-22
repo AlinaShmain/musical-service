@@ -1,10 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
-import { MatDialogRef } from "@angular/material/dialog";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Store } from "@ngrx/store";
-import { Subject } from "rxjs";
-import { AppState } from "../store/state/app.state";
-
 @Component({
   selector: "ms-auth-modal",
   templateUrl: "./auth-modal.component.html",
@@ -13,44 +7,21 @@ import { AppState } from "../store/state/app.state";
 })
 export class AuthModalComponent implements OnInit, OnDestroy {
 
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    public dialogRef: MatDialogRef<AuthModalComponent>,
-    private store: Store<AppState>,
-  ) {
-  }
+  // @ViewChild(RouterOutlet) outlet: RouterOutlet;
 
   ngOnInit(): void {
     console.log("init auth modal");
-    // this.store.select(selectIsOpenAuthModal).pipe(
-    //   takeUntil(this.destroy$),
-    // ).subscribe((isOpenAuthModal) => {
-    //   if (isOpenAuthModal) {
-    //     console.log(this.router.url);
-    //     this.store.dispatch(MainPageActions.setReturnUrl({ returnUrl: this.router.url }));
-    //     this.router.navigateByUrl("/signIn");
-    //     // this.router.navigate(["./signIn"], { relativeTo: this.route }); // { queryParams: { returnUrl: this.router.url }, relativeTo: this.route });
-    //   } else {
-    //     this.closeModal();
-    //   }
-    // });
-
   }
 
   ngOnDestroy(): void {
     console.warn("---- Dialog was destroyed ----");
-    // this.closeModal();
-  }
 
-  // closeModal(): void {
-  //   console.log("close modal");
-  //   // this.store.dispatch(MainPageActions.setIsOpenAuthModal({ isOpenAuthModal: false }));
-  //   this.destroy$.next();
-  //   this.destroy$.complete();
-  //   this.dialogRef.close();
-  // }
+    // if (this.outlet.isActivated) {
+    // console.log(this.outlet);
+    // this.outlet.deactivate();
+    //   console.log("deactivation");
+    //   // console.log(this.outlet);
+    // }
+  }
 
 }

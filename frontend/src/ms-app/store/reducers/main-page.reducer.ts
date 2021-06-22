@@ -12,6 +12,10 @@ export const mainPageReducer = createReducer(initialMainPageState,
         ...state,
         isOpenAuthModal,
     })),
+     on(MainPageActions.onCloseModal, (state): MainPageState => ({
+        ...state,
+        isCloseAuthModal: true,
+    })),
     on(MainPageActions.likeTrack, (state): MainPageState => ({
         ...state,
     })),

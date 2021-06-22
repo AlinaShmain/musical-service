@@ -93,6 +93,7 @@ export class UsersService {
   }
 
   getUserName(): string {
+    console.log(this.authState.user);
     return this.authState.user.name;
   }
 

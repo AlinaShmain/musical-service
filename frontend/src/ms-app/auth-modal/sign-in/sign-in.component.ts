@@ -1,11 +1,15 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from "@angular/forms";
+import { MatDialogRef } from "@angular/material/dialog";
+import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { Subject } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 import { filter, takeUntil } from "rxjs/operators";
 import { User } from "src/ms-app/models/user";
+import { ModalService } from "src/ms-app/services/modal/modal.service";
 import { AuthActions } from "src/ms-app/store/actions";
 import { AppState, selectAuthenticated, selectLoginError } from "src/ms-app/store/state/app.state";
+import { AuthModalComponent } from "../auth-modal.component";
 import { ValidationErrorsComponent } from "../validation-errors/validation-errors.component";
 @Component({
   selector: "ms-sign-in",
@@ -27,9 +31,12 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
   authenticated: boolean = false;
 
   private destroy$ = new Subject<void>();
+  subscribe: Subscription;
 
-  constructor(private _fb: FormBuilder, private cdr: ChangeDetectorRef, private store: Store<AppState>) {
+  constructor(private _fb: FormBuilder, private cdr: ChangeDetectorRef, private store: Store<AppState>, private router: Router,
+    private _modalService: ModalService, private dialogRef: MatDialogRef<AuthModalComponent>) {
     super();
+
     this.email = this._fb.control("", [Validators.required, Validators.email, Validators.maxLength(20), Validators.minLength(3)]);
     this.password = this._fb.control("", [Validators.required, Validators.pattern(
       "^(?=.*[0-9])(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*[@$!%*?&])([a-zA-Zа-яА-Я0-9@$!%*?&]{8,})$"), Validators.minLength(8)]);
@@ -92,7 +99,13 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
   loginUser(user: User): void {
     this.store.dispatch(AuthActions.loginUser({ user }));
 
-    // TODO redirect to authenticated page if login success
+    this.store.select(selectAuthenticated).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe((authenticated) => {
+      if (authenticated) {
+        this.onClose();
+      }
+    });
 
     this.store.select(selectLoginError).pipe(
       filter((value) => !!value),
@@ -143,6 +156,20 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
       console.log("on submit form", user);
       this.loginUser(user);
     }
+  }
+
+  onClose(): void {
+    this.router.navigate(
+      [
+        // ".",
+        {
+          outlets: {
+            popupContent: null,
+          },
+        },
+      ]);
+    this._modalService.setModalClose();
+    // ).then(() => this.router.navigate(["/"]));
   }
 
 }

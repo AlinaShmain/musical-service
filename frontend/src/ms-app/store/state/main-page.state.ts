@@ -1,6 +1,7 @@
 export interface MainPageState {
     returnUrl: string;
     isOpenAuthModal: boolean;
+    isCloseAuthModal: boolean;
     favouriteList: string[];
     addedToFavouritesError: Error;
 }
@@ -8,6 +9,7 @@ export interface MainPageState {
 export const initialMainPageState: MainPageState = {
     returnUrl: "/",
     isOpenAuthModal: false,
+    isCloseAuthModal: false,
     favouriteList: [],
     addedToFavouritesError: null,
 };

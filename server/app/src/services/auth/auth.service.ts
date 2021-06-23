@@ -33,6 +33,14 @@ export class AuthService {
         return encryptText;
     }
 
+    async verifyToken(token: string) {
+        return this.jwtService.verify(token);
+    }
+
+    // getUserInfo() {
+
+    // }
+
     async validateUser(email: string): Promise<EncryptedData> {
         const foundUser: UserDto = await this.userCollectionService.findByEmail({ email });
         if (!foundUser) {

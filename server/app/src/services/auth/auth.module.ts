@@ -7,6 +7,8 @@ import { RegisterController } from "src/controllers/register/register.controller
 import { LoginController } from "src/controllers/login/login.controller";
 import { FavouritesController } from "src/controllers/favourites/favourites.controller";
 import { FavouritesService } from "../favourites/favourites.service";
+import { VerifyController } from "src/controllers/verify/verify.controller";
+import { UserInfoController } from "src/controllers/user-info/user-info.controller";
 
 
 @Module({
@@ -17,7 +19,7 @@ import { FavouritesService } from "../favourites/favourites.service";
             signOptions: { expiresIn: '3h' },
         }),
     ],
-    controllers: [RegisterController, LoginController, FavouritesController],
+    controllers: [RegisterController, LoginController, UserInfoController, VerifyController, FavouritesController],
     providers: [AuthService, FavouritesService],
     exports: [AuthService, FavouritesService, JwtModule],
 })

@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Session } from '@nestjs/common';
 import { EncryptedData } from 'src/model/encryptedData.dto';
 import { TokenDto } from 'src/model/token.dto';
 import { AuthService } from 'src/services/auth/auth.service';
+import * as secureSession from 'fastify-secure-session';
 
 @Controller('login')
 export class LoginController {

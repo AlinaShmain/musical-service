@@ -4,7 +4,6 @@ import { ActivatedRoute, Router, RouterOutlet } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { ModalService } from "../services/modal/modal.service";
-import { MainPageActions } from "../store/actions";
 import { AppState } from "../store/state/app.state";
 
 @Component({
@@ -23,9 +22,9 @@ export class ModalEntryComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         console.log("modal entry", this.router.url.split("/"));
-        const routes = this.router.url.split("/");
-        const routesNum = routes.length;
-        this.store.dispatch(MainPageActions.setReturnUrl({ returnUrl: routes[routesNum - 2] }));
+        // const routes = this.router.url.split("/");
+        // const routesNum = routes.length;
+        // this.store.dispatch(MainPageActions.setReturnUrl({ returnUrl: routes[routesNum - 2] }));
         this.router.navigate([{ outlets: { popupContent: ["signIn"] } }]); // , { skipLocationChange: true });
         // this.openDialog();
         this._modalService.openModal();

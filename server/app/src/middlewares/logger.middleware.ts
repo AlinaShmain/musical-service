@@ -31,7 +31,7 @@ export class LoggerMiddleware implements NestMiddleware {
       const decoded = this.jwtService.verify(token);
       console.log("decoded", decoded);
       // req.token = token;
-      req.body = { token };
+      req.body = { token, decoded };
       next();
     } catch (e) {
       // return res.status(401).send("Access is denied");

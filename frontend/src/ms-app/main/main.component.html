@@ -10,14 +10,24 @@
             <div class="icon-bar" [@hamburguerX]="isHamburguer ? 'hamburguer' : 'bottomX'"></div>
         </button>
 
-        <!-- <button mat-raised-button color="accent" *ngIf="!isAuthenticated()" (click)="onOpenModal()" class="modal-btn">Login</button> -->
         <button mat-raised-button color="accent" *ngIf="!isAuthenticated()" routerLink="form" class="modal-btn">Login</button>
-        <span *ngIf="isAuthenticated()">{{ getUserName() }}</span>
+        <div class="authed-content" *ngIf="isAuthenticated()">
+            <i class="fas fa-user-circle"></i>
+            <span>{{ authState?.user?.name }}</span>
+            <div class="dropdown">
+                <span class="dropdown-icon" (click)="onDropdown()">
+                    <i class="fas fa-chevron-down"></i>
+                </span>
+                <div class="dropdown-content" *ngIf="isOpenDropdown">
+                    <a href="#" class="dropdown-link" (click)="onLogout($event)"><i class="fas fa-sign-out-alt logout-icon"></i>Logout</a>
+                </div>
+            </div>
+        </div>
     </mat-toolbar>
     <mat-sidenav-container class="sidenav-container">
         <mat-sidenav #sidenav mode="side" [(opened)]="isOpenMenu" class="sidenav">
             <mat-nav-list mat-align-tabs="center" class="nav-list">
-                <a *ngFor="let link of links" routerLink="{{ link.path }}" mat-list-item routerLinkActive="active-link" class="list-item">
+                <a *ngFor="let link of links | filterAuth: isAuthenticated()" routerLink="{{ link.path }}" mat-list-item routerLinkActive="active-link" class="list-item">
                     <!-- <mat-icon>{{ link.iconName }}</mat-icon> -->
                     <i class="{{ link.iconName }} icon"></i>
                     <span>{{ link.pageName }}</span>

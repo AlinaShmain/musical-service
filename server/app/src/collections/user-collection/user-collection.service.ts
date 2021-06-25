@@ -21,8 +21,8 @@ export class UserCollectionService {
         return await createdUser.save();
     }
 
-    async findByEmail({ email }): Promise<User> {
-        return await this.userModel.findOne({ email }).exec();
+    async findByEmail({ email }, exclude = {}): Promise<User> {
+        return await this.userModel.findOne({ email }, exclude).exec();
     }
 
     async updateFavourites({ userEmail, trackId }): Promise<void> {

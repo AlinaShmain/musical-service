@@ -7,7 +7,7 @@ export interface MainPageState {
 }
 
 export const initialMainPageState: MainPageState = {
-    returnUrl: "/",
+    returnUrl: "/main/home",
     isOpenAuthModal: false,
     isCloseAuthModal: false,
     favouriteList: [],

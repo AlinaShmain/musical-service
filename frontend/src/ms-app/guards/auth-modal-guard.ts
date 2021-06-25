@@ -11,14 +11,10 @@ import { MainPageState } from "../store/state/main-page.state";
 })
 export class AuthModalGuard implements CanActivate, OnDestroy {
 
-    // returnUrl: string;
     mainPageState: MainPageState;
     private readonly destroy$: Subject<void> = new Subject();
 
     constructor(private store: Store<AppState>, private router: Router, private route: ActivatedRoute) {
-        // this.route.queryParams.subscribe((params) => {
-        //     this.returnUrl = params.returnUrl;
-        // });
         this.store.select(selectMainPageState).pipe(
             takeUntil(this.destroy$),
         ).subscribe((mainPageState) => {

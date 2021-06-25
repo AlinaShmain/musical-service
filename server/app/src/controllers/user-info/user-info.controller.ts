@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get } from '@nestjs/common';
+import { UserDto } from 'src/model/user.dto';
 import { AuthService } from 'src/services/auth/auth.service';
 
 @Controller('user-info')
@@ -9,10 +10,10 @@ export class UserInfoController {
     }
 
     @Get()
-    async create(@Body() { token }): Promise<void> {
-        console.log("get userInfo", token);
+    async create(@Body() { token, decoded }): Promise<UserDto> {
+        console.log("get userInfo", decoded);
 
-        // return await this.authService.getUserInfo(token);
+        return await this.authService.getUserInfo(decoded.email);
     }
 
 }

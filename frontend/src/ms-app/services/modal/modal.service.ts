@@ -28,7 +28,7 @@ export class ModalService {
 
     openModal(): void {
         this.dialogRef = this.dialog.open(AuthModalComponent, {
-            // width: '250px'
+            width: "400px",
             disableClose: true,
         });
 

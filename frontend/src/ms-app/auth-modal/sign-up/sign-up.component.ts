@@ -5,8 +5,9 @@ import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { filter, takeUntil } from "rxjs/operators";
 import { User } from "src/ms-app/models/user";
+import { ModalService } from "src/ms-app/services/modal/modal.service";
 import { AuthActions } from "src/ms-app/store/actions";
-import { AppState, selectRegisterError } from "src/ms-app/store/state/app.state";
+import { AppState, selectAuthenticated, selectRegisterError } from "src/ms-app/store/state/app.state";
 import { ValidationErrorsComponent } from "../validation-errors/validation-errors.component";
 @Component({
   selector: "ms-sign-up",
@@ -25,9 +26,11 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
   submitted: boolean = false;
   isShown: boolean = false;
 
+  authenticated: boolean = false;
+
   private destroy$ = new Subject<void>();
 
-  constructor(private _fb: FormBuilder, private store: Store<AppState>, private router: Router) {
+  constructor(private _fb: FormBuilder, private store: Store<AppState>, private router: Router, private _modalService: ModalService) {
     super();
     this.name = this._fb.control("", [Validators.required, Validators.pattern("^[А-Яа-яЁёA-Za-z]*$"), Validators.maxLength(20), Validators.minLength(3)]);
     this.email = this._fb.control("", [Validators.required, Validators.email, Validators.maxLength(20), Validators.minLength(3)]);
@@ -43,6 +46,13 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
 
   ngOnInit(): void {
     console.log("init sign up component");
+
+    this.store.select(selectAuthenticated).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe((authenticated) => {
+      this.authenticated = authenticated;
+      // this.cdr.markForCheck();
+    });
 
     this.formModel.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.errors = [];
@@ -60,6 +70,14 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
 
   registerNewUser(user: User): void {
     this.store.dispatch(AuthActions.registerUser({ user }));
+
+    this.store.select(selectAuthenticated).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe((authenticated) => {
+      if (authenticated) {
+        this.onClose();
+      }
+    });
 
     this.store.select(selectRegisterError).pipe(
       filter((value) => !!value),
@@ -110,6 +128,20 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
       console.log("on submit form", user);
       this.registerNewUser(user);
     }
+  }
+
+  onClose(): void {
+    this.router.navigate(
+      [
+        // ".",
+        {
+          outlets: {
+            popupContent: null,
+          },
+        },
+      ]);
+    this._modalService.setModalClose();
+    // ).then(() => this.router.navigate(["/"]));
   }
 
 }

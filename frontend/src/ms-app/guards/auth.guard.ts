@@ -28,9 +28,6 @@ export class AuthGuard implements CanActivate, OnDestroy {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        console.log(state.url);
-
-        // TODO check if authed
 
         if (this.usersService.isAuthenticated()) {
             return true;

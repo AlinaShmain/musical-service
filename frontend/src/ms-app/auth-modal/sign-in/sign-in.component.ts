@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from "@angular/forms";
-import { MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Subject, Subscription } from "rxjs";
@@ -9,7 +8,6 @@ import { User } from "src/ms-app/models/user";
 import { ModalService } from "src/ms-app/services/modal/modal.service";
 import { AuthActions } from "src/ms-app/store/actions";
 import { AppState, selectAuthenticated, selectLoginError } from "src/ms-app/store/state/app.state";
-import { AuthModalComponent } from "../auth-modal.component";
 import { ValidationErrorsComponent } from "../validation-errors/validation-errors.component";
 @Component({
   selector: "ms-sign-in",
@@ -34,7 +32,7 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
   subscribe: Subscription;
 
   constructor(private _fb: FormBuilder, private cdr: ChangeDetectorRef, private store: Store<AppState>, private router: Router,
-    private _modalService: ModalService, private dialogRef: MatDialogRef<AuthModalComponent>) {
+    private _modalService: ModalService) {
     super();
 
     this.email = this._fb.control("", [Validators.required, Validators.email, Validators.maxLength(20), Validators.minLength(3)]);

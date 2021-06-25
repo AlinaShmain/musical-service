@@ -11,7 +11,8 @@ import { SignUpComponent } from "./auth-modal/sign-up/sign-up.component";
 import { ModalEntryComponent } from "./modalEntry/modal-entry";
 import { HomeComponent } from "./home/home.component";
 import { FavouriteListComponent } from "./favourite-list/favourite-list.component";
-import { AuthGuard } from "./guards/auth-route.guard";
+import { AuthGuard } from "./guards/auth.guard";
+import { NegateAuthGuard } from "./guards/unauth.guard";
 
 const routes: Routes = [
     { path: "", pathMatch: "full", redirectTo: "/main/home" },
@@ -19,7 +20,7 @@ const routes: Routes = [
         path: "main", component: MainComponent,
         children: [
             { path: "", pathMatch: "full", redirectTo: "home" },
-            { path: "form", component: ModalEntryComponent },
+            { path: "form", component: ModalEntryComponent, canActivate: [NegateAuthGuard] },
             { path: "home", component: HomeComponent },
             // { path: "artists", component: ArtistListComponent },
             // { path: "albums", component: AlbumListComponent },
@@ -30,10 +31,8 @@ const routes: Routes = [
     { path: "signIn", outlet: "popupContent", component: SignInComponent },
     { path: "signUp", outlet: "popupContent", component: SignUpComponent },
 
-    // { path: "signIn", component: SignInComponent, canActivate: [AuthModalGuard] },
-    // { path: "signUp", component: SignUpComponent, canActivate: [AuthModalGuard] },
     { path: "page-not-found", component: PageNotFoundComponent },
-    // { path: "**", redirectTo: "/page-not-found" },
+    { path: "**", redirectTo: "/page-not-found" },
 ];
 
 @NgModule({

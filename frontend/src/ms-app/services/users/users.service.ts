@@ -101,7 +101,6 @@ export class UsersService {
     // console.log(this.isValidToken());
     const httpOptions = {
       headers: {
-        // "CONTENT-TYPE": "application/json" as const,
         "AUTHORIZATION": `Bearer ${token}`,
       },
     };
@@ -181,6 +180,12 @@ export class UsersService {
     return this.authState.user.name;
     // const user: User = JSON.parse(this.getFromLocStore("user-info"));
     // return user?.name;
+  }
+
+  getFavourites(): string[] {
+    return this.authState.user?.favouriteTracks;
+    // const user: User = JSON.parse(this.getFromLocStore("user-info"));
+    // return user?.favouriteTracks;
   }
 
 }

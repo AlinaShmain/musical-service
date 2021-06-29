@@ -70,4 +70,48 @@ export const authReducer = createReducer(initialAuthState,
         authenticated: false,
         user: null,
     })),
+    on(AuthActions.likeTrack, (state, { trackId }): AuthState => ({
+        ...state,
+        user: {
+            ...state.user,
+            favouriteTracks: [...state.user.favouriteTracks, trackId],
+        }
+    })),
+    on(AuthApiActions.addedToFavouritesSuccess, (state, { favouriteTracks }): AuthState => ({
+        ...state,
+        user: {
+            ...state.user,
+            favouriteTracks,
+        }
+    })),
+    on(AuthApiActions.addedToFavouritesError, (state, { addedToFavouritesError }): AuthState => ({
+        ...state,
+        addedToFavouritesError,
+        user: {
+            ...state.user,
+            favouriteTracks: state.user.favouriteTracks.slice(0, state.user.favouriteTracks.length - 1),
+        }
+    })),
+    on(AuthActions.dislikeTrack, (state, { trackId }): AuthState => ({
+        ...state,
+        user: {
+            ...state.user,
+            favouriteTracks: state.user.favouriteTracks.filter((id) => id !== trackId)
+        }
+    })),
+    on(AuthApiActions.deletedFromFavouritesSuccess, (state, { favouriteTracks }): AuthState => ({
+        ...state,
+        user: {
+            ...state.user,
+            favouriteTracks,
+        }
+    })),
+    on(AuthApiActions.deletedFromFavouritesError, (state, { deletedFromFavouritesError, trackId }): AuthState => ({
+        ...state,
+        deletedFromFavouritesError,
+        user: {
+            ...state.user,
+            favouriteTracks: [...state.user.favouriteTracks, trackId],
+        }
+    })),
 );

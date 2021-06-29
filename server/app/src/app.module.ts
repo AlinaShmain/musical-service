@@ -9,6 +9,8 @@ import { TracksController } from './controllers/tracks/tracks.controller';
 import { AuthModule } from './services/auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { UserInfoController } from './controllers/user-info/user-info.controller';
+import { FavouritesController } from './controllers/favourites/favourites.controller';
+import { FavouritesService } from './services/favourites/favourites.service';
 
 @Module({
   imports: [
@@ -20,13 +22,13 @@ import { UserInfoController } from './controllers/user-info/user-info.controller
     // UserCollectionModule,
     AuthModule,
   ],
-  controllers: [AppController, TracksController, TrackController],
-  providers: [AppService, TrackService],
+  controllers: [AppController, TracksController, TrackController, FavouritesController],
+  providers: [AppService, TrackService, FavouritesService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
-      .forRoutes(UserInfoController);
+      .forRoutes(UserInfoController, FavouritesController);
   }
 }

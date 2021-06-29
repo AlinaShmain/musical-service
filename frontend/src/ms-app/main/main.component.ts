@@ -133,7 +133,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   onLogout(event: Event): void {
     console.log("on Logout");
-    event.preventDefault();
+    // event.preventDefault();
 
     this.usersService?.clearLocStore();
     this.store.dispatch(AuthActions.logoutUser());

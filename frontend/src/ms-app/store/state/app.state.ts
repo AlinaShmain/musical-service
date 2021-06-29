@@ -1,6 +1,7 @@
 import { createSelector } from "@ngrx/store";
 import { AudioState, initialAudioState } from "./audio.state";
 import { AuthState, initialAuthState } from "./auth.state";
+import { FavouritesPageState, initialFavouritesPageState } from "./favourites-page.state";
 import { HomePageState, initialHomePageState } from "./home-page.state";
 import { initialMainPageState, MainPageState } from "./main-page.state";
 
@@ -9,6 +10,7 @@ export interface AppState {
     audio: AudioState;
     home: HomePageState;
     main: MainPageState;
+    favourites: FavouritesPageState;
 }
 
 export const initialAppState: AppState = {
@@ -16,6 +18,7 @@ export const initialAppState: AppState = {
     audio: initialAudioState,
     home: initialHomePageState,
     main: initialMainPageState,
+    favourites: initialFavouritesPageState,
 };
 
 export const selectAuthState = (state: AppState): AuthState => state.auth;
@@ -42,8 +45,12 @@ export const selectMainPageState = (state: AppState): MainPageState => state.mai
 
 export const selectReturnUrl = createSelector(selectMainPageState, (mainState: MainPageState) => mainState.returnUrl);
 export const selectIsOpenAuthModal = createSelector(selectMainPageState, (mainState: MainPageState) => mainState.isOpenAuthModal);
-export const selectFavouriteList = createSelector(selectMainPageState, (mainState: MainPageState) => mainState.favouriteList);
 export const selectIsCloseAuthModal = createSelector(selectMainPageState, (mainState: MainPageState) => mainState.isCloseAuthModal);
+
+export const selectFavouritesPageState = (state: AppState): FavouritesPageState => state.favourites;
+
+export const selectFavourites = createSelector(selectFavouritesPageState, (favouritesState: FavouritesPageState) => favouritesState.tracks);
+
 
 
 

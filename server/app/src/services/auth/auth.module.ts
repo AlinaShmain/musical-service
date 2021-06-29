@@ -19,8 +19,8 @@ import { UserInfoController } from "src/controllers/user-info/user-info.controll
             signOptions: { expiresIn: '3h' },
         }),
     ],
-    controllers: [RegisterController, LoginController, UserInfoController, VerifyController, FavouritesController],
-    providers: [AuthService, FavouritesService],
-    exports: [AuthService, FavouritesService, JwtModule],
+    controllers: [RegisterController, LoginController, UserInfoController, VerifyController],
+    providers: [AuthService],
+    exports: [AuthService, JwtModule, UserCollectionModule],
 })
 export class AuthModule { }

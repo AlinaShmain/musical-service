@@ -25,14 +25,24 @@ export class UserCollectionService {
         return await this.userModel.findOne({ email }, exclude).exec();
     }
 
-    async updateFavourites({ userEmail, trackId }): Promise<void> {
+    async addFavourite({ email, trackId }): Promise<{ favouriteTracks: string[] }> {
         const { favouriteTracks } = await this.userModel.findOneAndUpdate(
-            { email: userEmail },
+            { email },
             { $addToSet: { favouriteTracks: trackId } },
             { new: true },
         ).exec();
         console.log('document after updating =>', favouriteTracks);
-        
+        return { favouriteTracks };
+    }
+
+    async deleteFavourite({ email, trackId }): Promise<{ favouriteTracks: string[] }> {
+        const { favouriteTracks } = await this.userModel.findOneAndUpdate(
+            { email },
+            { $pull: { favouriteTracks: trackId } },
+            { new: true },
+        ).exec();
+        console.log('document after updating =>', favouriteTracks);
+        return { favouriteTracks };
     }
 
 }

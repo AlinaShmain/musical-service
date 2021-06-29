@@ -7,6 +7,8 @@ export enum AuthActionTypes {
     // VERIFY_USER = "[Auth] Verify User",
     GET_USER_INFO = "[Auth] Get UserInfo",
     LOGOUT_USER = "[Auth] Logout User",
+    LIKE_TRACK = "[Auth] Like Track",
+    DISLIKE_TRACK = "[Auth] Dislike Track",
 }
 
 export const loginUser = createAction(
@@ -32,3 +34,13 @@ export const logoutUser = createAction(
 //     AuthActionTypes.VERIFY_USER,
 //     props<{ user: User }>(),
 // );
+
+export const likeTrack = createAction(
+    AuthActionTypes.LIKE_TRACK,
+    props<{ trackId: string, token: string }>(),
+);
+
+export const dislikeTrack = createAction(
+    AuthActionTypes.DISLIKE_TRACK,
+    props<{ trackId: string, token: string }>(),
+);

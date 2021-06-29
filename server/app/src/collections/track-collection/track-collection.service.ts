@@ -15,7 +15,7 @@ export class TrackCollectionService {
         // console.log(this.connection);
     }
 
-    // async create(createCatDto: TrackDto): Promise<Track> {
+    // async create(track: TrackDto): Promise<Track> {
     //     const createdTrack = new this.trackModel(createCatDto);
     //     return createdTrack.save();
     // }
@@ -27,4 +27,9 @@ export class TrackCollectionService {
     async findById({ id }): Promise<Track> {
         return await this.trackModel.findOne({ id }).exec();
     }
+
+    async findByIds({ trackIds }): Promise<Track[]> {
+        return await this.trackModel.find({ id: { $in: trackIds } }, { _id: 0, path: 0 }).exec();
+    }
+
 }

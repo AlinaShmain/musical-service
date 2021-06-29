@@ -8,8 +8,8 @@ import { Track } from "../models/track";
 import { TrackHeaders } from "../models/track-headers";
 import { AudioService } from "../services/track/audio.service";
 import { UsersService } from "../services/users/users.service";
-import { AudioActions, HomePageActions } from "../store/actions";
-import { AppState, selectAudioState, selectTrackList } from "../store/state/app.state";
+import { AudioActions, AuthActions } from "../store/actions";
+import { AppState, selectAudioState } from "../store/state/app.state";
 import { AudioState } from "../store/state/audio.state";
 
 @Component({
@@ -26,47 +26,37 @@ export class TrackListComponent implements OnInit, OnDestroy {
     // album: "Album",
     duration: "Duration",
   };
-  tracks$: Track[] = [];
+  // tracks$: Track[] = [];
   audioState: AudioState;
   returnUrl: string;
 
   isOpenDropdown: boolean[] = [];
+  isFavourite: boolean[] = [];
 
   private destroy$ = new Subject<void>();
 
   constructor(private store: Store<AppState>,
     private cdr: ChangeDetectorRef,
+    private router: Router,
     private audioService: AudioService,
     private usersService: UsersService,
-    public dialog: MatDialog,
-    private router: Router) { }
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     console.log("init track list component");
-    this.store.dispatch(HomePageActions.getTracks());
-
-    this.store.select(selectTrackList).pipe(
-      takeUntil(this.destroy$),
-    ).subscribe((trackList) => {
-      console.log("loaded tracks", trackList);
-      this.tracks$ = [...trackList];
-      this.cdr.markForCheck();
-    });
-    // TODO handle error
 
     this.store.select(selectAudioState).pipe(
       takeUntil(this.destroy$),
     ).subscribe((audioState) => {
       this.audioState = audioState;
+      if (this.usersService.isAuthenticated()) {
+        this.audioState.currTrackList.forEach((track, idx) => this.isFavourite[idx] = this.isInFavourites(track));
+      } else {
+        this.isFavourite = [];
+      }
+      console.log("!!!!", this.isFavourite);
       this.cdr.markForCheck();
     });
-
-    // this.store.select(selectReturnUrl).pipe(
-    //   takeUntil(this.destroy$),
-    // ).subscribe((returnUrl) => {
-    //   console.log("update returnUrl", returnUrl);
-    //   this.returnUrl = returnUrl;
-    // });
 
   }
 
@@ -75,23 +65,6 @@ export class TrackListComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
-  // onLike(trackId: string): void {
-  //   console.log("on like", trackId);
-  //   if (!this.usersService.isAuthenticated()) {
-  //     this.store.dispatch(MainPageActions.setIsOpenAuthModal({ isOpenAuthModal: true }));
-
-  //     const dialogRef = this.dialog.open(AuthModalComponent, {});
-  //     dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
-  //       console.log("after close modal");
-  //       this.router.navigateByUrl(this.returnUrl);
-  //     });
-  //   } else {
-  //     const userEmail = this.usersService?.getUserEmail();
-  //     console.log("userEmail", userEmail);
-  //     this.store.dispatch(MainPageActions.likeTrack({ trackId, userEmail }));
-  //   }
-  // }
 
   onDropdown(idx: number): void {
     this.isOpenDropdown[idx] = !this.isOpenDropdown[idx];
@@ -129,6 +102,37 @@ export class TrackListComponent implements OnInit, OnDestroy {
   onPause(): void {
     console.log("on pause");
     this.audioService.pausePlaying(this.audioState.bufferSource);
+  }
+
+  isInFavourites(track: Track): boolean {
+    // if (!this.usersService.isAuthenticated()) {
+    //   return false;
+    // }
+
+    const favouritesIds: string[] = this.usersService.getFavourites();
+    console.log("favouritesIds", favouritesIds);
+
+    return favouritesIds?.includes(track.id);
+  }
+
+  onLike(track: Track, idx: number): void {
+    if (this.usersService.isAuthenticated()) {
+
+      const token = this.usersService.getFromLocStore("jwt-token");
+
+      if (this.isInFavourites(track)) {
+        console.log("unlike");
+        this.isFavourite[idx] = false;
+        this.store.dispatch(AuthActions.dislikeTrack({ trackId: track.id, token }));
+      } else {
+        console.log("like");
+        this.isFavourite[idx] = true;
+        this.store.dispatch(AuthActions.likeTrack({ trackId: track.id, token }));
+      }
+
+    } else {
+      this.router.navigateByUrl("/main/form");
+    }
   }
 
 }

@@ -1,1 +1,38 @@
-// auth modal less
+@import "src/colors.less";
+
+.nav-bar {
+    .tabs-list {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0 0 10px;
+        .tab-item {
+            flex-grow: 1;
+            text-align: center;
+        }
+        .tab-link {
+            display: block;
+            text-decoration: none;
+            color: @text-color-grey;
+            // font-family: RocketRinder;
+            font-size: 18px;
+            padding: 10px;
+            cursor: pointer;
+            position: relative;
+            border-bottom: 2px solid @text-color-grey;
+            outline: 0;
+        }
+        .active-link {
+            color: @primary-color;
+            .border-line {
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background-color: @primary-color;
+                // box-shadow: 0 0 2px @primary-color;
+            }
+        }
+    }
+}

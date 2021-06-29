@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tbody class="table-body">
-        <tr *ngFor="let track of tracks$; index as i" class="track-row" [ngClass]="track.id === audioState?.trackId ? 'chosen-track' : ''">
+        <tr *ngFor="let track of audioState?.currTrackList; index as i" class="track-row" [ngClass]="track.id === audioState?.trackId ? 'chosen-track' : ''">
             <td class="cell track-index" (click)="onTrackClick(track)"
                 ><span>{{ track.id }}</span
                 ><i class="fas fa-play"></i
@@ -23,9 +23,8 @@
             </td>
             <td class="cell">
                 <div class="group-buttons">
-                    <!-- <span class="like-icon" (click)="onLike(track.id)"> -->
-                    <span class="like-icon" routerLink="/main/form">
-                        <i class="fas fa-heart"></i>
+                    <span class="like-icon" (click)="onLike(track, i)">
+                        <i class="fas fa-heart" [ngClass]="isFavourite[i] ? 'like-on' : 'like-out'"></i>
                     </span>
                     <div class="dropdown">
                         <span class="dropdown-icon" (click)="onDropdown(i)">

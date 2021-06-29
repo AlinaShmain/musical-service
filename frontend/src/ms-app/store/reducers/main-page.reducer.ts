@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import { MainApiActions, MainPageActions } from "../actions";
+import { MainPageActions } from "../actions";
 import { initialMainPageState, MainPageState } from "../state/main-page.state";
 
 
@@ -15,16 +15,5 @@ export const mainPageReducer = createReducer(initialMainPageState,
      on(MainPageActions.onCloseModal, (state): MainPageState => ({
         ...state,
         isCloseAuthModal: true,
-    })),
-    on(MainPageActions.likeTrack, (state): MainPageState => ({
-        ...state,
-    })),
-    on(MainApiActions.addedToFavouritesSuccess, (state, { favouriteList }): MainPageState => ({
-        ...state,
-        favouriteList,
-    })),
-    on(MainApiActions.addedToFavouritesError, (state, { addedToFavouritesError }): MainPageState => ({
-        ...state,
-        addedToFavouritesError,
     })),
 );

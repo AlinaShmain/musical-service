@@ -10,6 +10,10 @@ export enum AuthApiActionTypes {
     // VERIFIED_ERROR = "[Auth/API] Verify Error",
     GOT_USER_SUCCESS = "[Auth/API] GotUser Success",
     GOT_USER_ERROR = "[Auth/API] GotUser Error",
+    ADD_TO_FAVOURITES_SUCCESS = "[Auth/API] Add To Favourites Success",
+    ADD_TO_FAVOURITES_ERROR = "[Auth/API] Add To Favourites Error",
+    DELETE_FROM_FAVOURITES_SUCCESS = "[Auth/API] Delete From Favourites Success",
+    DELETE_FROM_FAVOURITES_ERROR = "[Auth/API] Delete From Favourites Error",
 }
 
 export const loggedSuccess = createAction(
@@ -50,4 +54,24 @@ export const gotUserSuccess = createAction(
 export const gotUserError = createAction(
     AuthApiActionTypes.GOT_USER_ERROR,
     props<{ verifyError: Error }>(),
+);
+
+export const addedToFavouritesSuccess = createAction(
+    AuthApiActionTypes.ADD_TO_FAVOURITES_SUCCESS,
+    props<{ favouriteTracks: string[] }>(),
+);
+
+export const addedToFavouritesError = createAction(
+    AuthApiActionTypes.ADD_TO_FAVOURITES_ERROR,
+    props<{ addedToFavouritesError: Error }>(),
+);
+
+export const deletedFromFavouritesSuccess = createAction(
+    AuthApiActionTypes.DELETE_FROM_FAVOURITES_SUCCESS,
+    props<{ favouriteTracks: string[] }>(),
+);
+
+export const deletedFromFavouritesError = createAction(
+    AuthApiActionTypes.DELETE_FROM_FAVOURITES_ERROR,
+    props<{ deletedFromFavouritesError: Error, trackId: string }>(),
 );

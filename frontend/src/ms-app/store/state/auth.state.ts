@@ -7,6 +7,8 @@ export interface AuthState {
     registerError: Error;
     verifyError: Error;
     user: User;
+    addedToFavouritesError: Error;
+    deletedFromFavouritesError: Error;
 }
 
 export const initialAuthState: AuthState = {
@@ -16,4 +18,6 @@ export const initialAuthState: AuthState = {
     registerError: null,
     verifyError: null,
     user: null,
+    addedToFavouritesError: null,
+    deletedFromFavouritesError: null,
 };

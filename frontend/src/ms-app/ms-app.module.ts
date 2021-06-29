@@ -34,6 +34,7 @@ import { PlaylistListComponent } from "./playlist-list/playlist-list.component";
 import { AlbumListComponent } from "./album-list/album-list.component";
 import { UsersService } from "./services/users/users.service";
 import { FilterAuthPipe } from "./pipes/filter-auth.pipe";
+
 @NgModule({
     declarations: [
         MsAppComponent,

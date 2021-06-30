@@ -54,7 +54,7 @@ export class TrackListComponent implements OnInit, OnDestroy {
       } else {
         this.isFavourite = [];
       }
-      console.log("!!!!", this.isFavourite);
+      // console.log("!!!!", this.isFavourite);
       this.cdr.markForCheck();
     });
 

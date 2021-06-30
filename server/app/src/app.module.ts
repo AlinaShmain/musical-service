@@ -11,6 +11,10 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { UserInfoController } from './controllers/user-info/user-info.controller';
 import { FavouritesController } from './controllers/favourites/favourites.controller';
 import { FavouritesService } from './services/favourites/favourites.service';
+import { ArtistCollectionModule } from './collections/artist-collection/artist-collection.module';
+import { ArtistsController } from './controllers/artists/artists.controller';
+import { ArtistController } from './controllers/artist/artist.controller';
+import { TracksService } from './services/tracks/tracks/tracks.service';
 
 @Module({
   imports: [
@@ -19,11 +23,11 @@ import { FavouritesService } from './services/favourites/favourites.service';
       { useFindAndModify: false }
     ),
     TrackCollectionModule,
-    // UserCollectionModule,
+    ArtistCollectionModule,
     AuthModule,
   ],
-  controllers: [AppController, TracksController, TrackController, FavouritesController],
-  providers: [AppService, TrackService, FavouritesService],
+  controllers: [AppController, TracksController, TrackController, FavouritesController, ArtistsController, ArtistController],
+  providers: [AppService, TrackService, FavouritesService, TracksService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

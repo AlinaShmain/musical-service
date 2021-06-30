@@ -16,6 +16,9 @@ export class Track extends Document {
     @Prop({ required: true })
     artist: string;
 
+    @Prop({ required: true })
+    artistId: string;
+
     @Prop()
     album: string;
 

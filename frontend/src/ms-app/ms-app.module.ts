@@ -34,6 +34,9 @@ import { PlaylistListComponent } from "./playlist-list/playlist-list.component";
 import { AlbumListComponent } from "./album-list/album-list.component";
 import { UsersService } from "./services/users/users.service";
 import { FilterAuthPipe } from "./pipes/filter-auth.pipe";
+import { TrackListService } from "./services/track-list/track-list.service";
+import { ArtistListService } from "./services/artist-list/artist-list.service";
+import { ArtistInfoComponent } from "./artist-info/artist-info.component";
 @NgModule({
     declarations: [
         MsAppComponent,
@@ -55,6 +58,7 @@ import { FilterAuthPipe } from "./pipes/filter-auth.pipe";
         PlayerComponent,
         HomeComponent,
         FilterAuthPipe,
+        ArtistInfoComponent,
     ],
     imports: [
         BrowserModule,
@@ -75,7 +79,7 @@ import { FilterAuthPipe } from "./pipes/filter-auth.pipe";
         // WebAudioModule,
     ],
     entryComponents: [AuthModalComponent],
-    providers: [UsersService, ModalService],
+    providers: [UsersService, ModalService, TrackListService, ArtistListService],
     bootstrap: [MsAppComponent],
 })
 export class MsAppModule {

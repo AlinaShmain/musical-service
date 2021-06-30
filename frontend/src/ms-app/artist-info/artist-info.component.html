@@ -1,0 +1,10 @@
+<div class="page-container">
+    <div class="wrap">
+        <img [src]="artist?.path" />
+        <h1 class="page-header">{{ artist?.name }}</h1>
+        <h2 class="subtitle">{{ artist?.genre }}</h2>
+    </div>
+    <p class="description">{{ artist?.description }}</p>
+    <h1 class="subheader">Popular Tracks</h1>
+    <ms-track-list></ms-track-list>
+</div>

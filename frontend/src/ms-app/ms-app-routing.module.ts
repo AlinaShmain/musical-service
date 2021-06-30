@@ -13,6 +13,8 @@ import { HomeComponent } from "./home/home.component";
 import { FavouriteListComponent } from "./favourite-list/favourite-list.component";
 import { AuthGuard } from "./guards/auth.guard";
 import { NegateAuthGuard } from "./guards/unauth.guard";
+import { ArtistListComponent } from "./artist-list/artist-list.component";
+import { ArtistInfoComponent } from "./artist-info/artist-info.component";
 
 const routes: Routes = [
     { path: "", pathMatch: "full", redirectTo: "/main/home" },
@@ -22,7 +24,8 @@ const routes: Routes = [
             { path: "", pathMatch: "full", redirectTo: "home" },
             { path: "form", component: ModalEntryComponent, canActivate: [NegateAuthGuard] },
             { path: "home", component: HomeComponent },
-            // { path: "artists", component: ArtistListComponent },
+            { path: "artists", component: ArtistListComponent },
+            { path: "artist/:id", component: ArtistInfoComponent },
             // { path: "albums", component: AlbumListComponent },
             { path: "favourites", component: FavouriteListComponent, canActivate: [AuthGuard] },
             // { path: "playlists", component: PlaylistListComponent, canActivate: [AuthGuard] },

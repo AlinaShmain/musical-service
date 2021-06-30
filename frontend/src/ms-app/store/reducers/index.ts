@@ -1,4 +1,6 @@
 // import { combineReducers } from "@ngrx/store";
+import { artistInfoReducer } from "./artist-info.reducers";
+import { artistsPageReducer } from "./artists-page.reducers";
 import { audioReducer } from "./audio.reducer";
 import { authReducer } from "./auth.reducer";
 import { favouritesPageReducer } from "./favourites-page.reducer";
@@ -16,4 +18,6 @@ export const reducers = {
     home: homePageReducer,
     main: mainPageReducer,
     favourites: favouritesPageReducer,
+    artists: artistsPageReducer,
+    artistInfo: artistInfoReducer,
 };

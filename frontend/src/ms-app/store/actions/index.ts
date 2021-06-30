@@ -5,9 +5,13 @@ import * as AudioApiActions from "./audio-api.actions";
 import * as HomePageActions from "./home-page.actions";
 import * as HomeApiActions from "./home-api.actions";
 import * as MainPageActions from "./main-page.actions";
-// import * as MainApiActions from "./main-api.actions";
 import * as FavouritesPageActions from "./favourites-page.actions";
 import * as FavouritesApiActions from "./favourites-api.actions";
+import * as ArtistsPageActions from "./artists-page.actions";
+import * as ArtistsApiActions from "./artists-api.actions";
+import * as ArtistInfoActions from "./artist-info.actions";
+import * as ArtistInfoApiActions from "./artist-info-api.actions";
+
 
 export {
     AuthApiActions,
@@ -17,7 +21,10 @@ export {
     HomePageActions,
     HomeApiActions,
     MainPageActions,
-    // MainApiActions,
     FavouritesPageActions,
     FavouritesApiActions,
+    ArtistsPageActions,
+    ArtistsApiActions,
+    ArtistInfoActions,
+    ArtistInfoApiActions,
 };

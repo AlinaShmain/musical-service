@@ -1,0 +1,25 @@
+@import "src/common.less";
+
+.wrap {
+    display: grid;
+    grid-template-areas:
+    "photo header"
+    "photo subtitle";
+    width: fit-content;
+    margin-bottom: 18px;
+    img {
+        grid-area: photo;
+        width: 150px;
+        height: 150px;
+    }
+    .page-header {
+        grid-area: header;
+        align-self: center;
+        padding-left: 10px;
+    }
+    .subtitle {
+        grid-area: subtitle;
+        align-self: center;
+        padding-left: 10px;
+    }
+}

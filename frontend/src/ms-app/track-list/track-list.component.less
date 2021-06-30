@@ -106,7 +106,7 @@
     border-radius: 5px;
     z-index: 1;
     color: white;
-    padding: 0 8px;
+    // padding: 0 8px;
     a {
         color: white;
         padding: 12px 16px;
@@ -115,6 +115,9 @@
         // display: block;
         display: flex;
         align-items: center;
+        &:hover {
+            background-color: @text-color-blue;
+        }
         .playlist-icon,
         .artist-icon {
             // vertical-align: middle;
@@ -144,6 +147,9 @@
     .title-span {
         font-size: 1.2em;
         color: @text-color-blue;
+    }
+    .genre-span {
+        color: @text-color-light-grey;
     }
 }
 

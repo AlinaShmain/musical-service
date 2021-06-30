@@ -1,1 +1,27 @@
-// artists less
+@import "src/common.less";
+
+.artists-list {
+    padding: 10px 10px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+}
+
+.artist-card {
+    max-width: 135px;
+    transition: all 0.3s ease 0s;
+    .mat-card-image {
+        margin-bottom: 10px;
+    }
+    .mat-card-header .mat-card-title {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+    .mat-card-subtitle {
+        margin-bottom: 5px;
+    }
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.1);
+    }
+}

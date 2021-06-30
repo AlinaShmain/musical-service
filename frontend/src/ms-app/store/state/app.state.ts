@@ -1,4 +1,6 @@
 import { createSelector } from "@ngrx/store";
+import { ArtistInfoState, initialArtistInfoState } from "./artist-info.state";
+import { ArtistsPageState, initialArtistsPageState } from "./artists-page.state";
 import { AudioState, initialAudioState } from "./audio.state";
 import { AuthState, initialAuthState } from "./auth.state";
 import { FavouritesPageState, initialFavouritesPageState } from "./favourites-page.state";
@@ -11,6 +13,8 @@ export interface AppState {
     home: HomePageState;
     main: MainPageState;
     favourites: FavouritesPageState;
+    artists: ArtistsPageState;
+    artistInfo: ArtistInfoState;
 }
 
 export const initialAppState: AppState = {
@@ -19,6 +23,8 @@ export const initialAppState: AppState = {
     home: initialHomePageState,
     main: initialMainPageState,
     favourites: initialFavouritesPageState,
+    artists: initialArtistsPageState,
+    artistInfo: initialArtistInfoState,
 };
 
 export const selectAuthState = (state: AppState): AuthState => state.auth;
@@ -51,7 +57,13 @@ export const selectFavouritesPageState = (state: AppState): FavouritesPageState 
 
 export const selectFavourites = createSelector(selectFavouritesPageState, (favouritesState: FavouritesPageState) => favouritesState.tracks);
 
+export const selectArtistsPageState = (state: AppState): ArtistsPageState => state.artists;
 
+export const selectArtists = createSelector(selectArtistsPageState, (artistsState: ArtistsPageState) => artistsState.artists);
+
+export const selectArtistInfoState = (state: AppState): ArtistInfoState => state.artistInfo;
+
+export const selectArtist = createSelector(selectArtistInfoState, (artistState: ArtistInfoState) => artistState.artist);
 
 
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectConnection, InjectModel } from '@nestjs/mongoose';
-import { Connection, Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import {
     Track,
 } from './track.schema';
@@ -10,10 +10,7 @@ export class TrackCollectionService {
     constructor(
         @InjectModel(Track.name)
         private trackModel: Model<Track>,
-        @InjectConnection() private connection: Connection
-    ) {
-        // console.log(this.connection);
-    }
+    ) {}
 
     // async create(track: TrackDto): Promise<Track> {
     //     const createdTrack = new this.trackModel(createCatDto);

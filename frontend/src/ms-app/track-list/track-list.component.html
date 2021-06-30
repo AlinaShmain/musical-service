@@ -14,10 +14,9 @@
     <tbody class="table-body">
         <tr *ngFor="let track of audioState?.currTrackList; index as i" class="track-row" [ngClass]="track.id === audioState?.trackId ? 'chosen-track' : ''">
             <td class="cell track-index" (click)="onTrackClick(track)"
-                ><span>{{ track.id }}</span
+                ><span>{{ i + 1 }}</span
                 ><i class="fas fa-play"></i
             ></td>
-            <!-- <td *ngFor="let column of track | filterProp:('genre') | getKeys" class="cell {{column}}" > -->
             <td *ngFor="let column of headers | getKeys" class="cell {{ column }}" (click)="onTrackClick(track)">
                 {{ headers[column] === "Duration" ? (track[column] | toTimeFormat) : track[column] }}
             </td>
@@ -37,7 +36,7 @@
                                 <span class="genre-span">{{ track["genre"] }}</span>
                             </div>
                             <a href="#" class="playlist"><img class="playlist-icon" src="../../assets/icons/playlist.svg" />Add to playlist</a>
-                            <a href="#"><img class="artist-icon" src="../../assets/icons/singer.svg" />Go to artist</a>
+                            <a [routerLink]="['/main/artist', track?.artistId]"><img class="artist-icon" src="../../assets/icons/singer.svg" />Go to artist</a>
                         </div>
                     </div>
                 </div>

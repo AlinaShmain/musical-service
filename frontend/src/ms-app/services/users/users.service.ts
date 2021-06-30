@@ -161,10 +161,6 @@ export class UsersService {
     return false;
   }
 
-  // verifyToken(): Observable<Token> {
-  //   return this.http.get<Token>(`http://localhost:3000/verify/${user.email}`);
-  // }
-
   // isAuthenticated(): boolean {
     // const isAuthenticated: User = JSON.parse(this.getFromLocStore("authenticated"));
     // return this.authState.authenticated && this.isValidToken();

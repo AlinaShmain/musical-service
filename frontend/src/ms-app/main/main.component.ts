@@ -68,6 +68,13 @@ export class MainComponent implements OnInit, OnDestroy {
       path: "playlists",
       // iconName: "playlist_play",
       iconName: "fas fa-list",
+      auth: false,
+    },
+    {
+      pageName: "My Playlists",
+      path: "user-playlists",
+      // iconName: "playlist_play",
+      iconName: "fas fa-list",
       auth: true,
     },
   ];

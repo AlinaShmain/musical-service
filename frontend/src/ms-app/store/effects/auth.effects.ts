@@ -2,7 +2,9 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { of } from "rxjs";
 import { catchError, map, mergeMap } from "rxjs/operators";
+import { Playlist } from "src/ms-app/models/playlist";
 import { User } from "src/ms-app/models/user";
+import { PlaylistsService } from "src/ms-app/services/playlists/playlists.service";
 import { TrackService } from "src/ms-app/services/track/track.service";
 import { UsersService } from "src/ms-app/services/users/users.service";
 import { AuthActions, AuthApiActions } from "../actions";
@@ -12,7 +14,8 @@ import { AuthActions, AuthApiActions } from "../actions";
 })
 export class AuthEffects {
 
-    constructor(private actions$: Actions, private usersService: UsersService, private trackService: TrackService) { }
+    constructor(private actions$: Actions, private usersService: UsersService,
+        private trackService: TrackService, private playlistsService: PlaylistsService) { }
 
     registerUser$ = createEffect(() =>
         this.actions$.pipe(
@@ -64,21 +67,6 @@ export class AuthEffects {
         ),
     );
 
-    // verifyUser$ = createEffect(() =>
-    //     this.actions$.pipe(
-    //         ofType(AuthActions.verifyUser),
-    //         mergeMap(({ user }) =>
-    //             this.usersService.verifyUser(user).pipe(
-    //                 map(({ token }) =>
-    //                     AuthApiActions.verifiedSuccess({
-    //                         token
-    //                     }),
-    //                 ),
-    //                 catchError((error: Error) => of(AuthApiActions.verifiedError({ verifyError: error }))),
-    //             )),
-    //     ),
-    // );
-
     likeTrack$ = createEffect(() =>
         this.actions$.pipe(
             ofType(AuthActions.likeTrack),
@@ -108,5 +96,36 @@ export class AuthEffects {
                 )),
         ),
     );
+
+    createPlaylist$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AuthActions.createPlaylist),
+            mergeMap(({ playlistInfo, token }) =>
+                this.playlistsService.createPlaylist(playlistInfo, token).pipe(
+                    map(({ playlistIds }) =>
+                        AuthApiActions.createdPlaylistSuccess({
+                            playlistIds
+                        }),
+                    ),
+                    catchError((error: Error) => of(AuthApiActions.createdPlaylistError({ createdPlaylistError: error, playlist: playlistInfo }))),
+                )),
+        ),
+    );
+
+    editPlaylist$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AuthActions.editPlaylist),
+            mergeMap(({ playlistInfo, token }) =>
+                this.playlistsService.editPlaylist(playlistInfo, token).pipe(
+                    map((playlist: Playlist) =>
+                        AuthApiActions.editedPlaylistSuccess({
+                            playlist
+                        }),
+                    ),
+                    catchError((error: Error) => of(AuthApiActions.editedPlaylistError({ editedPlaylistError: error }))),
+                )),
+        ),
+    );
+
 
 }

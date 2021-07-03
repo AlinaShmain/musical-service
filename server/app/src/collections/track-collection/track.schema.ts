@@ -27,6 +27,9 @@ export class Track extends Document {
 
     @Prop()
     genre: string;
+
+    @Prop()
+    imagePath: string;
 }
 
 export const TrackSchema = SchemaFactory.createForClass(Track);

@@ -4,6 +4,7 @@ import { Store } from "@ngrx/store";
 import { Subject, Subscription } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { Artist } from "../models/artist";
+import { MediaData } from "../models/media-data";
 import { ArtistInfoActions } from "../store/actions";
 import { AppState, selectArtist } from "../store/state/app.state";
 
@@ -19,6 +20,7 @@ export class ArtistInfoComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   artist: Artist;
+  mediaData: MediaData;
 
   constructor(private route: ActivatedRoute, private store: Store<AppState>, private cdr: ChangeDetectorRef) { }
 
@@ -39,9 +41,19 @@ export class ArtistInfoComponent implements OnInit, OnDestroy {
     ).subscribe((artist) => {
       console.log("update artist");
       this.artist = artist;
-      console.log("got artist info", artist);
 
-      artist && this.store.dispatch(ArtistInfoActions.loadTracks({ trackIds: artist.trackIds }));
+      if (artist) {
+        this.mediaData = {
+          imgPath: artist.path,
+          header: artist.name,
+          subtitle: artist.genre,
+          description: artist.description,
+          subheader: "Popular Tracks",
+        };
+        console.log("got artist info", artist);
+
+        this.store.dispatch(ArtistInfoActions.loadTracks({ trackIds: artist.trackIds }));
+      }
 
       this.cdr.markForCheck();
     });

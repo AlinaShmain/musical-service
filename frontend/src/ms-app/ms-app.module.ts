@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 
-// import { AudioContextModule } from "angular-audio-context";
 import { MsAppComponent } from "./ms-app.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AuthModalComponent } from "./auth-modal/auth-modal.component";
@@ -22,13 +21,12 @@ import { reducers } from "./store/reducers";
 import { materialModules } from "./material";
 import { effects } from "./store/effects";
 import { HomeComponent } from "./home/home.component";
-import { ModalService } from "./services/modal/modal.service";
+// import { ModalService } from "./services/modal/modal.service";
 import { PlayerComponent } from "./player/player.component";
 import { MainComponent } from "./main/main.component";
 import { GetKeysPipe } from "./pipes/get-keys.pipe";
 import { ToTimeFormatPipe } from "./pipes/to-time-format.pipe";
 import { GetValuesPipe } from "./pipes/get-values.pipe";
-import { ModalEntryComponent } from "./modalEntry/modal-entry";
 import { ArtistListComponent } from "./artist-list/artist-list.component";
 import { PlaylistListComponent } from "./playlist-list/playlist-list.component";
 import { AlbumListComponent } from "./album-list/album-list.component";
@@ -37,11 +35,20 @@ import { FilterAuthPipe } from "./pipes/filter-auth.pipe";
 import { TrackListService } from "./services/track-list/track-list.service";
 import { ArtistListService } from "./services/artist-list/artist-list.service";
 import { ArtistInfoComponent } from "./artist-info/artist-info.component";
+import { MediaContentComponent } from "./media-content/media-content.component";
+import { CardListComponent } from "./card-list/card-list.component";
+import { AuthModalEntryComponent } from "./modalEntry/auth-modal-entry";
+import { AddToPlaylistModalComponent } from "./add-to-playlist-modal/add-to-playlist-modal.component";
+import { AddToPlaylistModalEntryComponent } from "./modalEntry/add-to-playlist-modal-entry";
+import { CreatePlaylistModalComponent } from "./create-playlist-modal/create-playlist-modal.component";
+import { UserPlaylistListComponent } from "./user-playlist-list/user-playlist-list.component";
+import { PlaylistInfoComponent } from "./playlist-info/playlist-info.component";
+import { EditPlaylistModalComponent } from "./edit-playlist-modal/edit-playlist-modal.component";
 @NgModule({
     declarations: [
         MsAppComponent,
         AuthModalComponent,
-        ModalEntryComponent,
+        AuthModalEntryComponent,
         SignInComponent,
         SignUpComponent,
         PageNotFoundComponent,
@@ -59,6 +66,14 @@ import { ArtistInfoComponent } from "./artist-info/artist-info.component";
         HomeComponent,
         FilterAuthPipe,
         ArtistInfoComponent,
+        MediaContentComponent,
+        CardListComponent,
+        AddToPlaylistModalComponent,
+        AddToPlaylistModalEntryComponent,
+        CreatePlaylistModalComponent,
+        UserPlaylistListComponent,
+        PlaylistInfoComponent,
+        EditPlaylistModalComponent,
     ],
     imports: [
         BrowserModule,
@@ -75,11 +90,9 @@ import { ArtistInfoComponent } from "./artist-info/artist-info.component";
             maxAge: 25,
             logOnly: environment.production,
         }),
-        // AudioContextModule.forRoot("balanced"),
-        // WebAudioModule,
     ],
-    entryComponents: [AuthModalComponent],
-    providers: [UsersService, ModalService, TrackListService, ArtistListService],
+    entryComponents: [AuthModalComponent, AddToPlaylistModalComponent],
+    providers: [UsersService, TrackListService, ArtistListService],
     bootstrap: [MsAppComponent],
 })
 export class MsAppModule {

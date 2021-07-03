@@ -3,6 +3,7 @@ import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { Artist } from "../models/artist";
+import { Card } from "../models/card";
 import { ArtistsPageActions } from "../store/actions";
 import { AppState, selectArtists } from "../store/state/app.state";
 
@@ -17,6 +18,7 @@ export class ArtistListComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   artists: Artist[] = [];
+  cards: Card[];
 
   constructor(private store: Store<AppState>, private cdr: ChangeDetectorRef) { }
 
@@ -31,6 +33,19 @@ export class ArtistListComponent implements OnInit, OnDestroy {
       console.log("update artists");
       this.artists = artists;
       console.log(artists);
+
+      if (this.artists.length > 0) {
+        this.cards = [];
+        for (const artist of this.artists) {
+          this.cards.push({
+            link: `/main/artist/${artist.id}`,
+            imgPath: artist.path,
+            title: artist.name,
+          });
+        }
+        console.log(this.cards);
+      }
+
       this.cdr.markForCheck();
     });
   }

@@ -179,9 +179,15 @@ export class UsersService {
   }
 
   getFavourites(): string[] {
-    return this.authState.user?.favouriteTracks;
-    // const user: User = JSON.parse(this.getFromLocStore("user-info"));
-    // return user?.favouriteTracks;
+    // return this.authState.user?.favouriteTracks;
+    const user: User = JSON.parse(this.getFromLocStore("user-info"));
+    return user?.favouriteTracks;
+  }
+
+  getPlaylistIds(): string[] {
+    // return this.authState.user?.favouriteTracks;
+    const user: User = JSON.parse(this.getFromLocStore("user-info"));
+    return user?.playlistIds;
   }
 
 }

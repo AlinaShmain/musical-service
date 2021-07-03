@@ -9,6 +9,10 @@ export interface AuthState {
     user: User;
     addedToFavouritesError: Error;
     deletedFromFavouritesError: Error;
+    isCreated: boolean;
+    isEdited: boolean;
+    createdPlaylistError: Error;
+    editedPlaylistError: Error;
 }
 
 export const initialAuthState: AuthState = {
@@ -20,4 +24,8 @@ export const initialAuthState: AuthState = {
     user: null,
     addedToFavouritesError: null,
     deletedFromFavouritesError: null,
+    isCreated: null,
+    isEdited: null,
+    createdPlaylistError: null,
+    editedPlaylistError: null,
 };

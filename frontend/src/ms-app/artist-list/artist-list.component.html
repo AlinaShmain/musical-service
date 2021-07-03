@@ -1,11 +1,4 @@
 <div class="page-container">
     <h1 class="page-header">Top Artists</h1>
-    <div class="artists-list">
-        <mat-card *ngFor="let artist of artists; index as i" class="artist-card" [routerLink]="['/main/artist', artist?.id]">
-            <img mat-card-image [src]="artist?.path" alt="Photo of artist" />
-            <mat-card-header>
-                <mat-card-title>{{ artist.name }}</mat-card-title>
-            </mat-card-header>
-        </mat-card>
-    </div>
+    <ms-card-list [cards]="cards"></ms-card-list>
 </div>

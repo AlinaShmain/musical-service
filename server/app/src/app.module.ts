@@ -15,6 +15,11 @@ import { ArtistCollectionModule } from './collections/artist-collection/artist-c
 import { ArtistsController } from './controllers/artists/artists.controller';
 import { ArtistController } from './controllers/artist/artist.controller';
 import { TracksService } from './services/tracks/tracks/tracks.service';
+import { PlaylistCollectionModule } from './collections/playlist-collection.ts/playlist-collection.module';
+import { UserPlaylistsController } from './controllers/user-playlists/user-playlists.controller';
+import { PlaylistsController } from './controllers/playlists/playlists.controller';
+import { PlaylistsService } from './services/playlists/playlists.service';
+import { PlaylistController } from './controllers/playlist/playlist.controller';
 
 @Module({
   imports: [
@@ -24,15 +29,16 @@ import { TracksService } from './services/tracks/tracks/tracks.service';
     ),
     TrackCollectionModule,
     ArtistCollectionModule,
+    PlaylistCollectionModule,
     AuthModule,
   ],
-  controllers: [AppController, TracksController, TrackController, FavouritesController, ArtistsController, ArtistController],
-  providers: [AppService, TrackService, FavouritesService, TracksService],
+  controllers: [AppController, TracksController, TrackController, FavouritesController, ArtistsController, ArtistController, UserPlaylistsController, PlaylistsController, PlaylistController],
+  providers: [AppService, TrackService, FavouritesService, TracksService, PlaylistsService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
-      .forRoutes(UserInfoController, FavouritesController);
+      .forRoutes(UserInfoController, FavouritesController, UserPlaylistsController);
   }
 }

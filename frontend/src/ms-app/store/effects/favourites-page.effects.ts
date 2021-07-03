@@ -4,7 +4,6 @@ import { of } from "rxjs";
 import { catchError, mergeMap, switchMap } from "rxjs/operators";
 import { Track } from "src/ms-app/models/track";
 import { TrackListService } from "src/ms-app/services/track-list/track-list.service";
-import { UsersService } from "src/ms-app/services/users/users.service";
 import { AudioActions, FavouritesApiActions, FavouritesPageActions } from "../actions";
 
 @Injectable({
@@ -12,7 +11,7 @@ import { AudioActions, FavouritesApiActions, FavouritesPageActions } from "../ac
 })
 export class FavouritesPageEffects {
 
-    constructor(private actions$: Actions, private tracksService: TrackListService, private usersService: UsersService) { }
+    constructor(private actions$: Actions, private tracksService: TrackListService) { }
 
     getFavourites$ = createEffect(() =>
         this.actions$.pipe(

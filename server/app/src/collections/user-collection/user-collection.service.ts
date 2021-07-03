@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectConnection, InjectModel } from '@nestjs/mongoose';
-import { Connection, Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { UserDto } from 'src/model/user.dto';
 import {
     User,
@@ -11,10 +11,7 @@ export class UserCollectionService {
     constructor(
         @InjectModel(User.name)
         private readonly userModel: Model<User>,
-        @InjectConnection() private connection: Connection,
-    ) {
-        // console.log(this.connection);
-    }
+    ) { }
 
     async create(createUserDto: UserDto): Promise<User> {
         const createdUser = new this.userModel(createUserDto);
@@ -43,6 +40,16 @@ export class UserCollectionService {
         ).exec();
         console.log('document after updating =>', favouriteTracks);
         return { favouriteTracks };
+    }
+
+    async addPlaylistId({ email, playlistId }): Promise<{ playlistIds: string[] }> {
+        const { playlistIds } = await this.userModel.findOneAndUpdate(
+            { email },
+            { $addToSet: { playlistIds: playlistId } },
+            { new: true },
+        ).exec();
+        console.log('document after updating =>', playlistIds);
+        return { playlistIds };
     }
 
 }

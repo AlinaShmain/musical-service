@@ -11,6 +11,10 @@ import * as ArtistsPageActions from "./artists-page.actions";
 import * as ArtistsApiActions from "./artists-api.actions";
 import * as ArtistInfoActions from "./artist-info.actions";
 import * as ArtistInfoApiActions from "./artist-info-api.actions";
+import * as PlaylistsPageActions from "./playlists-page.actions";
+import * as PlaylistsApiActions from "./playlists-api.actions";
+import * as PlaylistInfoActions from "./playlist-info.actions";
+import * as PlaylistInfoApiActions from "./playlist-info-api.actions";
 
 
 export {
@@ -27,4 +31,8 @@ export {
     ArtistsApiActions,
     ArtistInfoActions,
     ArtistInfoApiActions,
+    PlaylistsPageActions,
+    PlaylistsApiActions,
+    PlaylistInfoActions,
+    PlaylistInfoApiActions,
 };

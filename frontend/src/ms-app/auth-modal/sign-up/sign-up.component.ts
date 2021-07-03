@@ -1,13 +1,14 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { filter, takeUntil } from "rxjs/operators";
 import { User } from "src/ms-app/models/user";
-import { ModalService } from "src/ms-app/services/modal/modal.service";
 import { AuthActions } from "src/ms-app/store/actions";
 import { AppState, selectAuthenticated, selectRegisterError } from "src/ms-app/store/state/app.state";
+import { AuthModalComponent } from "../auth-modal.component";
 import { ValidationErrorsComponent } from "../validation-errors/validation-errors.component";
 @Component({
   selector: "ms-sign-up",
@@ -30,7 +31,7 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
 
   private destroy$ = new Subject<void>();
 
-  constructor(private _fb: FormBuilder, private store: Store<AppState>, private router: Router, private _modalService: ModalService) {
+  constructor(private _fb: FormBuilder, private cdr: ChangeDetectorRef, private store: Store<AppState>, private router: Router, private dialogRef: MatDialogRef<AuthModalComponent>) {
     super();
     this.name = this._fb.control("", [Validators.required, Validators.pattern("^[А-Яа-яЁёA-Za-z]*$"), Validators.maxLength(20), Validators.minLength(3)]);
     this.email = this._fb.control("", [Validators.required, Validators.email, Validators.maxLength(20), Validators.minLength(3)]);
@@ -55,8 +56,10 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
     });
 
     this.formModel.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.submitted && this.resetErrorMessages(this.formModel);
       this.errors = [];
       this.calculateErrors(this.formModel);
+      this.cdr.markForCheck();
     });
 
     this.calculateErrors(this.formModel);
@@ -66,6 +69,14 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
     console.log("destroy sign up component");
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  onFocus(): void {
+    if (this.submitted) {
+      console.log("on focus");
+      this.password.setValue("");
+      this.submitted = !this.submitted;
+    }
   }
 
   registerNewUser(user: User): void {
@@ -123,7 +134,7 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
       const { name, email, password } = this.formModel.value;
 
       const user = {
-        name, email, password, favouriteTracks: []
+        name, email, password, favouriteTracks: [], playlistIds: [],
       };
       console.log("on submit form", user);
       this.registerNewUser(user);
@@ -140,7 +151,8 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
           },
         },
       ]);
-    this._modalService.setModalClose();
+    // this._modalService.setModalClose();
+    this.dialogRef.close();
     // ).then(() => this.router.navigate(["/"]));
   }
 

@@ -6,6 +6,8 @@ import { AuthState, initialAuthState } from "./auth.state";
 import { FavouritesPageState, initialFavouritesPageState } from "./favourites-page.state";
 import { HomePageState, initialHomePageState } from "./home-page.state";
 import { initialMainPageState, MainPageState } from "./main-page.state";
+import { initialPlaylistInfoState, PlaylistInfoState } from "./playlist-info.state";
+import { initialPlaylistsPageState, PlaylistsPageState } from "./playlists.state";
 
 export interface AppState {
     auth: AuthState;
@@ -15,6 +17,8 @@ export interface AppState {
     favourites: FavouritesPageState;
     artists: ArtistsPageState;
     artistInfo: ArtistInfoState;
+    playlists: PlaylistsPageState;
+    playlistInfo: PlaylistInfoState;
 }
 
 export const initialAppState: AppState = {
@@ -25,6 +29,8 @@ export const initialAppState: AppState = {
     favourites: initialFavouritesPageState,
     artists: initialArtistsPageState,
     artistInfo: initialArtistInfoState,
+    playlists: initialPlaylistsPageState,
+    playlistInfo: initialPlaylistInfoState,
 };
 
 export const selectAuthState = (state: AppState): AuthState => state.auth;
@@ -33,6 +39,8 @@ export const selectAuthenticated = createSelector(selectAuthState, (authState: A
 export const selectToken = createSelector(selectAuthState, (authState: AuthState) => authState.token);
 export const selectLoginError = createSelector(selectAuthState, (authState: AuthState) => authState.loginError);
 export const selectRegisterError = createSelector(selectAuthState, (authState: AuthState) => authState.registerError);
+export const selectIsCreated = createSelector(selectAuthState, (authState: AuthState) => authState.isCreated);
+export const selectIsEdited = createSelector(selectAuthState, (authState: AuthState) => authState.isEdited);
 
 export const selectAudioState = (state: AppState): AudioState => state.audio;
 
@@ -64,6 +72,15 @@ export const selectArtists = createSelector(selectArtistsPageState, (artistsStat
 export const selectArtistInfoState = (state: AppState): ArtistInfoState => state.artistInfo;
 
 export const selectArtist = createSelector(selectArtistInfoState, (artistState: ArtistInfoState) => artistState.artist);
+
+export const selectPlaylistsPageState = (state: AppState): PlaylistsPageState => state.playlists;
+
+export const selectPlaylists = createSelector(selectPlaylistsPageState, (playlistsState: PlaylistsPageState) => playlistsState.playlists);
+export const selectUserPlaylists = createSelector(selectPlaylistsPageState, (playlistsState: PlaylistsPageState) => playlistsState.userPlaylists);
+
+export const selectPlaylistInfoState = (state: AppState): PlaylistInfoState => state.playlistInfo;
+
+export const selectPlaylist = createSelector(selectPlaylistInfoState, (playlistState: PlaylistInfoState) => playlistState.playlist);
 
 
 

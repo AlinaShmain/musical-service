@@ -7,4 +7,5 @@ export interface TrackDto {
    album: string;
    duration: string;
    genre: string;
+   imagePath: string;
 }

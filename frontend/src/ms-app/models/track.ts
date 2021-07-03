@@ -6,4 +6,5 @@ export interface Track {
     album: string;
     duration: string;
     genre: string;
+    imagePath: string;
 }

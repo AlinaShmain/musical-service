@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from "@angular/forms";
+import { MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Subject, Subscription } from "rxjs";
 import { filter, takeUntil } from "rxjs/operators";
 import { User } from "src/ms-app/models/user";
-import { ModalService } from "src/ms-app/services/modal/modal.service";
 import { AuthActions } from "src/ms-app/store/actions";
 import { AppState, selectAuthenticated, selectLoginError } from "src/ms-app/store/state/app.state";
+import { AuthModalComponent } from "../auth-modal.component";
 import { ValidationErrorsComponent } from "../validation-errors/validation-errors.component";
 @Component({
   selector: "ms-sign-in",
@@ -32,7 +33,7 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
   subscribe: Subscription;
 
   constructor(private _fb: FormBuilder, private cdr: ChangeDetectorRef, private store: Store<AppState>, private router: Router,
-    private _modalService: ModalService) {
+    private dialogRef: MatDialogRef<AuthModalComponent>) {
     super();
 
     this.email = this._fb.control("", [Validators.required, Validators.email, Validators.maxLength(20), Validators.minLength(3)]);
@@ -78,16 +79,6 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
       this.password.setValue("");
       this.submitted = !this.submitted;
     }
-  }
-
-  resetErrorMessages(form: FormGroup): void {
-    Object.keys(form.controls).forEach((field) => {
-      const control = form.get(field);
-      if (control instanceof FormControl) {
-        // control.clearValidators();
-        control.setErrors(null);
-      }
-    });
   }
 
   handleCheckboxChange(): void {
@@ -149,7 +140,7 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
       const { email, password } = this.formModel.value;
 
       const user = {
-        email, password, favouriteTracks: []
+        email, password, favouriteTracks: [], playlistIds: [],
       };
       console.log("on submit form", user);
       this.loginUser(user);
@@ -166,7 +157,8 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
           },
         },
       ]);
-    this._modalService.setModalClose();
+    // this._modalService.setModalClose();
+    this.dialogRef.close();
     // ).then(() => this.router.navigate(["/"]));
   }
 

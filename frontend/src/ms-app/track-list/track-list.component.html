@@ -35,7 +35,9 @@
                                 <span class="artist-span">{{ track["artist"] }}</span>
                                 <span class="genre-span">{{ track["genre"] }}</span>
                             </div>
-                            <a href="#" class="playlist"><img class="playlist-icon" src="../../assets/icons/playlist.svg" />Add to playlist</a>
+                            <a *ngIf="isAuthenticated()" [routerLink]="['/main/add-to-playlist', track?.id]" class="playlist"
+                                ><img class="playlist-icon" src="../../assets/icons/playlist.svg" />Add to playlist</a
+                            >
                             <a [routerLink]="['/main/artist', track?.artistId]"><img class="artist-icon" src="../../assets/icons/singer.svg" />Go to artist</a>
                         </div>
                     </div>

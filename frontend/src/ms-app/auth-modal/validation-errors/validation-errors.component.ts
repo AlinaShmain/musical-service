@@ -9,7 +9,7 @@ import { AllValidationControlErrors } from "src/ms-app/models/all-validation-con
 })
 export class ValidationErrorsComponent {
 
-  protected  errors: AllValidationControlErrors[] = [];
+  protected errors: AllValidationControlErrors[] = [];
 
   constructor() {
     console.log("auth form", this.errors.length);
@@ -36,6 +36,16 @@ export class ValidationErrorsComponent {
       return t.controlName === error.controlName && t.errorName === error.errorName;
     }) === index);
     return this.errors;
+  }
+
+  resetErrorMessages(form: FormGroup): void {
+    Object.keys(form.controls).forEach((field) => {
+      const control = form.get(field);
+      if (control instanceof FormControl) {
+        // control.clearValidators();
+        control.setErrors(null);
+      }
+    });
   }
 
   getErrorsControl(control: string): AllValidationControlErrors[] | undefined {

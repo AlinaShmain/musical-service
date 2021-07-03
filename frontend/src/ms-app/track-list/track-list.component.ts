@@ -135,4 +135,8 @@ export class TrackListComponent implements OnInit, OnDestroy {
     }
   }
 
+  isAuthenticated(): boolean {
+    return this.usersService.isAuthenticated();
+  }
+
 }

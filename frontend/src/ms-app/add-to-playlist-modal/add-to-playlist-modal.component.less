@@ -1,0 +1,74 @@
+@import "src/colors.less";
+
+.line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    h1 {
+        margin: 0;
+    }
+    .close-btn {
+        color: @text-color-blue;
+        background-color: white;
+        font-size: 20px;
+        border: none;
+        padding: 0;
+        outline: none;
+        cursor: pointer;
+        &:hover {
+            color: @blue-light;
+        }
+    }
+}
+
+.create-button {
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px 8px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+    color: @primary-color;
+    border: 2px solid @primary-color;
+    &:hover {
+        box-shadow: 0 0 7px @primary-color;
+    }
+}
+
+.center-button {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.playlists-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+}
+
+.images-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 2px;
+    width: fit-content;
+    margin-bottom: 5px;
+    img {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+.playlist {
+    max-width: 60px;
+    transition: all 0.3s ease 0s;
+    padding: 5px;
+    .mat-card-title {
+        font-size: 16px;
+        margin: 5px 0 0;
+    }
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.1);
+    }
+}

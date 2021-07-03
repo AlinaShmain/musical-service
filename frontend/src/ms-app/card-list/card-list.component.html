@@ -1,0 +1,11 @@
+<div class="card-list">
+    <mat-card [ngStyle]="{ 'max-width': widthCard }" *ngFor="let card of cards; index as i" class="card" [routerLink]="card?.link">
+        <div mat-card-content class="images-wrap" *ngIf="card?.imagesPath">
+            <img *ngFor="let imgPath of card?.imagesPath" [src]="imgPath" />
+        </div>
+        <img mat-card-image *ngIf="card?.imgPath" [src]="card?.imgPath" />
+        <!-- <mat-card-header> -->
+        <mat-card-title>{{ card?.title }}</mat-card-title>
+        <!-- </mat-card-header> -->
+    </mat-card>
+</div>

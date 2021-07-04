@@ -31,6 +31,14 @@ export class PlaylistCollectionService {
         ).exec();
     }
 
+    async deleteImagePlaylist({ playlistId, imagePath }): Promise<void> {
+        this.playlistModel.findOneAndUpdate(
+            { id: playlistId },
+            { $pull: { imagesPath: imagePath } },
+            { new: true },
+        ).exec();
+    }
+
     async addToPlaylist({ trackId, playlistId }): Promise<{ trackIds: string[] }> {
         const { trackIds } = await this.playlistModel.findOneAndUpdate(
             { id: playlistId },
@@ -57,6 +65,24 @@ export class PlaylistCollectionService {
         ).exec();
         console.log('document after updating =>', playlist);
         return playlist;
+    }
+
+    async deletePlaylist(playlistId: string): Promise<{ playlistId: string }> {
+        const { id } = await this.playlistModel.findOneAndDelete(
+            { id: playlistId },
+        ).exec();
+        console.log('document after updating =>', id);
+        return { playlistId: id };
+    }
+
+    async deleteFromPlaylist({ trackId, playlistId }): Promise<{ trackIds: string[] }> {
+        const { trackIds } = await this.playlistModel.findOneAndUpdate(
+            { id: playlistId },
+            { $pull: { trackIds: trackId } },
+            { new: true },
+        ).exec();
+        console.log('document after updating =>', trackIds);
+        return { trackIds };
     }
 
 }

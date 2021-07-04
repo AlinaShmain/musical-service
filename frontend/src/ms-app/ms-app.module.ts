@@ -44,6 +44,8 @@ import { CreatePlaylistModalComponent } from "./create-playlist-modal/create-pla
 import { UserPlaylistListComponent } from "./user-playlist-list/user-playlist-list.component";
 import { PlaylistInfoComponent } from "./playlist-info/playlist-info.component";
 import { EditPlaylistModalComponent } from "./edit-playlist-modal/edit-playlist-modal.component";
+import { DeletePlaylistModalComponent } from "./delete-playlist-modal/delete-playlist-modal.component";
+import { DeleteFromPlaylistComponent } from "./delete-from-playlist/delete-from-playlist.component";
 @NgModule({
     declarations: [
         MsAppComponent,
@@ -74,6 +76,8 @@ import { EditPlaylistModalComponent } from "./edit-playlist-modal/edit-playlist-
         UserPlaylistListComponent,
         PlaylistInfoComponent,
         EditPlaylistModalComponent,
+        DeletePlaylistModalComponent,
+        DeleteFromPlaylistComponent,
     ],
     imports: [
         BrowserModule,
@@ -91,7 +95,7 @@ import { EditPlaylistModalComponent } from "./edit-playlist-modal/edit-playlist-
             logOnly: environment.production,
         }),
     ],
-    entryComponents: [AuthModalComponent, AddToPlaylistModalComponent],
+    entryComponents: [AuthModalComponent, AddToPlaylistModalComponent, CreatePlaylistModalComponent],
     providers: [UsersService, TrackListService, ArtistListService],
     bootstrap: [MsAppComponent],
 })

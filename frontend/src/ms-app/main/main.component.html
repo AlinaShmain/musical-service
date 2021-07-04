@@ -33,6 +33,9 @@
                     <span>{{ link.pageName }}</span>
                 </a>
             </mat-nav-list>
+            <div *ngIf="isAuthenticated()" class="center-button">
+                <button class="modal-button submit-button" routerLink="/main/create-playlist">+ Create new playlist</button>
+            </div>
         </mat-sidenav>
 
         <mat-sidenav-content class="sidenav-content">

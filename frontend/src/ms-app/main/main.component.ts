@@ -49,13 +49,13 @@ export class MainComponent implements OnInit, OnDestroy {
       iconName: "fas fa-music",
       auth: false,
     },
-    {
-      pageName: "Albums",
-      path: "albums",
-      // iconName: "album",
-      iconName: "fas fa-record-vinyl",
-      auth: false,
-    },
+    // {
+    //   pageName: "Albums",
+    //   path: "albums",
+    //   // iconName: "album",
+    //   iconName: "fas fa-record-vinyl",
+    //   auth: false,
+    // },
     {
       pageName: "Favourites",
       path: "favourites",

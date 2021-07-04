@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+import { DeleteFromPlaylistComponent } from "../delete-from-playlist/delete-from-playlist.component";
 import { Track } from "../models/track";
 import { TrackHeaders } from "../models/track-headers";
 import { AudioService } from "../services/track/audio.service";
@@ -32,6 +33,9 @@ export class TrackListComponent implements OnInit, OnDestroy {
 
   isOpenDropdown: boolean[] = [];
   isFavourite: boolean[] = [];
+  playlistId: string;
+
+  private dialogRef: MatDialogRef<DeleteFromPlaylistComponent>;
 
   private destroy$ = new Subject<void>();
 
@@ -40,7 +44,10 @@ export class TrackListComponent implements OnInit, OnDestroy {
     private router: Router,
     private audioService: AudioService,
     private usersService: UsersService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog) {
+    const url = this.router.url.split("/");
+    this.playlistId = url[url.length - 1];
+  }
 
   ngOnInit(): void {
     console.log("init track list component");
@@ -137,6 +144,37 @@ export class TrackListComponent implements OnInit, OnDestroy {
 
   isAuthenticated(): boolean {
     return this.usersService.isAuthenticated();
+  }
+
+  isUserPlaylist(playlistId: string): boolean {
+    const playlistIds: string[] = this.usersService.getPlaylistIds();
+
+    return playlistIds?.includes(playlistId);
+  }
+
+  isShown(): boolean {
+    return this.isAuthenticated() && this.isUserPlaylist(this.playlistId);
+  }
+
+  onOpenDeleteModal(trackId: string, index: number): void {
+    this.dialogRef = this.dialog.open(DeleteFromPlaylistComponent, {
+      width: "400px",
+      data: {
+        trackId,
+        playlistId: this.playlistId,
+      }
+    });
+
+    this.dialogRef.afterClosed().pipe(
+      takeUntil(this.destroy$),
+    ).subscribe((isDeleted) => {
+      console.log("after dialog close");
+
+      if (isDeleted) {
+        this.isOpenDropdown[index] = false;
+        this.cdr.markForCheck();
+      }
+    });
   }
 
 }

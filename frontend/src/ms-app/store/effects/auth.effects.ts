@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { of } from "rxjs";
-import { catchError, map, mergeMap } from "rxjs/operators";
+import { catchError, map, mergeMap, switchMap } from "rxjs/operators";
 import { Playlist } from "src/ms-app/models/playlist";
 import { User } from "src/ms-app/models/user";
 import { PlaylistsService } from "src/ms-app/services/playlists/playlists.service";
 import { TrackService } from "src/ms-app/services/track/track.service";
 import { UsersService } from "src/ms-app/services/users/users.service";
-import { AuthActions, AuthApiActions } from "../actions";
+import { AudioActions, AuthActions, AuthApiActions } from "../actions";
 
 @Injectable({
     providedIn: "root"
@@ -127,5 +127,33 @@ export class AuthEffects {
         ),
     );
 
+    deletePlaylist$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AuthActions.deletePlaylist),
+            mergeMap(({ playlistId, token }) =>
+                this.playlistsService.deletePlaylist(playlistId, token).pipe(
+                    map(() =>
+                        AuthApiActions.deletedPlaylistSuccess(),
+                    ),
+                    catchError((error: Error) => of(AuthApiActions.deletedPlaylistError({ deletedPlaylistError: error }))),
+                )),
+        ),
+    );
+
+    deleteFromPlaylist$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(AuthActions.deleteFromPlaylist),
+            mergeMap(({ playlistId, trackId, token }) =>
+                this.trackService.deleteFromPlaylist(trackId, playlistId, token).pipe(
+                    switchMap(({ trackIds }) => [
+                        AuthApiActions.deletedFromPlaylistSuccess({ trackIds }),
+                        AudioActions.deleteTrack({
+                            trackId
+                        }),
+                    ]),
+                    catchError((error: Error) => of(AuthApiActions.deletedFromPlaylistError({ deletedFromPlaylistError: error }))),
+                )),
+        ),
+    );
 
 }

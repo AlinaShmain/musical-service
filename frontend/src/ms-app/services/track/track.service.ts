@@ -83,4 +83,17 @@ export class TrackService {
     return this.http.post<{ trackIds: string[] }>("http://localhost:3000/user-playlists/add", JSON.stringify({ trackId, playlistId }), httpOptions);
   }
 
+  deleteFromPlaylist(trackId: string, playlistId: string, token: string): Observable<{ trackIds: string[] }> {
+    const httpOptions = {
+      headers: {
+        "AUTHORIZATION": `Bearer ${token}`,
+        "CONTENT-TYPE": "application/json" as const,
+      },
+    };
+
+    console.log("delete from playlist");
+
+    return this.http.post<{ trackIds: string[] }>("http://localhost:3000/user-playlists/delete-track", JSON.stringify({ trackId, playlistId }), httpOptions);
+  }
+
 }

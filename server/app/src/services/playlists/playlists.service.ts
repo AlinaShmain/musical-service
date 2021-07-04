@@ -50,9 +50,13 @@ export class PlaylistsService {
         try {
             if (!playlistInfo) throw new Error();
 
-            const { imagePath } = await this.trackCollectionService.findById({ id: playlistInfo.trackIds[0] });
+            if (playlistInfo.trackIds.length > 0) {
+                const { imagePath } = await this.trackCollectionService.findById({ id: playlistInfo.trackIds[0] });
 
-            await this.playlistCollectionService.createPlaylist({ ...playlistInfo, imagesPath: [imagePath] });
+                await this.playlistCollectionService.createPlaylist({ ...playlistInfo, imagesPath: [imagePath] });
+            } else {
+                await this.playlistCollectionService.createPlaylist(playlistInfo);
+            }
 
             return await this.userCollectionService.addPlaylistId({ email, playlistId: playlistInfo.id });
 
@@ -67,6 +71,34 @@ export class PlaylistsService {
             if (!playlistInfo) throw new Error();
 
             return await this.playlistCollectionService.editPlaylist(playlistInfo);
+        } catch (error) {
+            console.log(error.message);
+            throw new InternalServerErrorException(error.message);
+        }
+    }
+
+    async deletePlaylist({ playlistId }): Promise<{ playlistId: string }> {
+        try {
+            if (!playlistId) throw new Error();
+
+            return await this.playlistCollectionService.deletePlaylist(playlistId);
+        } catch (error) {
+            console.log(error.message);
+            throw new InternalServerErrorException(error.message);
+        }
+    }
+
+    async deleteFromPlaylist({ playlistId, trackId }): Promise<{ trackIds: string[] }> {
+        try {
+            if (!playlistId && !trackId) throw new Error();
+
+            if (trackId <= 4) {
+                const { imagePath } = await this.trackCollectionService.findById({ id: trackId });
+
+                await this.playlistCollectionService.deleteImagePlaylist({ playlistId, imagePath });
+            }
+
+            return await this.playlistCollectionService.deleteFromPlaylist({ playlistId, trackId });
         } catch (error) {
             console.log(error.message);
             throw new InternalServerErrorException(error.message);

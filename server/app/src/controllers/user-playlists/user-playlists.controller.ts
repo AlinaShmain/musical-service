@@ -29,10 +29,24 @@ export class UserPlaylistsController {
     }
 
     @Post("edit")
-    async edit(@Body() { playlistInfo, decoded }): Promise<Playlist> {
+    async edit(@Body() { playlistInfo }): Promise<Playlist> {
         console.log("edit playlist", playlistInfo);
 
         return await this.playlistsService.editPlaylist({ playlistInfo });
+    }
+
+    @Post("delete")
+    async delete(@Body() { playlistId }): Promise<{ playlistId: string }> {
+        console.log("delete playlist", playlistId);
+
+        return await this.playlistsService.deletePlaylist({ playlistId });
+    }
+
+    @Post("delete-track")
+    async deleteTrack(@Body() { playlistId, trackId }): Promise<{ trackIds: string[] }> {
+        console.log("delete from playlist", playlistId);
+
+        return await this.playlistsService.deleteFromPlaylist({ playlistId, trackId });
     }
 
 }

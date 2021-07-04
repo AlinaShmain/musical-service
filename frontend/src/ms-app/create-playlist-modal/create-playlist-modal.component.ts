@@ -33,7 +33,10 @@ export class CreatePlaylistModalComponent extends ValidationErrorsComponent impl
     super();
 
     const param = this.router.url.split("?")[1];
-    this.trackId = param.split("=")[1];
+    console.log("param", param);
+    if (param) {
+      this.trackId = param.split("=")[1];
+    }
 
     this.title = this._fb.control("", [Validators.required, Validators.maxLength(20)]);
     this.description = this._fb.control("");
@@ -89,8 +92,10 @@ export class CreatePlaylistModalComponent extends ValidationErrorsComponent impl
 
       const id = (this.usersService.getPlaylistIds().length + 1).toString();
 
-      const playlistInfo = {
+      const playlistInfo = this.trackId ? {
         id, title, description, trackIds: [this.trackId], creatorId: "", totalLikes: "", imagesPath: [],
+      } : {
+        id, title, description, trackIds: [], creatorId: "", totalLikes: "", imagesPath: [],
       };
 
       console.log("on submit form", playlistInfo);

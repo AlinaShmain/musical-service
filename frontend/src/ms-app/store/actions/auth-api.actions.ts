@@ -17,6 +17,10 @@ export enum AuthApiActionTypes {
     CREATE_PLAYLIST_ERROR = "[Auth/API] CreatePlaylist Error",
     EDIT_PLAYLIST_SUCCESS = "[Auth/API] EditPlaylist Success",
     EDIT_PLAYLIST_ERROR = "[Auth/API] EditPlaylist Error",
+    DELETE_PLAYLIST_SUCCESS = "[Auth/API] DeletePlaylist Success",
+    DELETE_PLAYLIST_ERROR = "[Auth/API] DeletePlaylist Error",
+    DELETE_FROM_PLAYLIST_SUCCESS = "[Auth/API] Delete From Playlist Success",
+    DELETE_FROM_PLAYLIST_ERROR = "[Auth/API] Delete From Playlist Error",
 }
 
 export const loggedSuccess = createAction(
@@ -87,4 +91,23 @@ export const editedPlaylistSuccess = createAction(
 export const editedPlaylistError = createAction(
     AuthApiActionTypes.EDIT_PLAYLIST_ERROR,
     props<{ editedPlaylistError: Error }>(),
+);
+
+export const deletedPlaylistSuccess = createAction(
+    AuthApiActionTypes.DELETE_PLAYLIST_SUCCESS,
+);
+
+export const deletedPlaylistError = createAction(
+    AuthApiActionTypes.DELETE_PLAYLIST_ERROR,
+    props<{ deletedPlaylistError: Error }>(),
+);
+
+export const deletedFromPlaylistSuccess = createAction(
+    AuthApiActionTypes.DELETE_FROM_PLAYLIST_SUCCESS,
+    props<{ trackIds: string[] }>(),
+);
+
+export const deletedFromPlaylistError = createAction(
+    AuthApiActionTypes.DELETE_FROM_PLAYLIST_ERROR,
+    props<{ deletedFromPlaylistError: Error }>(),
 );

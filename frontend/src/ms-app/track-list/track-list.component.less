@@ -8,6 +8,7 @@
     margin: 0 auto;
     .track-row {
         background-color: white;
+        cursor: pointer;
         &:hover {
             background-color: @light-grey-color;
             .cell {
@@ -109,22 +110,28 @@
     // padding: 0 8px;
     a {
         color: white;
-        padding: 12px 16px;
+        padding: 12px 10px;
         text-decoration: none;
         font-size: 0.9em;
         // display: block;
         display: flex;
         align-items: center;
+        cursor: pointer;
         &:hover {
             background-color: @text-color-blue;
         }
         .playlist-icon,
-        .artist-icon {
+        .artist-icon,
+        .delete-icon {
             // vertical-align: middle;
             display: inline-block;
             margin-right: 7px;
             width: 19px;
             height: 19px;
+            cursor: pointer;
+        }
+        .delete-icon {
+            cursor: pointer;
         }
         &:not(:last-child) {
             border-bottom: solid 1px white;

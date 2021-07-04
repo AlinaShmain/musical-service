@@ -75,4 +75,17 @@ export class PlaylistsService {
     return this.http.post<Playlist>("http://localhost:3000/user-playlists/edit", JSON.stringify({ playlistInfo }), httpOptions);
   }
 
+  deletePlaylist(playlistId: string, token: string): Observable<{ playlistId: string }> {
+
+    console.log("delete playlist");
+
+    const httpOptions = {
+      headers: {
+        "CONTENT-TYPE": "application/json" as const,
+        "AUTHORIZATION": `Bearer ${token}`,
+      },
+    };
+    return this.http.post<{ playlistId: string }>("http://localhost:3000/user-playlists/delete", JSON.stringify({ playlistId }), httpOptions);
+  }
+
 }

@@ -5,8 +5,8 @@ export interface AudioState {
     trackId: string;
     trackTitle: string;
     trackArtist: string;
+    trackImage: string;
     currTrackList: Track[];
-    // audioCtx: AudioContext;
     audioBuffer: AudioBuffer;
     bufferSource: AudioBufferSourceNode;
     isPlaying: boolean;
@@ -23,6 +23,7 @@ export const initialAudioState: AudioState = {
     trackId: null,
     trackTitle: null,
     trackArtist: null,
+    trackImage: null,
     currTrackList: [],
     audioBuffer: null,
     bufferSource: null,

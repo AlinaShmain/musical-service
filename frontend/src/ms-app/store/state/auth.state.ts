@@ -11,8 +11,12 @@ export interface AuthState {
     deletedFromFavouritesError: Error;
     isCreated: boolean;
     isEdited: boolean;
+    isDeleted: boolean;
+    isDeletedFromPlaylist: boolean;
     createdPlaylistError: Error;
     editedPlaylistError: Error;
+    deletedPlaylistError: Error;
+    deletedFromPlaylistError: Error;
 }
 
 export const initialAuthState: AuthState = {
@@ -26,6 +30,10 @@ export const initialAuthState: AuthState = {
     deletedFromFavouritesError: null,
     isCreated: null,
     isEdited: null,
+    isDeleted: null,
+    isDeletedFromPlaylist: null,
     createdPlaylistError: null,
     editedPlaylistError: null,
+    deletedPlaylistError: null,
+    deletedFromPlaylistError: null,
 };

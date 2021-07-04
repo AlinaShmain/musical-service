@@ -137,4 +137,28 @@ export const authReducer = createReducer(initialAuthState,
         isEdited: false,
         editedPlaylistError,
     })),
+    on(AuthActions.deletePlaylist, (state): AuthState => ({
+        ...state,
+    })),
+    on(AuthApiActions.deletedPlaylistSuccess, (state): AuthState => ({
+        ...state,
+        isDeleted: true,
+    })),
+    on(AuthApiActions.deletedPlaylistError, (state, { deletedPlaylistError }): AuthState => ({
+        ...state,
+        isDeleted: false,
+        deletedPlaylistError,
+    })),
+    on(AuthActions.deleteFromPlaylist, (state): AuthState => ({
+        ...state,
+    })),
+    on(AuthApiActions.deletedFromPlaylistSuccess, (state, { trackIds }): AuthState => ({
+        ...state,
+        isDeletedFromPlaylist: true,
+    })),
+    on(AuthApiActions.deletedFromPlaylistError, (state, { deletedFromPlaylistError }): AuthState => ({
+        ...state,
+        isDeletedFromPlaylist: false,
+        deletedFromPlaylistError,
+    })),
 );

@@ -21,7 +21,6 @@ export class AddToPlaylistModalComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   playlists: Playlist[] = [];
-  // cards: Card[];
   trackId: string;
 
   constructor(private store: Store<AppState>, private cdr: ChangeDetectorRef,
@@ -44,18 +43,6 @@ export class AddToPlaylistModalComponent implements OnInit, OnDestroy {
       this.playlists = playlists;
       console.log(playlists);
 
-      // if (this.playlists.length > 0) {
-      //   this.cards = [];
-      //   for (const playlist of this.playlists) {
-      //     this.cards.push({
-      //       link: `/main/playlist/${playlist.id}`,
-      //       title: playlist.title,
-      //       imagesPath: [...playlist.imagesPath],
-      //     });
-      //   }
-      //   console.log(this.cards);
-      // }
-
       this.cdr.markForCheck();
     });
   }
@@ -66,14 +53,12 @@ export class AddToPlaylistModalComponent implements OnInit, OnDestroy {
   }
 
   onAdd(playlistId: string): void {
-    // const url = this.router.url.split("/");
-    // const trackId = url[url.length - 1];
-    // console.log(trackId);
-
     const token = this.usersService.getFromLocStore("jwt-token");
     token && this.trackService.addToPlaylist(this.trackId, playlistId, token).pipe(
       takeUntil(this.destroy$),
-    ).subscribe(() => { });
+    ).subscribe(() => {
+      this.onClose();
+    });
   }
 
   onClose(): void {

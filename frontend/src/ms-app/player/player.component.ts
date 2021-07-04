@@ -84,6 +84,10 @@ export class PlayerComponent implements OnInit, OnDestroy {
     }
   }
 
+  isFirstTrack(): boolean {
+    return !this.audioState?.trackId || this.audioState?.currTrackList[0].id === this.audioState?.trackId;
+  }
+
   isLastTrack(trackId: string): boolean {
     if (this.audioState.currTrackList.length > 0) {
       const trackListLength: number = this.audioState?.currTrackList.length;

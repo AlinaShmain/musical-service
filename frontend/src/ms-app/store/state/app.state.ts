@@ -41,6 +41,8 @@ export const selectLoginError = createSelector(selectAuthState, (authState: Auth
 export const selectRegisterError = createSelector(selectAuthState, (authState: AuthState) => authState.registerError);
 export const selectIsCreated = createSelector(selectAuthState, (authState: AuthState) => authState.isCreated);
 export const selectIsEdited = createSelector(selectAuthState, (authState: AuthState) => authState.isEdited);
+export const selectIsDeleted = createSelector(selectAuthState, (authState: AuthState) => authState.isDeleted);
+export const selectIsDeletedFromPlaylist = createSelector(selectAuthState, (authState: AuthState) => authState.isDeletedFromPlaylist);
 
 export const selectAudioState = (state: AppState): AudioState => state.audio;
 

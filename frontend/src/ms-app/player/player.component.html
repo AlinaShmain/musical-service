@@ -10,11 +10,14 @@
     <!-- <mat-toolbar-row class="media-action-bar"> -->
     <div class="media-action-bar">
         <div class="track-info">
-            <span className="title">{{ audioState?.trackTitle }}</span>
-            <span className="artist">{{ audioState?.trackArtist }}</span>
+            <img *ngIf="audioState?.trackImage" class="track-image" [src]="audioState?.trackImage" />
+            <div class="columns">
+                <span className="title">{{ audioState?.trackTitle }}</span>
+                <span className="artist">{{ audioState?.trackArtist }}</span>
+            </div>
         </div>
         <div class="play-controllers">
-            <button mat-icon-button color="accent" [disabled]="!audioState?.trackId || audioState?.trackId === '1'" (click)="onPrevious()">
+            <button mat-icon-button color="accent" [disabled]="isFirstTrack()" (click)="onPrevious()">
                 <!-- <mat-icon mat-list-icon>skip_previous</mat-icon> -->
                 <i class="fas fa-step-backward"></i>
             </button>

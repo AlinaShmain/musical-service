@@ -12,11 +12,17 @@ export enum AudioActionTypes {
     MUTE_VOLUME = "[Audio] Mute",
     UNMUTE_VOLUME = "[Audio] Unmute",
     SET_VOLUME = "[Audio] Set Volume",
+    DELETE_TRACK = "[Audio] Delete Track",
 }
 
 export const loadTrackList = createAction(
     AudioActionTypes.LOAD_TRACK_LIST,
     props<{ currTrackList: Track[] }>(),
+);
+
+export const deleteTrack = createAction(
+    AudioActionTypes.DELETE_TRACK,
+    props<{ trackId: string }>(),
 );
 
 export const playTrack = createAction(

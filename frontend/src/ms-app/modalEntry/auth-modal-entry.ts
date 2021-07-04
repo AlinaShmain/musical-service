@@ -23,20 +23,16 @@ export class AuthModalEntryComponent implements OnInit, OnDestroy {
         this.store.select(selectReturnUrl).pipe(
             takeUntil(this.destroy$),
         ).subscribe((returnUrl) => {
-            console.log("update returnUrl", returnUrl);
             this.returnUrl = returnUrl;
         });
     }
 
     ngOnInit(): void {
-        console.log("modal entry", this.router.url.split("/"));
-        this.router.navigate([{ outlets: { popupContent: ["signIn"] } }]); // , { skipLocationChange: true });
-        // this._modalService.openModal();
+        this.router.navigate([{ outlets: { popupContent: ["signIn"] } }]);
         this.openModal();
     }
 
     ngOnDestroy(): void {
-        console.log("destroy auth modal entry component");
         this.destroy$.next();
         this.destroy$.complete();
     }
@@ -50,7 +46,6 @@ export class AuthModalEntryComponent implements OnInit, OnDestroy {
         this.dialogRef.afterClosed().pipe(
             takeUntil(this.destroy$),
         ).subscribe((result) => {
-            console.log("after close dialog", this.returnUrl);
             this.router.navigateByUrl(this.returnUrl);
         });
     }

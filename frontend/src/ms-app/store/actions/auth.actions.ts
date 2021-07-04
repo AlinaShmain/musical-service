@@ -13,7 +13,6 @@ export enum AuthActionTypes {
     EDIT_PLAYLIST = "[Auth] Edit Playlist",
     DELETE_PLAYLIST = "[Auth] Delete Playlist",
     DELETE_FROM_PLAYLIST = "[Auth] Delete From Playlist",
-    // ADD_TO_PLAYLIST = "[Auth] AddTo Playlist",
 }
 
 export const loginUser = createAction(
@@ -64,8 +63,3 @@ export const deleteFromPlaylist = createAction(
     AuthActionTypes.DELETE_FROM_PLAYLIST,
     props<{ playlistId: string, trackId: string, token: string }>(),
 );
-
-// export const addToPlaylist = createAction(
-//     AuthActionTypes.ADD_TO_PLAYLIST,
-//     props<{ trackId: string, playlistId: string, token: string }>(),
-// );

@@ -31,17 +31,13 @@ export class AddToPlaylistModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log("create playlist modal init");
-
     const token = this.usersService.getFromLocStore("jwt-token");
     token && this.store.dispatch(PlaylistsPageActions.loadUserPlaylists({ token }));
 
     this.store.select(selectUserPlaylists).pipe(
       takeUntil(this.destroy$),
     ).subscribe((playlists) => {
-      console.log("update playlists");
       this.playlists = playlists;
-      console.log(playlists);
 
       this.cdr.markForCheck();
     });

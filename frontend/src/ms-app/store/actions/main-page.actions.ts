@@ -20,9 +20,4 @@ export const setIsOpenAuthModal = createAction(
     props<{ isOpenAuthModal: boolean }>(),
 );
 
-// export const likeTrack = createAction(
-//     MainActionTypes.LIKE_TRACK,
-//     props<{ trackId: string, token: string }>(),
-// );
-
 

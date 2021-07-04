@@ -23,16 +23,13 @@ export class ArtistListComponent implements OnInit, OnDestroy {
   constructor(private store: Store<AppState>, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    console.log("artists component init");
 
     this.store.dispatch(ArtistsPageActions.loadArtists());
 
     this.store.select(selectArtists).pipe(
       takeUntil(this.destroy$),
     ).subscribe((artists) => {
-      console.log("update artists");
       this.artists = artists;
-      console.log(artists);
 
       if (this.artists.length > 0) {
         this.cards = [];
@@ -43,7 +40,6 @@ export class ArtistListComponent implements OnInit, OnDestroy {
             title: artist.name,
           });
         }
-        console.log(this.cards);
       }
 
       this.cdr.markForCheck();
@@ -51,7 +47,6 @@ export class ArtistListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log("artists page on destroy");
     this.destroy$.next();
     this.destroy$.complete();
   }

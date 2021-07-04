@@ -14,8 +14,6 @@ export class HomeComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    console.log("init home component");
-
     this.store.dispatch(HomePageActions.getTracks());
   }
 

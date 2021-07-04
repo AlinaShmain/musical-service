@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy } from "@angular/core";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { Subject } from "rxjs";
@@ -15,7 +15,7 @@ import { UsersService } from "../services/users/users.service";
   styleUrls: ["./media-content.component.less"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MediaContentComponent implements OnInit, OnDestroy {
+export class MediaContentComponent implements OnDestroy {
 
   @Input() mediaData: MediaData;
 
@@ -29,11 +29,9 @@ export class MediaContentComponent implements OnInit, OnDestroy {
   constructor(private usersService: UsersService, private dialog: MatDialog, private cdr: ChangeDetectorRef,
     private router: Router) {
     const url = this.router.url.split("/");
-    this.playlistId = url[url.length - 1];
-  }
-
-  ngOnInit(): void {
-    console.log("init media content component");
+    if (url[url.length - 2] === "playlist") {
+      this.playlistId = url[url.length - 1];
+    }
   }
 
   ngOnDestroy(): void {
@@ -48,7 +46,7 @@ export class MediaContentComponent implements OnInit, OnDestroy {
   }
 
   isShow(): boolean {
-    return this.usersService.isAuthenticated() && this.isUserPlaylist(this.playlistId);
+    return this.usersService.isAuthenticated() && this.playlistId && this.isUserPlaylist(this.playlistId);
   }
 
   onDropdown(): void {
@@ -70,8 +68,6 @@ export class MediaContentComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
     ).subscribe((result: Playlist) => {
       if (result) {
-        console.log("after dialog close", result);
-
         this.mediaData.header = result.title;
         this.mediaData.description = result.description;
 
@@ -89,8 +85,6 @@ export class MediaContentComponent implements OnInit, OnDestroy {
     this.dialogDelete.afterClosed().pipe(
       takeUntil(this.destroy$),
     ).subscribe((isDeleted) => {
-      console.log("after dialog close");
-
       if (isDeleted) {
         this.isOpenDropdown = false;
         this.cdr.markForCheck();

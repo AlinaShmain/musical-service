@@ -17,8 +17,6 @@ export class FavouriteListComponent implements OnInit {
   constructor(private store: Store<AppState>, private usersService: UsersService) { }
 
   ngOnInit(): void {
-    console.log("favourites component init");
-
     const token = this.usersService.getFromLocStore("jwt-token");
     token && this.store.dispatch(FavouritesPageActions.loadFavourites({ token }));
   }

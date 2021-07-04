@@ -27,7 +27,6 @@ const routes: Routes = [
             { path: "home", component: HomeComponent },
             { path: "artists", component: ArtistListComponent },
             { path: "artist/:id", component: ArtistInfoComponent },
-            // { path: "albums", component: AlbumListComponent },
             { path: "favourites", component: FavouriteListComponent, canActivate: [AuthGuard] },
             { path: "add-to-playlist/:id", component: AddToPlaylistModalEntryComponent, canActivate: [AuthGuard] },
             { path: "create-playlist", component: CreatePlaylistModalEntryComponent, canActivate: [AuthGuard] },

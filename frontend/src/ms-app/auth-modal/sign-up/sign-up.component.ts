@@ -31,14 +31,14 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
 
   private destroy$ = new Subject<void>();
 
-  constructor(private _fb: FormBuilder, private cdr: ChangeDetectorRef, private store: Store<AppState>, private router: Router, private dialogRef: MatDialogRef<AuthModalComponent>) {
+  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef, private store: Store<AppState>, private router: Router, private dialogRef: MatDialogRef<AuthModalComponent>) {
     super();
-    this.name = this._fb.control("", [Validators.required, Validators.pattern("^[А-Яа-яЁёA-Za-z]*$"), Validators.maxLength(20), Validators.minLength(3)]);
-    this.email = this._fb.control("", [Validators.required, Validators.email, Validators.maxLength(20), Validators.minLength(3)]);
-    this.password = this._fb.control("", [Validators.required, Validators.pattern(
+    this.name = this.fb.control("", [Validators.required, Validators.pattern("^[А-Яа-яЁёA-Za-z]*$"), Validators.maxLength(20), Validators.minLength(3)]);
+    this.email = this.fb.control("", [Validators.required, Validators.email, Validators.maxLength(20), Validators.minLength(3)]);
+    this.password = this.fb.control("", [Validators.required, Validators.pattern(
       "^(?=.*[0-9])(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*[@$!%*?&])([a-zA-Zа-яА-Я0-9@$!%*?&]{8,})$"), Validators.minLength(8)]);
 
-    this.formModel = this._fb.group({
+    this.formModel = this.fb.group({
       name: this.name,
       email: this.email,
       password: this.password,
@@ -46,13 +46,11 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
   }
 
   ngOnInit(): void {
-    console.log("init sign up component");
 
     this.store.select(selectAuthenticated).pipe(
       takeUntil(this.destroy$),
     ).subscribe((authenticated) => {
       this.authenticated = authenticated;
-      // this.cdr.markForCheck();
     });
 
     this.formModel.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -66,14 +64,12 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
   }
 
   ngOnDestroy(): void {
-    console.log("destroy sign up component");
     this.destroy$.next();
     this.destroy$.complete();
   }
 
   onFocus(): void {
     if (this.submitted) {
-      console.log("on focus");
       this.password.setValue("");
       this.submitted = !this.submitted;
     }
@@ -94,31 +90,8 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
       filter((value) => !!value),
       takeUntil(this.destroy$),
     ).subscribe((error) => {
-      console.log("error", error);
       if (error) {
         // TODO handle error User already exists
-        //     Object.keys(this.formModel.controls).forEach((prop) => {
-        //       const formControl = this.formModel.get(prop);
-        //       if (formControl) {
-        //         formControl.setErrors({
-        //           "isIncorrect": true,
-        //         });
-        //         // formControl.setValidators(this.isCorrectUserData);
-        //         this.errors = [
-        //           ...this.errors,
-        //           {
-        //             controlName: prop,
-        //             errorName: "isIncorrect",
-        //             errorValue: <ValidationErrors>error,
-        //           },
-        //         ];
-        //         this.cdr.markForCheck();
-        //       }
-        //     });
-      } else {
-        // TODO redirect to authenticated page if register success
-        console.log("register success");
-        // this.router.navigateByUrl("/");
       }
     });
   }
@@ -136,7 +109,6 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
       const user = {
         name, email, password, favouriteTracks: [], playlistIds: [],
       };
-      console.log("on submit form", user);
       this.registerNewUser(user);
     }
   }
@@ -144,16 +116,13 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
   onClose(): void {
     this.router.navigate(
       [
-        // ".",
         {
           outlets: {
             popupContent: null,
           },
         },
       ]);
-    // this._modalService.setModalClose();
     this.dialogRef.close();
-    // ).then(() => this.router.navigate(["/"]));
   }
 
 }

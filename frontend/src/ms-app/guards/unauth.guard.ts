@@ -14,7 +14,6 @@ export class NegateAuthGuard implements CanActivate, OnDestroy {
   returnUrl: string;
   private readonly destroy$: Subject<void> = new Subject();
 
-  // constructor(private _authGuard: AuthGuard) { }
   constructor(private store: Store<AppState>, private router: Router, private usersService: UsersService) {
     this.store.select(selectReturnUrl).pipe(
       takeUntil(this.destroy$),
@@ -29,9 +28,6 @@ export class NegateAuthGuard implements CanActivate, OnDestroy {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    // console.log(!this._authGuard.canActivate(route, state));
-    // return !this._authGuard.canActivate(route, state);
-
       if (this.usersService.isAuthenticated()) {
         this.router.navigateByUrl(this.returnUrl);
 

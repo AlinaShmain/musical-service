@@ -1,5 +1,5 @@
 export interface Playlist {
-    id: string;
+    id?: string;
     title: string;
     description: string;
     trackIds?: string[];

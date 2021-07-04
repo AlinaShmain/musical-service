@@ -21,7 +21,6 @@ import { reducers } from "./store/reducers";
 import { materialModules } from "./material";
 import { effects } from "./store/effects";
 import { HomeComponent } from "./home/home.component";
-// import { ModalService } from "./services/modal/modal.service";
 import { PlayerComponent } from "./player/player.component";
 import { MainComponent } from "./main/main.component";
 import { GetKeysPipe } from "./pipes/get-keys.pipe";
@@ -29,7 +28,6 @@ import { ToTimeFormatPipe } from "./pipes/to-time-format.pipe";
 import { GetValuesPipe } from "./pipes/get-values.pipe";
 import { ArtistListComponent } from "./artist-list/artist-list.component";
 import { PlaylistListComponent } from "./playlist-list/playlist-list.component";
-import { AlbumListComponent } from "./album-list/album-list.component";
 import { UsersService } from "./services/users/users.service";
 import { FilterAuthPipe } from "./pipes/filter-auth.pipe";
 import { TrackListService } from "./services/track-list/track-list.service";
@@ -61,7 +59,6 @@ import { DeleteFromPlaylistComponent } from "./delete-from-playlist/delete-from-
         GetValuesPipe,
         ToTimeFormatPipe,
         ArtistListComponent,
-        AlbumListComponent,
         FavouriteListComponent,
         PlaylistListComponent,
         PlayerComponent,

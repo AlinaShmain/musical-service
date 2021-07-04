@@ -4,8 +4,6 @@
             <img *ngFor="let imgPath of card?.imagesPath" [src]="imgPath" />
         </div>
         <img mat-card-image *ngIf="card?.imgPath" [src]="card?.imgPath" />
-        <!-- <mat-card-footer> -->
         <mat-card-title>{{ card?.title }}</mat-card-title>
-        <!-- </mat-card-footer> -->
     </mat-card>
 </div>

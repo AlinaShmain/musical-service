@@ -38,42 +38,30 @@ export class MainComponent implements OnInit, OnDestroy {
     {
       pageName: "Home",
       path: "home",
-      // iconName: "home",
       iconName: "fas fa-home",
       auth: false,
     },
     {
       pageName: "Artists",
       path: "artists",
-      // iconName: "mic_external_on",
       iconName: "fas fa-music",
       auth: false,
     },
-    // {
-    //   pageName: "Albums",
-    //   path: "albums",
-    //   // iconName: "album",
-    //   iconName: "fas fa-record-vinyl",
-    //   auth: false,
-    // },
     {
       pageName: "Favourites",
       path: "favourites",
-      // iconName: "grade",
       iconName: "fas fa-star",
       auth: true,
     },
     {
       pageName: "Playlists",
       path: "playlists",
-      // iconName: "playlist_play",
       iconName: "fas fa-list",
       auth: false,
     },
     {
       pageName: "My Playlists",
       path: "user-playlists",
-      // iconName: "playlist_play",
       iconName: "fas fa-list",
       auth: true,
     },
@@ -93,30 +81,24 @@ export class MainComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
       ).subscribe((event) => {
         if (event instanceof NavigationEnd && !event.url.includes("form")) {
-          console.log("prev:", event.url);
           this.store.dispatch(MainPageActions.setReturnUrl({ returnUrl: event.url }));
         }
       });
   }
 
   ngOnInit(): void {
-    console.log("init main component");
-
     const token = this.usersService.getFromLocStore("jwt-token");
     token && this.store.dispatch(AuthActions.getUserInfo({ token }));
 
-    // this.store.dispatch(AuthActions.verifyUser());
     this.store.select(selectAuthState).pipe(
       takeUntil(this.destroy$),
     ).subscribe((authState) => {
-      console.log("update authState");
       this.authState = authState;
       this.cdr.markForCheck();
     });
   }
 
   ngOnDestroy(): void {
-    console.log("main on destroy");
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -139,9 +121,6 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   onLogout(event: Event): void {
-    console.log("on Logout");
-    // event.preventDefault();
-
     this.usersService?.clearLocStore();
     this.store.dispatch(AuthActions.logoutUser());
 

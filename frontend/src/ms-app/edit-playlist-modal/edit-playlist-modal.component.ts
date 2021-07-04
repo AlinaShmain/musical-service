@@ -44,7 +44,6 @@ export class EditPlaylistModalComponent extends ValidationErrorsComponent implem
   }
 
   ngOnInit(): void {
-    console.log("edit playlist init", this.data);
 
     this.title?.setValue(this.data.title);
     this.description?.setValue(this.data.description);
@@ -68,7 +67,6 @@ export class EditPlaylistModalComponent extends ValidationErrorsComponent implem
   }
 
   onSubmit(): void {
-    console.log("on submit", this.errors);
 
     if (this.errors.length === 0) {
       const { title, description } = this.formModel.value;
@@ -77,13 +75,11 @@ export class EditPlaylistModalComponent extends ValidationErrorsComponent implem
         id: this.playlistId, title, description
       };
 
-      console.log("on submit form", playlistInfo);
       this.editPlaylist(playlistInfo);
     }
   }
 
    editPlaylist(playlistInfo: Playlist): void {
-    console.log("edit playlist", playlistInfo);
     const token = this.usersService.getFromLocStore("jwt-token");
     token && this.store.dispatch(AuthActions.editPlaylist({ playlistInfo, token }));
 

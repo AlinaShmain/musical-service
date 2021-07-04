@@ -33,7 +33,6 @@ export class CreatePlaylistModalComponent extends ValidationErrorsComponent impl
     super();
 
     const param = this.router.url.split("?")[1];
-    console.log("param", param);
     if (param) {
       this.trackId = param.split("=")[1];
     }
@@ -48,10 +47,8 @@ export class CreatePlaylistModalComponent extends ValidationErrorsComponent impl
   }
 
   ngOnInit(): void {
-    console.log("create playlists init", this.trackId);
 
     this.formModel.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      console.log("value change");
       this.errors = [];
       this.calculateErrors(this.formModel);
       this.cdr.markForCheck();
@@ -83,22 +80,19 @@ export class CreatePlaylistModalComponent extends ValidationErrorsComponent impl
   }
 
   onSubmit(event: Event): void {
-    console.log("on submit", this.errors);
     event.preventDefault();
-    // this.submitted = true;
 
     if (this.errors.length === 0) {
       const { title, description } = this.formModel.value;
 
-      const id = (this.usersService.getPlaylistIds().length + 1).toString();
+      // const id = (this.usersService.getPlaylistIds().length + 1).toString();
 
       const playlistInfo = this.trackId ? {
-        id, title, description, trackIds: [this.trackId], creatorId: "", totalLikes: "", imagesPath: [],
+        title, description, trackIds: [this.trackId], creatorId: "", totalLikes: "0", imagesPath: [],
       } : {
-        id, title, description, trackIds: [], creatorId: "", totalLikes: "", imagesPath: [],
+        title, description, trackIds: [], creatorId: "", totalLikes: "0", imagesPath: [],
       };
 
-      console.log("on submit form", playlistInfo);
       this.createPlaylist(playlistInfo);
     }
   }

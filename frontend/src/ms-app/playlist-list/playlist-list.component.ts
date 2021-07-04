@@ -23,16 +23,12 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
   constructor(private store: Store<AppState>, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    console.log("playlist component init");
-
     this.store.dispatch(PlaylistsPageActions.loadPlaylists());
 
     this.store.select(selectPlaylists).pipe(
       takeUntil(this.destroy$),
     ).subscribe((playlists) => {
-      console.log("update playlists");
       this.playlists = playlists;
-      console.log(playlists);
 
       if (this.playlists.length > 0) {
         this.cards = [];
@@ -43,7 +39,6 @@ export class PlaylistListComponent implements OnInit, OnDestroy {
             imagesPath: [...playlist.imagesPath],
           });
         }
-        console.log(this.cards);
       }
 
       this.cdr.markForCheck();

@@ -10,6 +10,7 @@ import { User } from "src/ms-app/models/user";
 import { AppState, selectAuthState } from "src/ms-app/store/state/app.state";
 import { AuthState } from "src/ms-app/store/state/auth.state";
 import { SecurityService } from "../security/security.service";
+import { baseURL } from "../config.json";
 
 @Injectable({
   providedIn: "root"
@@ -20,7 +21,6 @@ export class UsersService {
 
   constructor(private http: HttpClient, private store: Store<AppState>) {
     this.store.select(selectAuthState).subscribe((authState) => {
-      console.log("update authenticated", authState.authenticated);
       this.authState = authState;
     });
   }
@@ -31,7 +31,6 @@ export class UsersService {
         "CONTENT-TYPE": "application/json" as const,
       },
     };
-    console.log("post", user);
 
     const securityUtil: SecurityService = new SecurityService(128, 1000);
     const keys: string = securityUtil.encrypt(user.password);
@@ -42,12 +41,9 @@ export class UsersService {
       password: keys,
     };
 
-    console.log("userData", userData);
-
-    return this.http.post<Token>("http://localhost:3000/register", JSON.stringify(userData), httpOptions)
+    return this.http.post<Token>(`${baseURL}/register`, JSON.stringify(userData), httpOptions)
       .pipe(
         tap(({ token }) => {
-          console.log("token", token);
           this.setToLocStore("jwt-token", token);
         }),
       );
@@ -59,14 +55,10 @@ export class UsersService {
         "CONTENT-TYPE": "application/json" as const,
       },
     };
-    console.log("get", user);
 
-    return this.http.get<{ encryptedPrivateKey: string, encryptedRND: string }>(`http://localhost:3000/login/${user.email}`)
+    return this.http.get<{ encryptedPrivateKey: string, encryptedRND: string }>(`${baseURL}/login/${user.email}`)
       .pipe(
         switchMap(({ encryptedPrivateKey, encryptedRND }) => {
-          console.log("encryptedPrivateKey", encryptedPrivateKey);
-          console.log("encryptedRND", encryptedRND);
-
           const securityUtil: SecurityService = new SecurityService(128, 1000);
 
           const extractKey = /-----BEGIN ENCRYPTED PRIVATE KEY-----\r\n(.*)-----END ENCRYPTED PRIVATE KEY-----\r\n/.exec(encryptedPrivateKey);
@@ -74,21 +66,17 @@ export class UsersService {
           const privateKey = securityUtil.decryptPrivateKey(extractKey[1], user.password);
 
           const rnd: string = securityUtil.decryptRND(privateKey, encryptedRND);
-          console.log("rnd", rnd);
 
           const hashRND = securityUtil.getHash(rnd);
 
-          return this.http.post<{ token: string, userInfo: User }>("http://localhost:3000/login", JSON.stringify({ hashRND }), httpOptions)
+          return this.http.post<{ token: string, userInfo: User }>(`${baseURL}/login`, JSON.stringify({ hashRND }), httpOptions)
             .pipe(
               catchError((err) => {
-                console.log(err);
                 return of(err);
               }),
             );
         }),
         tap(({ token, userInfo }) => {
-          console.log("token", token);
-          console.log("user-info", userInfo);
           this.setToLocStore("jwt-token", token);
           this.setToLocStore("user-info", JSON.stringify(userInfo));
         }),
@@ -96,26 +84,20 @@ export class UsersService {
   }
 
   getUserInfo(token: string): Observable<User> {
-    // const token = this.getFromLocStore("jwt-token");
-    console.log("get user info", token);
-    // console.log(this.isValidToken());
     const httpOptions = {
       headers: {
         "AUTHORIZATION": `Bearer ${token}`,
       },
     };
-    return this.http.get<User>("http://localhost:3000/user-info", httpOptions)
+    return this.http.get<User>(`${baseURL}/user-info`, httpOptions)
     .pipe(
       tap((user) => {
-        console.log("user", user);
         this.setToLocStore("user-info", JSON.stringify(user));
       }),
     );
   }
 
   setToLocStore(key: string, value: string): void {
-    console.log(key);
-    console.log(value);
     localStorage.setItem(key, value);
   }
 
@@ -134,11 +116,8 @@ export class UsersService {
   getTokenInfo(): string {
     try {
       const token: string = this.getFromLocStore("jwt-token");
-      // console.log("get token", token);
       if (token) {
         const payload = window.atob(token.split(".")[1]);
-        console.log("payload", payload);
-        // return JSON.parse(payload);
         return payload;
       }
       return null;
@@ -150,21 +129,14 @@ export class UsersService {
 
   isAuthenticated(): boolean {
     const tokenInfo: string = this.getTokenInfo();
-    // console.log("token info", tokenInfo);
 
     if (tokenInfo) {
       const tokenInfoObj: TokenInfo = JSON.parse(tokenInfo);
-      console.log(Math.round(Date.now() / 1000));
       return tokenInfoObj.exp > Math.round(Date.now() / 1000) ? true : false;
     }
 
     return false;
   }
-
-  // isAuthenticated(): boolean {
-    // const isAuthenticated: User = JSON.parse(this.getFromLocStore("authenticated"));
-    // return this.authState.authenticated && this.isValidToken();
-  // }
 
   getUserEmail(): string {
     return this.authState.user.email;
@@ -179,13 +151,11 @@ export class UsersService {
   }
 
   getFavourites(): string[] {
-    // return this.authState.user?.favouriteTracks;
     const user: User = JSON.parse(this.getFromLocStore("user-info"));
     return user?.favouriteTracks;
   }
 
   getPlaylistIds(): string[] {
-    // return this.authState.user?.favouriteTracks;
     const user: User = JSON.parse(this.getFromLocStore("user-info"));
     return user?.playlistIds;
   }

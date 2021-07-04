@@ -25,13 +25,11 @@ export class ArtistInfoComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private store: Store<AppState>, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    console.log("init artist info component");
 
     this.sub = this.route.params.pipe(
       takeUntil(this.destroy$),
     ).subscribe((params) => {
       const id = params["id"];
-      console.log("id", id);
 
       this.store.dispatch(ArtistInfoActions.loadArtistInfo({ id }));
     });
@@ -39,7 +37,6 @@ export class ArtistInfoComponent implements OnInit, OnDestroy {
     this.store.select(selectArtist).pipe(
       takeUntil(this.destroy$),
     ).subscribe((artist) => {
-      console.log("update artist");
       this.artist = artist;
 
       if (artist) {
@@ -50,7 +47,6 @@ export class ArtistInfoComponent implements OnInit, OnDestroy {
           description: artist.description,
           subheader: "Popular Tracks",
         };
-        console.log("got artist info", artist);
 
         this.store.dispatch(ArtistInfoActions.loadTracks({ trackIds: artist.trackIds }));
       }
@@ -60,7 +56,6 @@ export class ArtistInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log("artists page on destroy");
     this.sub.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();

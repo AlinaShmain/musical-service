@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { Card } from "../models/card";
 
 @Component({
@@ -7,16 +7,9 @@ import { Card } from "../models/card";
   styleUrls: ["./card-list.component.less"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CardListComponent implements OnInit {
+export class CardListComponent {
 
   @Input() cards: Card[];
   @Input() widthCard: string = "150px";
-
-  // constructor() { }
-
-  ngOnInit(): void {
-    console.log("init card component");
-    console.log(this.cards);
-  }
 
 }

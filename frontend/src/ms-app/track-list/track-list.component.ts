@@ -24,10 +24,8 @@ export class TrackListComponent implements OnInit, OnDestroy {
   headers: TrackHeaders = {
     title: "Title",
     artist: "Artist",
-    // album: "Album",
     duration: "Duration",
   };
-  // tracks$: Track[] = [];
   audioState: AudioState;
   returnUrl: string;
 
@@ -50,8 +48,6 @@ export class TrackListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log("init track list component");
-
     this.store.select(selectAudioState).pipe(
       takeUntil(this.destroy$),
     ).subscribe((audioState) => {
@@ -61,14 +57,12 @@ export class TrackListComponent implements OnInit, OnDestroy {
       } else {
         this.isFavourite = [];
       }
-      // console.log("!!!!", this.isFavourite);
       this.cdr.markForCheck();
     });
 
   }
 
   ngOnDestroy(): void {
-    console.log("destroy track list component");
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -79,7 +73,6 @@ export class TrackListComponent implements OnInit, OnDestroy {
 
   onTrackClick(track: Track): void {
     if (track.id === this.audioState?.trackId) {
-      console.log("same track");
       this.audioState?.isPlaying ? this.onPause() : this.onResume();
     } else {
       this.onPlay(track);
@@ -87,10 +80,7 @@ export class TrackListComponent implements OnInit, OnDestroy {
   }
 
   onPlay(track: Track): void {
-    console.log("on play", track);
-
     if (this.audioState.bufferSource) {
-      console.log("interrupt playing");
       this.audioService.pausePlaying(this.audioState.bufferSource);
       this.audioService.resetTrackData();
     }
@@ -107,7 +97,6 @@ export class TrackListComponent implements OnInit, OnDestroy {
   }
 
   onPause(): void {
-    console.log("on pause");
     this.audioService.pausePlaying(this.audioState.bufferSource);
   }
 
@@ -117,7 +106,6 @@ export class TrackListComponent implements OnInit, OnDestroy {
     // }
 
     const favouritesIds: string[] = this.usersService.getFavourites();
-    console.log("favouritesIds", favouritesIds);
 
     return favouritesIds?.includes(track.id);
   }
@@ -128,11 +116,9 @@ export class TrackListComponent implements OnInit, OnDestroy {
       const token = this.usersService.getFromLocStore("jwt-token");
 
       if (this.isInFavourites(track)) {
-        console.log("unlike");
         this.isFavourite[idx] = false;
         this.store.dispatch(AuthActions.dislikeTrack({ trackId: track.id, token }));
       } else {
-        console.log("like");
         this.isFavourite[idx] = true;
         this.store.dispatch(AuthActions.likeTrack({ trackId: track.id, token }));
       }
@@ -168,8 +154,6 @@ export class TrackListComponent implements OnInit, OnDestroy {
     this.dialogRef.afterClosed().pipe(
       takeUntil(this.destroy$),
     ).subscribe((isDeleted) => {
-      console.log("after dialog close");
-
       if (isDeleted) {
         this.isOpenDropdown[index] = false;
         this.cdr.markForCheck();

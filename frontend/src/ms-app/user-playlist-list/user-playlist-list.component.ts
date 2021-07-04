@@ -30,9 +30,7 @@ export class UserPlaylistListComponent implements OnInit {
     this.store.select(selectUserPlaylists).pipe(
       takeUntil(this.destroy$),
     ).subscribe((playlists) => {
-      console.log("update user playlists");
       this.playlists = playlists;
-      console.log(playlists);
 
       if (this.playlists.length > 0) {
         this.cards = [];
@@ -43,7 +41,6 @@ export class UserPlaylistListComponent implements OnInit {
             imagesPath: [...playlist.imagesPath],
           });
         }
-        console.log(this.cards);
       }
 
       this.cdr.markForCheck();

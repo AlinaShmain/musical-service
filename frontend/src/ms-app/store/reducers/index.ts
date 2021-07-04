@@ -1,4 +1,3 @@
-// import { combineReducers } from "@ngrx/store";
 import { artistInfoReducer } from "./artist-info.reducers";
 import { artistsPageReducer } from "./artists-page.reducers";
 import { audioReducer } from "./audio.reducer";
@@ -8,11 +7,6 @@ import { homePageReducer } from "./home-page.reducer";
 import { mainPageReducer } from "./main-page.reducer";
 import { playlistInfoReducer } from "./playlist-info.reducers";
 import { playlistsPageReducer } from "./playlists.reducers";
-
-// export const rootReducer = combineReducers({
-//     auth: authReducer,
-//     audio: audioReducer
-// });
 
 export const reducers = {
     auth: authReducer,

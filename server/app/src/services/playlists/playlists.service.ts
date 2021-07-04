@@ -50,6 +50,14 @@ export class PlaylistsService {
         try {
             if (!playlistInfo) throw new Error();
 
+            const playlists = await this.playlistCollectionService.findAllPlaylists();
+
+            const lastId = parseInt(playlists[playlists.length - 1].id, 10);
+
+            playlistInfo = {
+                ...playlistInfo, id: (lastId + 1).toString()
+            };
+
             if (playlistInfo.trackIds.length > 0) {
                 const { imagePath } = await this.trackCollectionService.findById({ id: playlistInfo.trackIds[0] });
 

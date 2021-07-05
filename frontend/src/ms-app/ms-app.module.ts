@@ -44,6 +44,8 @@ import { PlaylistInfoComponent } from "./playlist-info/playlist-info.component";
 import { EditPlaylistModalComponent } from "./edit-playlist-modal/edit-playlist-modal.component";
 import { DeletePlaylistModalComponent } from "./delete-playlist-modal/delete-playlist-modal.component";
 import { DeleteFromPlaylistComponent } from "./delete-from-playlist/delete-from-playlist.component";
+
+
 @NgModule({
     declarations: [
         MsAppComponent,

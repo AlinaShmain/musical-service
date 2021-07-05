@@ -87,11 +87,14 @@ export class AuthEffects {
             ofType(AuthActions.dislikeTrack),
             mergeMap(({ trackId, token }) =>
                 this.trackService.deleteFromFavourites(trackId, token).pipe(
-                    map(({ favouriteTracks }) =>
+                    switchMap(({ favouriteTracks }) => [
                         AuthApiActions.deletedFromFavouritesSuccess({
                             favouriteTracks
                         }),
-                    ),
+                        AudioActions.deleteTrack({
+                            trackId
+                        }),
+                    ]),
                     catchError((error: Error) => of(AuthApiActions.deletedFromFavouritesError({ deletedFromFavouritesError: error, trackId }))),
                 )),
         ),

@@ -1,0 +1,17 @@
+<div class="line">
+    <h1>Create new playlist</h1>
+    <button class="close-btn" (click)="onClose()"><i class="fas fa-window-close close-icon"></i></button>
+</div>
+
+<form [formGroup]="formModel" (ngSubmit)="onSubmit($event)" class="form-model">
+    <div class="input-group">
+        <input type="text" placeholder="Name your playlist..." class="form-control" formControlName="title" required />
+    </div>
+    <div class="input-group">
+        <textarea placeholder="Describe your playlist ..." class="form-control" formControlName="description" required></textarea>
+    </div>
+    <div class="center-button">
+        <button class="modal-button submit-button" type="submit">Create</button>
+        <button (click)="onClose()" class="modal-button close-button">Cancel</button>
+    </div>
+</form>

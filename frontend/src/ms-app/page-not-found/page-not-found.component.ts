@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: "ms-page-not-found",
@@ -6,12 +7,12 @@ import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
   styleUrls: ["./page-not-found.component.less"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PageNotFoundComponent implements OnInit {
+export class PageNotFoundComponent {
 
-  // constructor() { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
-  ngOnInit(): void {
-    console.log("init page not found component");
+  onReturn(): void {
+    this.router.navigate(["../"], { relativeTo: this.route });
   }
 
 }

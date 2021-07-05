@@ -1,1 +1,43 @@
-/* page not found less */
+@import "src/colors.less";
+
+.page-wrap {
+    background-color: @light-primary-color;
+    height: 100vh;
+  }
+  
+  .error-page {
+    background-color: white;
+    position: absolute;
+    top: 10%;
+    left: 17%;
+    right: 17%;
+    bottom: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .content {
+    max-width: 500px;
+    text-align: center;
+  }
+  
+  .content h1 {
+    font-size: 13vw;
+    color: @primary-color;
+    line-height: 0.5em;
+    margin-bottom: 42px;
+  }
+  
+  .content p {
+    font-size: 1.2em;
+  }
+  
+  .primary-button {
+    background-color: @primary-color;
+    &:hover {
+        box-shadow: 0 0 7px @primary-color;
+    }
+  }
+  

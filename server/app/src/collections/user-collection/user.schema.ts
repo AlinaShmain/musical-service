@@ -1,9 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import * as bcrypt from "bcrypt";
-import { JwtService } from '@nestjs/jwt';
 
-const SALT_WORK_FACTOR = 10;
+// const SALT_WORK_FACTOR = 10;
 
 @Schema()
 export class User extends Document {
@@ -22,6 +20,9 @@ export class User extends Document {
 
   @Prop()
   favouriteTracks: string[]
+
+  @Prop()
+  playlistIds: string[]
 
   // isCorrectPassword?: Function;
 }

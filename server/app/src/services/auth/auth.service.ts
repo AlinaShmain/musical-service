@@ -1,11 +1,12 @@
 import { ConflictException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserCollectionService } from 'src/collections/user-collection/user-collection.service';
-import { TokenDto } from 'src/model/token.dto';
 import { UserDto } from 'src/model/user.dto';
 import * as forge from "node-forge";
 import { EncryptedData } from 'src/model/encryptedData.dto';
 import * as bcrypt from "bcrypt";
+import { TokenDto } from 'src/model/token.dto';
+import { AuthInfoDto } from 'src/model/authInfo.dto';
 
 @Injectable()
 export class AuthService {
@@ -31,6 +32,16 @@ export class AuthService {
         // console.log("encryptText", encryptText);
 
         return encryptText;
+    }
+
+    async verifyToken(token: string) {
+        return this.jwtService.verify(token);
+    }
+
+    async getUserInfo(email: string): Promise<UserDto> {
+        const foundUser: UserDto = await this.userCollectionService.findByEmail({ email }, { _id: 0, password: 0 });
+        console.log("foundUser", foundUser);
+        return foundUser;
     }
 
     async validateUser(email: string): Promise<EncryptedData> {
@@ -66,17 +77,22 @@ export class AuthService {
         return hash;
     }
 
-    async signIn({salt, hashClient}): Promise<TokenDto> {
+    async signIn({salt, hashClient}): Promise<AuthInfoDto> {
         const hashServer = this.getHash(salt, this.currentRND.toString());
         console.log("hash server", hashServer);
         console.log("hash client", hashClient);
         
         if (hashClient === hashServer) {
-            const token = {
-                token: this.jwtService.sign(this.currentPayload),
-            };
+            const token = this.jwtService.sign(this.currentPayload);
             console.log("token", token);
-            return token;
+
+            const userInfo: UserDto = await this.userCollectionService.findByEmail({ email: this.currentPayload.email }, { _id: 0, password: 0 });
+            console.log("foundUser", userInfo);
+
+            return {
+                token,
+                userInfo
+            };
         }
 
         throw new UnauthorizedException("Incorrect email or password");
@@ -108,11 +124,6 @@ export class AuthService {
             const createdUser = (await this.userCollectionService.create(newUser)).toObject();
 
             console.log("saved user", createdUser);
-
-            // const createdUserCopy = {
-            //     name: createdUser.name,
-            //     email: createdUser.email,
-            // };
 
             const payload = {
                 email: createdUser.email,

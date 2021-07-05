@@ -1,0 +1,15 @@
+<div class="line">
+    <h1>Add to playlist</h1>
+    <button class="close-btn" (click)="onClose()"><i class="fas fa-window-close close-icon"></i></button>
+</div>
+<div class="playlists-list">
+    <mat-card *ngFor="let playlist of playlists; index as i" class="playlist" (click)="onAdd(playlist.id)">
+        <div mat-card-content class="images-wrap" *ngIf="playlist?.imagesPath">
+            <img *ngFor="let imgPath of playlist?.imagesPath" [src]="imgPath" />
+        </div>
+        <mat-card-title>{{ playlist?.title }}</mat-card-title>
+    </mat-card>
+</div>
+<div class="center-button">
+    <button class="create-button" (click)="onClose()" routerLink="/main/create-playlist" [queryParams]="{ trackId: trackId }">+ Create new playlist</button>
+</div>

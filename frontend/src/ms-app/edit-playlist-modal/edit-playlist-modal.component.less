@@ -1,0 +1,52 @@
+@import "src/colors.less";
+@import "src/common.less";
+
+.line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    h1 {
+        margin: 0;
+    }
+    .close-btn {
+        color: @text-color-blue;
+        background-color: white;
+        font-size: 20px;
+        border: none;
+        padding: 0;
+        outline: none;
+        cursor: pointer;
+        &:hover {
+            color: @blue-light;
+        }
+    }
+}
+
+.form-model {
+    margin-top: 10px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px 5px;
+    label {
+        color: @primary-color;
+    }
+}
+
+textarea {
+    font-family: inherit;
+    font-size: inherit;
+ } 
+
+.form-control {
+    border: none;
+    border-bottom: 1px solid rgb(202, 202, 202);
+    margin-top: 5px;
+    padding: 5px;
+}
+
+.form-control:focus {
+    outline: none;
+}

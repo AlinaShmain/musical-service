@@ -9,11 +9,7 @@ import { AllValidationControlErrors } from "src/ms-app/models/all-validation-con
 })
 export class ValidationErrorsComponent {
 
-  protected  errors: AllValidationControlErrors[] = [];
-
-  constructor() {
-    console.log("auth form", this.errors.length);
-  }
+  protected errors: AllValidationControlErrors[] = [];
 
   calculateErrors(form: FormGroup): AllValidationControlErrors[] {
     Object.keys(form.controls).forEach((field) => {
@@ -38,6 +34,15 @@ export class ValidationErrorsComponent {
     return this.errors;
   }
 
+  resetErrorMessages(form: FormGroup): void {
+    Object.keys(form.controls).forEach((field) => {
+      const control = form.get(field);
+      if (control instanceof FormControl) {
+        control.setErrors(null);
+      }
+    });
+  }
+
   getErrorsControl(control: string): AllValidationControlErrors[] | undefined {
     return this.errors.filter((error) => error.controlName === control);
   }
@@ -54,9 +59,6 @@ export class ValidationErrorsComponent {
           if (error.controlName === "name") {
             return `Field ${error.controlName} should contain only letters`;
           }
-          // if (error.controlName === "email") {
-          //   return `Field ${error.controlName} has incorrect data`;
-          // }
           return "";
         case "maxlength":
           return `Length of field ${error.controlName} should be ${error.errorValue.requiredLength} characters maximum`;

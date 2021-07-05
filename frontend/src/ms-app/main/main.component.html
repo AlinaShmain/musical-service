@@ -1,26 +1,36 @@
 <div class="main-container">
     <mat-toolbar class="fixed-header">
-        <!-- <button mat-button color="accent" (click)="sidenav.toggle()">
-                <mat-icon>{{ opened ? 'menu_open' : 'menu' }}</mat-icon>
-        </button> -->
-        <!-- <div (click)="sidenav.toggle()" class="btn"> -->
         <button mat-flat-button (click)="onOpenMenu()" class="menu-btn">
             <div class="icon-bar" [@hamburguerX]="isHamburguer ? 'hamburguer' : 'topX'"></div>
             <div class="icon-bar" [@hamburguerX]="isHamburguer ? 'hamburguer' : 'hide'"></div>
             <div class="icon-bar" [@hamburguerX]="isHamburguer ? 'hamburguer' : 'bottomX'"></div>
         </button>
 
-        <button mat-raised-button color="accent" (click)="onOpenModal()" class="modal-btn">Login</button>
+        <button mat-raised-button color="accent" *ngIf="!isAuthenticated()" routerLink="form" class="modal-btn">Login</button>
+        <div class="authed-content" *ngIf="isAuthenticated()">
+            <i class="fas fa-user-circle"></i>
+            <span>{{ authState?.user?.name }}</span>
+            <div class="dropdown">
+                <span class="dropdown-icon" (click)="onDropdown()">
+                    <i class="fas fa-chevron-down"></i>
+                </span>
+                <div class="dropdown-content" *ngIf="isOpenDropdown">
+                    <a href="#" class="dropdown-link" (click)="onLogout($event)"><i class="fas fa-sign-out-alt logout-icon"></i>Logout</a>
+                </div>
+            </div>
+        </div>
     </mat-toolbar>
     <mat-sidenav-container class="sidenav-container">
         <mat-sidenav #sidenav mode="side" [(opened)]="isOpenMenu" class="sidenav">
             <mat-nav-list mat-align-tabs="center" class="nav-list">
-                <a *ngFor="let link of links" routerLink="{{ link.path }}" mat-list-item routerLinkActive="active-link" class="list-item">
-                    <!-- <mat-icon>{{ link.iconName }}</mat-icon> -->
+                <a *ngFor="let link of links | filterAuth: isAuthenticated()" routerLink="{{ link.path }}" mat-list-item routerLinkActive="active-link" class="list-item">
                     <i class="{{ link.iconName }} icon"></i>
                     <span>{{ link.pageName }}</span>
                 </a>
             </mat-nav-list>
+            <div *ngIf="isAuthenticated()" class="center-button">
+                <button class="modal-button submit-button" routerLink="/main/create-playlist">+ Create new playlist</button>
+            </div>
         </mat-sidenav>
 
         <mat-sidenav-content class="sidenav-content">

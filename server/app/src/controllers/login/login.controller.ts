@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Session } from '@nestjs/common';
 import { EncryptedData } from 'src/model/encryptedData.dto';
-import { TokenDto } from 'src/model/token.dto';
 import { AuthService } from 'src/services/auth/auth.service';
+import * as secureSession from 'fastify-secure-session';
+import { AuthInfoDto } from 'src/model/authInfo.dto';
 
 @Controller('login')
 export class LoginController {
@@ -18,7 +19,7 @@ export class LoginController {
     }
 
     @Post()
-    async create(@Body() { hashRND }): Promise<TokenDto> {
+    async create(@Body() { hashRND }): Promise<AuthInfoDto> {
         console.log("hashRND", hashRND);
         const splitted = hashRND.split(":")
         const hashData = {

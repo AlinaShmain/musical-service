@@ -45,6 +45,5 @@ export class AudioEffects {
                 return AudioApiActions.playSuccess({ bufferSource });
             }),
         ),
-        // { dispatch: false },
     );
 }

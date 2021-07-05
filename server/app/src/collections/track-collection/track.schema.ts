@@ -16,6 +16,9 @@ export class Track extends Document {
     @Prop({ required: true })
     artist: string;
 
+    @Prop({ required: true })
+    artistId: string;
+
     @Prop()
     album: string;
 
@@ -24,6 +27,9 @@ export class Track extends Document {
 
     @Prop()
     genre: string;
+
+    @Prop()
+    imagePath: string;
 }
 
 export const TrackSchema = SchemaFactory.createForClass(Track);

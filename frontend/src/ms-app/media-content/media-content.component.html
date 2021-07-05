@@ -1,0 +1,21 @@
+<div class="wrap">
+    <div mat-card-content class="images-wrap" *ngIf="mediaData?.imagesPath">
+        <img *ngFor="let imgPath of mediaData?.imagesPath" [src]="imgPath" />
+    </div>
+    <img class="image-media" *ngIf="mediaData?.imgPath" [src]="mediaData?.imgPath" />
+    <h1 class="page-header">{{ mediaData?.header }}</h1>
+    <h2 class="subtitle">{{ mediaData?.subtitle }}</h2>
+</div>
+<div class="line">
+    <p class="description">{{ mediaData?.description }}</p>
+    <div *ngIf="isShow()" class="dropdown">
+        <span class="dropdown-icon" (click)="onDropdown()">
+            <i class="fas fa-ellipsis-h"></i>
+        </span>
+        <div class="dropdown-content" *ngIf="isOpenDropdown">
+            <a (click)="openEditModal()"> <i class="fas fa-edit icon"></i>Edit playlist </a>
+            <a (click)="openDeleteModal()"> <i class="fas fa-trash-alt icon"></i>Delete playlist</a>
+        </div>
+    </div>
+</div>
+<h1 class="subheader" *ngIf="mediaData?.subheader">{{ mediaData?.subheader }}</h1>

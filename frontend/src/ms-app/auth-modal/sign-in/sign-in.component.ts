@@ -1,11 +1,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from "@angular/forms";
+import { MatDialogRef } from "@angular/material/dialog";
+import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { Subject } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 import { filter, takeUntil } from "rxjs/operators";
 import { User } from "src/ms-app/models/user";
 import { AuthActions } from "src/ms-app/store/actions";
 import { AppState, selectAuthenticated, selectLoginError } from "src/ms-app/store/state/app.state";
+import { AuthModalComponent } from "../auth-modal.component";
 import { ValidationErrorsComponent } from "../validation-errors/validation-errors.component";
 @Component({
   selector: "ms-sign-in",
@@ -27,31 +30,31 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
   authenticated: boolean = false;
 
   private destroy$ = new Subject<void>();
+  subscribe: Subscription;
 
-  constructor(private _fb: FormBuilder, private cdr: ChangeDetectorRef, private store: Store<AppState>) {
+  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef, private store: Store<AppState>, private router: Router,
+    private dialogRef: MatDialogRef<AuthModalComponent>) {
     super();
-    this.email = this._fb.control("", [Validators.required, Validators.email, Validators.maxLength(20), Validators.minLength(3)]);
-    this.password = this._fb.control("", [Validators.required, Validators.pattern(
+
+    this.email = this.fb.control("", [Validators.required, Validators.email, Validators.maxLength(20), Validators.minLength(3)]);
+    this.password = this.fb.control("", [Validators.required, Validators.pattern(
       "^(?=.*[0-9])(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*[@$!%*?&])([a-zA-Zа-яА-Я0-9@$!%*?&]{8,})$"), Validators.minLength(8)]);
 
-    this.formModel = this._fb.group({
+    this.formModel = this.fb.group({
       email: this.email,
       password: this.password,
     });
   }
 
   ngOnInit(): void {
-    console.log("init sign in component");
 
     this.store.select(selectAuthenticated).pipe(
       takeUntil(this.destroy$),
     ).subscribe((authenticated) => {
       this.authenticated = authenticated;
-      // this.cdr.markForCheck();
     });
 
     this.formModel.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      console.log("value change");
       this.submitted && this.resetErrorMessages(this.formModel);
       this.errors = [];
       this.calculateErrors(this.formModel);
@@ -62,27 +65,15 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
   }
 
   ngOnDestroy(): void {
-    console.log("destroy sign in component");
     this.destroy$.next();
     this.destroy$.complete();
   }
 
   onFocus(): void {
     if (this.submitted) {
-      console.log("on focus");
       this.password.setValue("");
       this.submitted = !this.submitted;
     }
-  }
-
-  resetErrorMessages(form: FormGroup): void {
-    Object.keys(form.controls).forEach((field) => {
-      const control = form.get(field);
-      if (control instanceof FormControl) {
-        // control.clearValidators();
-        control.setErrors(null);
-      }
-    });
   }
 
   handleCheckboxChange(): void {
@@ -92,13 +83,18 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
   loginUser(user: User): void {
     this.store.dispatch(AuthActions.loginUser({ user }));
 
-    // TODO redirect to authenticated page if login success
+    this.store.select(selectAuthenticated).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe((authenticated) => {
+      if (authenticated) {
+        this.onClose();
+      }
+    });
 
     this.store.select(selectLoginError).pipe(
       filter((value) => !!value),
       takeUntil(this.destroy$),
     ).subscribe((error) => {
-      console.log("error", error);
       if (error) {
         Object.keys(this.formModel.controls).forEach((prop) => {
           const formControl = this.formModel.get(prop);
@@ -106,7 +102,6 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
             formControl.setErrors({
               "isIncorrect": true,
             });
-            // formControl.setValidators(this.isCorrectUserData);
             this.errors = [
               ...this.errors,
               {
@@ -131,18 +126,28 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
   }
 
   onSubmit(): void {
-    console.log("submit");
     this.submitted = true;
 
     if (this.errors.length === 0) {
       const { email, password } = this.formModel.value;
 
       const user = {
-        email, password, favouriteTracks: []
+        email, password, favouriteTracks: [], playlistIds: [],
       };
-      console.log("on submit form", user);
       this.loginUser(user);
     }
+  }
+
+  onClose(): void {
+    this.router.navigate(
+      [
+        {
+          outlets: {
+            popupContent: null,
+          },
+        },
+      ]);
+    this.dialogRef.close();
   }
 
 }

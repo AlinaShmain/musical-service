@@ -3,5 +3,7 @@ export interface UserDto {
     name?: string;
     email: string;
     password: string;
+    favouriteTracks: string[];
+    playlistIds: string[];
     // admin: boolean,
 }

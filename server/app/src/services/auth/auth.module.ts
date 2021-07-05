@@ -5,6 +5,7 @@ import { AuthService } from "./auth.service";
 import { jwtConstants } from "./constants";
 import { RegisterController } from "src/controllers/register/register.controller";
 import { LoginController } from "src/controllers/login/login.controller";
+import { UserInfoController } from "src/controllers/user-info/user-info.controller";
 
 
 @Module({
@@ -15,8 +16,8 @@ import { LoginController } from "src/controllers/login/login.controller";
             signOptions: { expiresIn: '3h' },
         }),
     ],
-    controllers: [RegisterController, LoginController],
+    controllers: [RegisterController, LoginController, UserInfoController],
     providers: [AuthService],
-    exports: [AuthService, JwtModule],
+    exports: [AuthService, JwtModule, UserCollectionModule],
 })
 export class AuthModule { }

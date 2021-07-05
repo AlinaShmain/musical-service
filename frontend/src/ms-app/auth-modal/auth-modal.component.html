@@ -1,15 +1,17 @@
-<nav mat-tab-nav-bar mat-align-tabs="center">
-    <a mat-tab-link routerLink="signIn" routerLinkActive="active">Sign In</a>
-    <a mat-tab-link routerLink="signUp" routerLinkActive="active">Sign Up</a>
-</nav>
-<!-- <nav class="nav-bar">
+<nav class="nav-bar">
     <ul class="tabs-list">
         <li class="tab-item">
-            <a mat-tab-link routerLink="signIn" routerLinkActive="active">Sign In</a>
+            <a class="tab-link" [routerLink]="[{ outlets: { popupContent: ['signIn'] } }]" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+                Sign In
+                <div class="border-line"></div>
+            </a>
         </li>
         <li class="tab-item">
-            <a mat-tab-link routerLink="signUp" routerLinkActive="active">Sign Up</a>
+            <a class="tab-link" [routerLink]="[{ outlets: { popupContent: ['signUp'] } }]" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active-link">
+                Sign Up
+                <div class="border-line"></div>
+            </a>
         </li>
     </ul>
-</nav> -->
-<router-outlet></router-outlet>
+</nav>
+<router-outlet name="popupContent"></router-outlet>

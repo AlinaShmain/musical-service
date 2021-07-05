@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
@@ -7,20 +8,17 @@ import {
 } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatSidenav } from "@angular/material/sidenav";
-import { ActivatedRoute, Router } from "@angular/router";
+import { NavigationEnd, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { filter, takeUntil } from "rxjs/operators";
 import { hamburgerAnimation } from "../animations/hamburger-menu";
-import { AuthModalComponent } from "../auth-modal/auth-modal.component";
-import { AuthActions } from "../store/actions";
-import { AppState } from "../store/state/app.state";
+import { Link } from "../models/link";
+import { UsersService } from "../services/users/users.service";
+import { AuthActions, MainPageActions } from "../store/actions";
+import { AppState, selectAuthState } from "../store/state/app.state";
+import { AuthState } from "../store/state/auth.state";
 
-interface Link {
-  pageName: string;
-  path: string;
-  iconName: string;
-}
 @Component({
   selector: "ms-main",
   templateUrl: "./main.component.html",
@@ -32,9 +30,6 @@ interface Link {
 })
 export class MainComponent implements OnInit, OnDestroy {
 
-  private destroy$ = new Subject<void>();
-  returnUrl: string;
-
   isOpenMenu: boolean = false;
   @ViewChild(MatSidenav) private sidenav: MatSidenav;
   isHamburguer: boolean = true;
@@ -43,49 +38,67 @@ export class MainComponent implements OnInit, OnDestroy {
     {
       pageName: "Home",
       path: "home",
-      // iconName: "home",
       iconName: "fas fa-home",
+      auth: false,
     },
     {
       pageName: "Artists",
       path: "artists",
-      // iconName: "mic_external_on",
       iconName: "fas fa-music",
-    },
-    {
-      pageName: "Albums",
-      path: "albums",
-      // iconName: "album",
-      iconName: "fas fa-record-vinyl",
+      auth: false,
     },
     {
       pageName: "Favourites",
       path: "favourites",
-      // iconName: "grade",
       iconName: "fas fa-star",
+      auth: true,
     },
     {
       pageName: "Playlists",
       path: "playlists",
-      // iconName: "playlist_play",
       iconName: "fas fa-list",
+      auth: false,
+    },
+    {
+      pageName: "My Playlists",
+      path: "user-playlists",
+      iconName: "fas fa-list",
+      auth: true,
     },
   ];
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog,
-    private router: Router, private store: Store<AppState>) {
+  isOpenDropdown: boolean = false;
+
+  private destroy$ = new Subject<void>();
+
+  authState: AuthState;
+
+  constructor(public dialog: MatDialog, private usersService: UsersService,
+    private store: Store<AppState>, private cdr: ChangeDetectorRef, private router: Router) {
+    router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntil(this.destroy$),
+      ).subscribe((event) => {
+        if (event instanceof NavigationEnd && !event.url.includes("form")) {
+          this.store.dispatch(MainPageActions.setReturnUrl({ returnUrl: event.url }));
+        }
+      });
   }
 
   ngOnInit(): void {
-    console.log("home component");
-    console.log(this.router.url);
-    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      this.returnUrl = params.returnUrl;
+    const token = this.usersService.getFromLocStore("jwt-token");
+    token && this.store.dispatch(AuthActions.getUserInfo({ token }));
+
+    this.store.select(selectAuthState).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe((authState) => {
+      this.authState = authState;
+      this.cdr.markForCheck();
     });
   }
 
   ngOnDestroy(): void {
-    console.log("home on destroy");
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -95,15 +108,23 @@ export class MainComponent implements OnInit, OnDestroy {
     this.sidenav.toggle();
   }
 
-  onOpenModal(): void {
-    console.log("on open");
-    this.store.dispatch(AuthActions.setIsOpenAuthModal({ isOpenAuthModal: true }));
+  isAuthenticated(): boolean {
+    return this.usersService.isAuthenticated();
+  }
 
-    const dialogRef = this.dialog.open(AuthModalComponent, {});
-    dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
-      console.log("after close modal");
-      this.router.navigateByUrl(this.returnUrl);
-    });
+  getUserName(): string {
+    return this.usersService.getUserName();
+  }
+
+  onDropdown(): void {
+    this.isOpenDropdown = !this.isOpenDropdown;
+  }
+
+  onLogout(event: Event): void {
+    this.usersService?.clearLocStore();
+    this.store.dispatch(AuthActions.logoutUser());
+
+    this.router.navigateByUrl("/main/home");
   }
 
 }

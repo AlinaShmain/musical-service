@@ -23,15 +23,12 @@ export class PlayerComponent implements OnInit, OnDestroy {
   constructor(private store: Store<AppState>, private cdr: ChangeDetectorRef, private audioService: AudioService) { }
 
   ngOnInit(): void {
-    console.log("player component init");
-
     this.store.select(selectAudioState).pipe(
       takeUntil(this.destroy$),
     ).subscribe((audioState) => {
 
       if (audioState.isEnded) {
         const nextTrack = this.getNextTrack();
-        console.log("next track", nextTrack);
         if (nextTrack) {
           this.store.dispatch(AudioActions.playTrack({ track: nextTrack }));
         }
@@ -43,7 +40,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.warn("player was destroyed");
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -65,14 +61,10 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   onPause(): void {
-    console.log("on pause");
     this.audioService.pausePlaying(this.audioState.bufferSource);
-    // this.store.dispatch(AudioActions.pausePlaying({ bufferSource: this.audioState.bufferSource }));
   }
 
   onResume(): void {
-    console.log("on resume");
-
     if (this.audioState.trackId) {
       this.store.dispatch(AudioActions.resumePlaying({
         currentTime: this.audioState.currentTime,
@@ -82,6 +74,10 @@ export class PlayerComponent implements OnInit, OnDestroy {
       const track = this.audioState.currTrackList[0];
       this.store.dispatch(AudioActions.playTrack({ track }));
     }
+  }
+
+  isFirstTrack(): boolean {
+    return !this.audioState?.trackId || this.audioState?.currTrackList[0].id === this.audioState?.trackId;
   }
 
   isLastTrack(trackId: string): boolean {
@@ -95,8 +91,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   onPrevious(): void {
-    console.log("on previous");
-
     this.audioService.pausePlaying(this.audioState.bufferSource);
     this.audioService.resetTrackData();
 
@@ -106,8 +100,6 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   onNext(): void {
-    console.log("on next");
-
     this.audioService.pausePlaying(this.audioState.bufferSource);
     this.audioService.resetTrackData();
 
@@ -117,19 +109,14 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
 
   onMute(): void {
-    console.log("on mute");
-
     this.store.dispatch(AudioActions.muteVolume());
   }
 
   onUnmute(): void {
-    console.log("on unmute");
-
     this.store.dispatch(AudioActions.unmuteVolume());
   }
 
   onVolumeChange(event: MatSliderChange): void {
-    console.log("on volume change", event.value);
     const volume = event.value.toString();
 
     this.store.dispatch(AudioActions.setVolume({ volume }));

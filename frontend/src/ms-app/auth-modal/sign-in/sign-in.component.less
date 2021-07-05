@@ -1,4 +1,9 @@
 @import "src/colors.less";
+@import "src/common.less";
+
+.form-model {
+    margin-top: 10px;
+}
 
 .input-group {
     display: flex;
@@ -65,26 +70,6 @@
     font-size: 14px;
 }
 
-.center-button {
-    text-align: center;
-    margin-top: 10px;
-}
-
-.submit-button {
-    background-color: white;
-    color: @primary-color;
-    border: 2px solid @primary-color;
-    border-radius: 5px;
-    padding: 5px 8px;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease 0s;
-    cursor: pointer;
-    outline: none;
-    &:hover {
-        box-shadow: 0 0 7px @primary-color;
-    }
-}
-
 .flex-wrapper {
     display: flex;
     justify-content: space-between;
@@ -117,9 +102,6 @@
                 color: white;
             }
         }
-        &:checked:active {
-            // box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
-        }
         &:focus {
             outline: 0;
         }
@@ -131,7 +113,6 @@
 
 .forget-password {
     .link {
-        // text-decoration: none;
         color: @primary-color;
     }
 }

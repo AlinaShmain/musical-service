@@ -160,4 +160,11 @@ export class UsersService {
     return user?.playlistIds;
   }
 
+  updatePlaylistIds(playlistIds: string[]): void {
+    let user: User = JSON.parse(this.getFromLocStore("user-info"));
+    user = { ...user, playlistIds };
+
+    this.setToLocStore("user-info", JSON.stringify(user));
+  }
+
 }

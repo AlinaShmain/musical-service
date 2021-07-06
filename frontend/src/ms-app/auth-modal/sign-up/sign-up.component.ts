@@ -34,7 +34,7 @@ export class SignUpComponent extends ValidationErrorsComponent implements OnInit
   constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef, private store: Store<AppState>, private router: Router, private dialogRef: MatDialogRef<AuthModalComponent>) {
     super();
     this.name = this.fb.control("", [Validators.required, Validators.pattern("^[А-Яа-яЁёA-Za-z]*$"), Validators.maxLength(20), Validators.minLength(3)]);
-    this.email = this.fb.control("", [Validators.required, Validators.email, Validators.maxLength(20), Validators.minLength(3)]);
+    this.email = this.fb.control("", [Validators.required, Validators.email, Validators.maxLength(30), Validators.minLength(3)]);
     this.password = this.fb.control("", [Validators.required, Validators.pattern(
       "^(?=.*[0-9])(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*[@$!%*?&])([a-zA-Zа-яА-Я0-9@$!%*?&]{8,})$"), Validators.minLength(8)]);
 

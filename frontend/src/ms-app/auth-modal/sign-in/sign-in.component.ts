@@ -36,7 +36,7 @@ export class SignInComponent extends ValidationErrorsComponent implements OnInit
     private dialogRef: MatDialogRef<AuthModalComponent>) {
     super();
 
-    this.email = this.fb.control("", [Validators.required, Validators.email, Validators.maxLength(20), Validators.minLength(3)]);
+    this.email = this.fb.control("", [Validators.required, Validators.email, Validators.maxLength(30), Validators.minLength(3)]);
     this.password = this.fb.control("", [Validators.required, Validators.pattern(
       "^(?=.*[0-9])(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*[@$!%*?&])([a-zA-Zа-яА-Я0-9@$!%*?&]{8,})$"), Validators.minLength(8)]);
 

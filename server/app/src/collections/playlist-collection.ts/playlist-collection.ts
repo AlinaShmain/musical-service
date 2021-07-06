@@ -26,7 +26,7 @@ export class PlaylistCollectionService {
     async addImagePlaylist({ playlistId, imagePath }): Promise<void> {
         this.playlistModel.findOneAndUpdate(
             { id: playlistId },
-            { $addToSet: { imagesPath: imagePath } },
+            { $push: { imagesPath: imagePath } },
             { new: true },
         ).exec();
     }

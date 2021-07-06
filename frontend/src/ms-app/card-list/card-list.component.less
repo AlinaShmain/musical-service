@@ -1,8 +1,8 @@
 .card-list {
     padding: 10px 10px 0;
-    display: flex;
-    justify-content: space-around;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 20px;
 }
 
 .images-wrap {
@@ -19,6 +19,7 @@
 }
 
 .card {
+    justify-self: center;
     max-width: 150px;
     transition: all 0.3s ease 0s;
     .mat-card-image {
